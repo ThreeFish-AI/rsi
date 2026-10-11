@@ -5,7 +5,7 @@ default_branch: main
 local_path: ~/Documents/projects/aurelius/review-once
 adoption: pending
 skill_entry: SKILL.md
-ledger: docs/.agents/issue.md（仓内台账）
+ledger: docs/.agents/issue.md（仓内 ledger）
 entry_id: RSI-NNN（三位递增，当前至 010，新条目 011 起）
 untrusted_sources: 被 Review 的目标仓库内容（源码、注释、Issue/PR 正文）、Review 私有内容、Conductor 平台内部状态
 privacy_lexicon: 用户名、目标仓库名、Review request 私有内容关键词；公共托管域名不入表
@@ -22,7 +22,7 @@ special_channels: 无
 
 # review-once 适配要点
 
-- 已知缺陷（切换 PR 借机修复）：SKILL.md / references 零引用 issue.md 台账，RSI 非运行时行为——切换 PR 为 SKILL.md 增补「自改进回路（RSI）」薄指针章节 + NEW_CONTRACT 词汇护栏 + evals 触发正负例。
-- 台账条目六段式：日期 / 问题描述 / 表因与根因 / 处理方式（回填 PR 与 commit 链接）/ 后续防范（可检查规则而非叙述）/ 同类问题影响与注意事项（建教训谱系）。
+- 已知缺陷（切换 PR 借机修复）：SKILL.md / references 零引用 issue.md ledger，RSI 非运行时行为——切换 PR 为 SKILL.md 增补「自改进回路（RSI）」薄指针章节 + NEW_CONTRACT 词汇护栏 + evals 触发正负例。
+- ledger 条目六段式：日期 / 问题描述 / 表因与根因 / 处理方式（回填 PR 与 commit 链接）/ 后续防范（可检查规则而非叙述）/ 同类问题影响与注意事项（建教训谱系）。
 - 收敛门纪律对本仓自身适用（RSI-006 先例）：「修改契约本身也必须过收敛门」。
 - 切换前置：仓内 open PR #7（feat/rsi-010）合并后开工，避免 SKILL.md 与 issue.md 冲突。

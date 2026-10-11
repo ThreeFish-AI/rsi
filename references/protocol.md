@@ -57,7 +57,7 @@ flowchart LR
 ```text
 .temp/rsi/<repo-key>/
 ├── .gitignore      # 首次捕获时写入，内容仅一行 `*`：目录自忽略，防止污染业务仓库 git 状态
-├── backlog.md      # 条目台账
+├── backlog.md      # 条目 ledger
 ├── repo/<slug>/    # 上游隔离 clone（每条目独占，Steward 工作区，Context-Reviewer 复用）
 ├── pr/<slug>.md    # PR 正文草稿（主 Agent 撰写）
 ├── pr/<slug>.patch # 本地 patch（Steward 提交后一律导出）
@@ -90,7 +90,7 @@ case $S in ''|*[!a-z0-9-]*|*..*|-*|*-) echo "ABORT: 非法 slug"; exit 1;; esac
 - 结论：<门禁回执摘要 · PR 链接与 ctx-review 三态>
 ```
 
-> 编号式样（`RSI-NNN` 仓内台账型 / `RSI-YYYYMMDD-NN` 项目 .temp 型）由适配档案 `entry_id` 供值。
+> 编号式样（`RSI-NNN` 仓内 ledger 型 / `RSI-YYYYMMDD-NN` 项目 .temp 型）由适配档案 `entry_id` 供值。
 
 | 分级 | 范围 | commit type | G2 要求 | 提交形态 |
 | :--- | :--- | :--- | :--- | :--- |
@@ -181,7 +181,7 @@ gh repo view "$R" --json viewerPermission -q .viewerPermission  # ADMIN / MAINTA
 
 ## 8. Context-Reviewer 挂载
 
-PR 创建成功（`submitted`）后，主 Agent 立即后台派发 Context-Reviewer 子代理（fresh context，复用 Steward 的 `$REPO` 隔离 clone），执行 PR 后上下文审阅回路：八镜头审阅（跨文件一致性 / 词汇对齐 / 索引台账同步 / 合并后时效 / 表达规范 / 锚点有效性 / 不变量冲突——只报不改 / 同批演进纪律）、白名单内修复、轻量复验（G1' 锚点 + G3' 反刷分 + G4a' 隐私）、PR 页摘要回执（三态：可合并 | 修后可合并 | 需人工裁决）。完整协议见 [context-reviewer.md](context-reviewer.md)。
+PR 创建成功（`submitted`）后，主 Agent 立即后台派发 Context-Reviewer 子代理（fresh context，复用 Steward 的 `$REPO` 隔离 clone），执行 PR 后上下文审阅回路：八镜头审阅（跨文件一致性 / 词汇对齐 / 索引 ledger 同步 / 合并后时效 / 表达规范 / 锚点有效性 / 不变量冲突——只报不改 / 同批演进纪律）、白名单内修复、轻量复验（G1' 锚点 + G3' 反刷分 + G4a' 隐私）、PR 页摘要回执（三态：可合并 | 修后可合并 | 需人工裁决）。完整协议见 [context-reviewer.md](context-reviewer.md)。
 
 - **交接块**：`gh pr create` 成功后，主 Agent 将机器可读交接块追加至 PR 描述尾部（同内容落 `$W/pr/$S.review-request.md`，供跨会话与无 GitHub 权限宿主消费）：
 
@@ -201,11 +201,11 @@ review_focus: <G2 比选/盲评中 Verifier 标注的最弱一环，或「无」
 
 | 情形 | 出路 |
 | :--- | :--- |
-| G1 不成立（无法复现 / 环境特异） | 台账记「不成立 + 证据」，闭环 |
+| G1 不成立（无法复现 / 环境特异） | ledger 记「不成立 + 证据」，闭环 |
 | G2 触碰不变量且无推翻论证 | **升级为用户决策项**（RSI 无权单方面推翻历史制度） |
 | G2 收益不足 | 降级「待议」，攒够证据再启 |
 | G3 破坏不变量且无论证 | 阻断；唯一出路 = 显式权衡 + 全量同步 + 用户批准，三条件齐备 |
-| Steward 修复 2 轮门禁仍不过 | `rejected`，丢弃分支，台账记死因（防下一轮重复踩坑） |
+| Steward 修复 2 轮门禁仍不过 | `rejected`，丢弃分支，ledger 记死因（防下一轮重复踩坑） |
 | Context-Reviewer 第 2 轮仍有必须修 Finding | 停止，全部转「需人工裁决」，终态三态如实标注 |
 
 ## 10. 降级矩阵
@@ -272,7 +272,7 @@ PR 正文与 commit message 遵循目标仓表达规范（由适配档案指针�
 | `key` / `upstream` / `default_branch` / `local_path` | repo-key（豁免键与 `.temp/rsi/<key>/` 用）、上游仓库、默认分支、本机源码仓路径（提示性） |
 | `adoption` | `pending` \| `live`，切换 PR 合并后置 live |
 | `skill_entry` | 规约入口文件（skill 仓为 SKILL.md，规范仓为 AGENTS.md） |
-| `ledger` / `entry_id` | 台账位置（仓内 issue.md 或项目 .temp backlog）与编号式样 |
+| `ledger` / `entry_id` | ledger 位置（仓内 issue.md 或项目 .temp backlog）与编号式样 |
 | `untrusted_sources` / `privacy_lexicon` | 不可信来源定义、G4b 私有词表构造规则 |
 | `sediment` | 经验沉淀位置与格式要点 |
 | `branch_style` / `commit_convention` / `pr_convention` | 分支式样、commit 格式、PR 标题正文与 CHANGELOG 约定 |
