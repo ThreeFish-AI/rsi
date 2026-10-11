@@ -64,7 +64,7 @@ flowchart LR
 └── report.md       # RSI 改进报告
 ```
 
-**路径约定**：主 Agent 在用户项目根计算一次绝对路径 `W="$(git rev-parse --show-toplevel)/.temp/rsi/<repo-key>"`（非 git 项目取项目根绝对路径），连同 `R`、`K`、`<slug>` 写入派发 Prompt；子代理不自行推导（其 cwd 可能被重置）。`<slug>` 由标题转写：去停用词、kebab-case 化，必须匹配 `^[a-z0-9]([a-z0-9-]{0,37}[a-z0-9])?$`（1–39 字符、首尾须字母数字；与下方 case 断言两处判据须同步修改）。宿主每次工具调用都是独立 shell，**每段命令开头都先声明并断言变量非空与 slug 字符集**：
+**路径约定**：主 Agent 在用户项目根计算一次绝对路径 `W="$(git rev-parse --show-toplevel)/.temp/rsi/<repo-key>"`（非 git 项目取项目根绝对路径），连同 `R`、`K`、`<slug>` 写入派发 Prompt；子代理不自行推导（其 cwd 可能被重置）。`<slug>` 由标题转写：去停用词、kebab-case 化，必须匹配 `^[a-z0-9]([a-z0-9-]{0,37}[a-z0-9])?$`（1–39 字符、首尾须字母数字；与下方 case 断言、steward 底稿副本三处判据须同步修改）。宿主每次工具调用都是独立 shell，**每段命令开头都先声明并断言变量非空与 slug 字符集**：
 
 ```bash
 R=<upstream>; K=<repo-key>; D=<default-branch>; W=<主 Agent 传入的绝对路径>; S=<slug>
