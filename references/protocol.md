@@ -64,12 +64,13 @@ flowchart LR
 └── report.md       # RSI 改进报告
 ```
 
-**路径约定**：主 Agent 在用户项目根计算一次绝对路径 `W="$(git rev-parse --show-toplevel)/.temp/rsi/<repo-key>"`（非 git 项目取项目根绝对路径），连同 `R`、`K`、`<slug>` 写入派发 Prompt；子代理不自行推导（其 cwd 可能被重置）。`<slug>` 由标题转写：去停用词、kebab-case 化，必须匹配 `^[a-z0-9][a-z0-9-]{0,38}$`。宿主每次工具调用都是独立 shell，**每段命令开头都先声明并断言变量非空与 slug 字符集**：
+**路径约定**：主 Agent 在用户项目根计算一次绝对路径 `W="$(git rev-parse --show-toplevel)/.temp/rsi/<repo-key>"`（非 git 项目取项目根绝对路径），连同 `R`、`K`、`<slug>` 写入派发 Prompt；子代理不自行推导（其 cwd 可能被重置）。`<slug>` 由标题转写：去停用词、kebab-case 化，必须匹配 `^[a-z0-9]([a-z0-9-]{0,37}[a-z0-9])?$`（1–39 字符、首尾须字母数字；与下方 case 断言两处判据须同步修改）。宿主每次工具调用都是独立 shell，**每段命令开头都先声明并断言变量非空与 slug 字符集**：
 
 ```bash
 R=<upstream>; K=<repo-key>; D=<default-branch>; W=<主 Agent 传入的绝对路径>; S=<slug>
 REPO="$W/repo/$S"; B="rsi/$S"; : "${R:?}" "${K:?}" "${D:?}" "${W:?}" "${S:?}"
 [ -d "$W" ] || { echo "ABORT: W 不存在"; exit 1; }
+[ "${#S}" -le 39 ] || { echo "ABORT: slug 超 39 字符"; exit 1; }
 case $S in ''|*[!a-z0-9-]*|*..*|-*|*-) echo "ABORT: 非法 slug"; exit 1;; esac
 ```
 
@@ -87,7 +88,7 @@ case $S in ''|*[!a-z0-9-]*|*..*|-*|*-) echo "ABORT: 非法 slug"; exit 1;; esac
 - 锚点：<file>:<line>
 - 最小复现：<仅引用目标仓文本或脱敏合成夹具>
 - 疑似根因 / 建议：<一句话> / <一句话>
-- 结论：<门禁回执摘要 · PR 链接与 ctx-review 三态>
+- 结论：<门禁回执摘要 · PR 链接与 ctx-review 三态 · 分支 <B> · commit <sha> · patch <path>>
 ```
 
 > 编号式样（`RSI-NNN` 仓内 ledger 型 / `RSI-YYYYMMDD-NN` 项目 .temp 型）由适配档案 `entry_id` 供值。
@@ -114,7 +115,7 @@ case $S in ''|*[!a-z0-9-]*|*..*|-*|*-) echo "ABORT: 非法 slug"; exit 1;; esac
 | **Verifier** | fresh | 只读 | G1–G4a 核验并出具回执；不做任何修复 | [verifier.md](verifier.md) |
 | **Context-Reviewer** | fresh | 读写仅限 `$REPO` + PR comment | PR 后八镜头上下文审阅、白名单内修复、轻量复验、PR 页摘要 | [context-reviewer.md](context-reviewer.md) |
 
-Steward 关键步骤（详见底稿）：① **G0a 检索**上游同类 PR / Issue（clone 前）；② **隔离 clone** `gh repo clone "$R" "$REPO"`（无 `gh` 时 `git clone "https://github.com/$R.git"`）并按 `branch_style` 创建 `$B`（`--no-track`）；**不复用、不改动已安装目录**；`$REPO` 已存在（中断残留）时移至 `$REPO.<时间戳>` 后重新 clone（不删除）；③ **G0b 核实**：命中 PR 时 fetch 其 diff，修复同一 `文件:锚点` 即同类——open → `superseded`，已关闭未合并 → `rejected`，止于此；④ **复现**：在 `origin/$D` 上复现，无法复现 → `rejected`；⑤ **规约溯源**：`git log -S` 与 `git blame` 查明原规约引入初衷；回退检测：上游 `rsi/*` 已合并 PR 与 blame 比对，若本次在回退它们，升级 T3 并引用原 PR；⑥ **最小改动**：只改唯一定义处（SSOT），同步全部指针（链接、表格、结构树）；⑦ **本地提交**：原生 `git commit`（禁用可能自带 push 的宿主提交命令），遵循目标仓 commit 格式；**提交身份必须以 noreply 邮箱覆盖**（`git -c user.name=rsi-steward -c user.email=<noreply> commit`）；导出 patch；⑧ **回执**：回传基线 SHA、G0 结论、复现对照、溯源结论、分支与 commit SHA、patch 路径，由主 Agent 回写 backlog。
+Steward 关键步骤（详见底稿）：① **G0a 检索**上游同类 PR / Issue（clone 前）；② **隔离 clone** `gh repo clone "$R" "$REPO"`（无 `gh` 时 `git clone "https://github.com/$R.git" "$REPO"`）并按 `branch_style` 创建 `$B`（`--no-track`）；**不复用、不改动已安装目录**；`$REPO` 已存在（中断残留）时移至 `$REPO.<时间戳>` 后重新 clone（不删除）；③ **G0b 核实**：命中 PR 时 fetch 其 diff，修复同一 `文件:锚点` 即同类——open → `superseded`，已关闭未合并 → `rejected`，止于此；④ **复现**：在 `origin/$D` 上复现，无法复现 → `rejected`；⑤ **规约溯源**：`git log -S` 与 `git blame` 查明原规约引入初衷；回退检测：上游 `rsi/*` 已合并 PR 与 blame 比对，若本次在回退它们，升级 T3 并引用原 PR；⑥ **最小改动**：只改唯一定义处（SSOT），同步全部指针（链接、表格、结构树）；⑦ **本地提交**：原生 `git commit`（禁用可能自带 push 的宿主提交命令），遵循目标仓 commit 格式；**提交身份必须以 noreply 邮箱覆盖**（`git -c user.name=rsi-steward -c user.email=<noreply> commit`）；导出 patch；⑧ **回执**：回传基线 SHA、G0 结论、复现对照、溯源结论、分支与 commit SHA、patch 路径，由主 Agent 回写 backlog。
 
 ## 5. 核验门禁
 
@@ -221,6 +222,8 @@ review_focus: <G2 比选/盲评中 Verifier 标注的最弱一环，或「无」
 | 无后台能力 | 交付后在前台执行 |
 | 无网络 | 只捕获入 `backlog.md`，标记「待联网」，跨会话承接 |
 | 无 `gh` 或未认证 | G0a 改为报告中提示用户自查；`git clone` 继续；patch 与 PR 草稿照常产出交用户手动提交；绝不代装 gh、绝不索要 token |
+| 无 git 可用 | 条目照记 backlog，clone / patch / Steward 派发延后，报告注明宿主无 git |
+| 项目目录 `.temp` 不可写 | 不落盘，主 Agent 在最终报告以全字段呈现条目并提示用户手动记录 |
 | 统一 rsi skill 未安装 / 不可调用 | 调用方（注册仓钩子）直接拉取本仓 `references/protocol.md` 全文，按协议文本派发 Steward 与 Verifier；无法读取（离线）时只捕获入 backlog 标「待联网」，派发延后 |
 | 无写权限 | 报告中声明将 fork，经同意后 fork 并推送 |
 | 用户拒绝 | `declined`，保留 patch，不再追问 |

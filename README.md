@@ -36,10 +36,13 @@
 ## 安装
 
 ```bash
+mkdir -p ~/projects ~/.claude/skills ~/.agents/skills
 git clone git@github.com:ThreeFish-AI/rsi.git ~/projects/rsi
 ln -sfn ~/projects/rsi ~/.claude/skills/rsi   # Claude Code
 ln -sfn ~/projects/rsi ~/.agents/skills/rsi   # Codex 等其他 agent CLI
 ```
+
+目标路径（如 `~/.claude/skills/rsi`）已是实体目录时，先迁移其内容再建 symlink。
 
 单一检出多端共享（symlink 安装，仓库变更后全局实时生效）。
 
