@@ -1,0 +1,19 @@
+{
+  "description": "rsi skill 触发边界评测集：正例应触发 rsi skill，负例不得触发。改动 SKILL.md frontmatter description 时必须同批过本评测（声明与数据同批演进）。",
+  "positive": [
+    "review-once 的收敛门判据和它 references 里的状态机描述对不上，把这个缺口沉淀一下",
+    "我在用 guided-learn 精读论文时发现它的模板缺一节，提个 RSI 条目改进这个 skill",
+    "preening-substrate 的 rsi 流程里有个死链，修复并回流上游",
+    "vibe-video 的建手册候选区规则可以更好，走自改进回路提个 PR",
+    "AGENTS.md 的术语规范表格应该加一行 RSID 的约束，按 RSI 机制沉淀到 agents.md 仓库",
+    "这个 PR 提给 ThreeFish-AI/review-once 之后，帮忙自动做一轮上下文审阅并生成摘要"
+  ],
+  "negative": [
+    "帮我修一下这个业务仓库里的登录 bug",
+    "review 一下当前 workspace 的 diff 有没有问题",
+    "把这段经验总结写到项目 README 里",
+    "帮我 git commit 并 push 到 origin",
+    "guided-learn 帮我精读这篇 arXiv 论文",
+    "preening-substrate 对这个模块做正交分解重构"
+  ]
+}
