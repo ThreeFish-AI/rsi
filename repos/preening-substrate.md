@@ -22,7 +22,7 @@ special_channels: 无
 
 # preening-substrate 适配要点
 
-- 切换前协议：references/rsi-hook.md（181 行，与 guided-learn 孪生）；切换后该文件整替为 5 行指针 stub（防外部入站死链），SKILL.md「RSI 自我改进钩子」章节压缩为 4–6 行薄指针。
+- 切换前协议：references/rsi-hook.md（180 行，与 guided-learn 孪生）；切换后该文件整替为 5 行指针 stub（防外部入站死链），SKILL.md「RSI 自我改进钩子」章节压缩为 4–6 行薄指针。
 - 捕获目录迁移：`.temp/preening-substrate-rsi/` → `.temp/rsi/preening-substrate/`；旧目录 captured 条目由用户择机迁移或随项目清理（PR 影响面注明）。
 - Phase 0–5 重构作业平面与 RSI 维护平面的双平面边界不变；Phase 5 清理 lab 临时目录时保护 `.temp/rsi/` 不被误删。
 - context-and-audit.md §0 敏感值脱敏红线对本仓 RSI 条目同样生效。

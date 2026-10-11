@@ -22,7 +22,7 @@ special_channels: 无
 
 # guided-learn 适配要点
 
-- 切换前协议：references/rsi-hook.md（238 行，与 preening-substrate 孪生、为两份中更全版本）；切换后整替为指针 stub，SKILL.md「RSI 自我改进钩子」章节（L113–119）及 SSOT 指针索引、阶段验收总表 RSI 行同步改写。
+- 切换前协议：references/rsi-hook.md（237 行，与 preening-substrate 孪生、为两份中更全版本）；切换后整替为指针 stub，SKILL.md「RSI 自我改进钩子」章节（L113–119）及 SSOT 指针索引、阶段验收总表 RSI 行同步改写。
 - 捕获目录迁移：`.temp/guided-learn-rsi/` → `.temp/rsi/guided-learn/`（PR 影响面注明存量处置）。
 - G2 盲评 comparator 细节（合成夹具 A/B 打乱标签、判定代理不读 diff）已上收为统一协议 G2(b) 标准配置。
 - 外行四测轮次触顶仍不过时：仅当归因指向本 Skill 规约且脱离材料可复现，方按触发白名单捕获（运行时证据的固定产生点）。
