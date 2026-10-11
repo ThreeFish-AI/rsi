@@ -25,7 +25,7 @@
 | repo-key | 上游 | adoption |
 | :--- | :--- | :--- |
 | rsi（自举） | ThreeFish-AI/rsi | live |
-| agents.md | ThreeFish-AI/agents.md | pending |
+| agents.md | ThreeFish-AI/agents.md | live |
 | preening-substrate | ThreeFish-AI/preening-substrate | pending |
 | guided-learn | ThreeFish-AI/guided-learn | pending |
 | vibe-video | ThreeFish-AI/vibe-video | pending |

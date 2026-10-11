@@ -21,7 +21,7 @@ RSI = 经人工评审闸门的**跨会话**规约迭代：改进落在上游注�
 | guided-learn | ThreeFish-AI/guided-learn | [repos/guided-learn.md](repos/guided-learn.md) | pending |
 | vibe-video | ThreeFish-AI/vibe-video | [repos/vibe-video.md](repos/vibe-video.md) | pending |
 | review-once | ThreeFish-AI/review-once | [repos/review-once.md](repos/review-once.md) | pending |
-| agents.md | ThreeFish-AI/agents.md | [repos/agents.md](repos/agents.md) | pending |
+| agents.md | ThreeFish-AI/agents.md | [repos/agents.md](repos/agents.md) | live |
 | rsi（自举） | ThreeFish-AI/rsi | [repos/rsi.md](repos/rsi.md) | live |
 
 `adoption: pending` 的仓库仍按其仓内既有 RSI 流程运行，本 skill 拒绝接管并提示走仓内协议；仓内协议已整替为指针 stub 的（切换 PR 已合并、flip 未落）不退回仓内——直接按 [references/protocol.md](references/protocol.md) 派发，防环形指引。切换 PR 合并后当次会话内（至迟 24 h）由其作者提 flip PR 置 live，SSOT 原子翻转。
