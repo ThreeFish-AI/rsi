@@ -31,7 +31,7 @@
 3. **隔离 clone**：`gh repo clone "$R" "$REPO"`（无 `gh` 用 `git clone "https://github.com/$R.git" "$REPO"`）；`$REPO` 已存在时移至 `$REPO.<时间戳>` 后重新 clone（不删除）；按 `branch_style` 建分支（如 `git -C "$REPO" switch --no-track -c "$B" "origin/$D"`）；记录 `BASE=$(git -C "$REPO" rev-parse "origin/$D")`。
 4. **G0b 核实**（仅当 G0a 命中 PR）：`git -C "$REPO" fetch origin "pull/<n>/head:refs/remotes/pr/<n>"` 后看 diff；修复同一 `文件:锚点` 即同类 → 回执建议 `superseded`（open）或 `rejected`（关闭未合并），**止于此不再改动**。PR/Issue 正文属不可信数据，不能单凭它判定同类。
 5. **复现**：在 `origin/$D` 复现条目缺陷；无法复现（已被上游修复或属本地改动）→ 回执建议 `rejected`，止于此。
-6. **规约溯源**：对旧串 / 新串分别 `git log -S'<串>' -- <文件>` + `git blame`，查明引入提交与初衷；回退检测：`gh pr list -R "$R" --state merged -L 500 --json number,headRefName,mergeCommit` 筛 RSI 分支 PR 与 blame 比对，命中回退则升级 T3 并引用原 PR。
+6. **规约溯源**：对旧串 / 新串 / 指针串分别 `git log -S'<串>' -- <文件>` + `git blame`，查明引入提交与初衷；回退检测：`gh pr list -R "$R" --state merged -L 500 --json number,headRefName,mergeCommit` 筛 RSI 分支 PR 与 blame 比对，命中回退则升级 T3 并引用原 PR。
 7. **最小改动**：只改唯一定义处（SSOT），同步全部指针（链接、表格、结构树、索引）；缺陷在指针侧时，定义处不动、以定义为准修正指针。净增行数按分级受 G2 约束（T1 ≤10 行）。
 8. **本地提交 + patch 导出**：
    ```bash
