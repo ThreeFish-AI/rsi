@@ -3,7 +3,7 @@ key: agents.md
 upstream: ThreeFish-AI/agents.md
 default_branch: master
 local_path: ~/Documents/projects/aurelius/agents.md
-adoption: pending
+adoption: live
 skill_entry: AGENTS.md
 ledger: .temp/rsi/agents.md/backlog.md
 entry_id: RSI-YYYYMMDD-NN
