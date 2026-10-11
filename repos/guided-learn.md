@@ -3,7 +3,7 @@ key: guided-learn
 upstream: ThreeFish-AI/guided-learn
 default_branch: main
 local_path: ~/Documents/projects/aurelius/guided-learn
-adoption: pending
+adoption: live
 skill_entry: SKILL.md
 ledger: .temp/rsi/guided-learn/backlog.md
 entry_id: RSI-YYYYMMDD-NN

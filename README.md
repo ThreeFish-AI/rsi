@@ -26,9 +26,9 @@
 | :--- | :--- | :--- |
 | rsi（自举） | ThreeFish-AI/rsi | live |
 | agents.md | ThreeFish-AI/agents.md | live |
-| preening-substrate | ThreeFish-AI/preening-substrate | pending |
-| guided-learn | ThreeFish-AI/guided-learn | pending |
-| vibe-video | ThreeFish-AI/vibe-video | pending |
+| preening-substrate | ThreeFish-AI/preening-substrate | live |
+| guided-learn | ThreeFish-AI/guided-learn | live |
+| vibe-video | ThreeFish-AI/vibe-video | live |
 | review-once | ThreeFish-AI/review-once | pending |
 
 `pending` = 该仓切换 PR 合并前，仍按仓内既有 RSI 流程运行；合并后置 `live`，SSOT 原子翻转。
@@ -36,10 +36,13 @@
 ## 安装
 
 ```bash
+mkdir -p ~/projects ~/.claude/skills ~/.agents/skills
 git clone git@github.com:ThreeFish-AI/rsi.git ~/projects/rsi
 ln -sfn ~/projects/rsi ~/.claude/skills/rsi   # Claude Code
 ln -sfn ~/projects/rsi ~/.agents/skills/rsi   # Codex 等其他 agent CLI
 ```
+
+目标路径（如 `~/.claude/skills/rsi`）已是实体目录时，先迁移其内容再建 symlink。
 
 单一检出多端共享（symlink 安装，仓库变更后全局实时生效）。
 
