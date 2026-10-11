@@ -3,7 +3,7 @@ key: vibe-video
 upstream: ThreeFish-AI/vibe-video
 default_branch: main
 local_path: ~/Documents/projects/aurelius/vibe-video
-adoption: pending
+adoption: live
 skill_entry: SKILL.md
 ledger: docs/.agents/issue.md（仓内 ledger）
 entry_id: RSI-NNN（三位递增，从 ledger 既有最大号顺延；刻意不用 ISSUE- 前缀，与上游 negentropy ledger 区分）

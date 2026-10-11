@@ -26,9 +26,9 @@
 | :--- | :--- | :--- |
 | rsi（自举） | ThreeFish-AI/rsi | live |
 | agents.md | ThreeFish-AI/agents.md | live |
-| preening-substrate | ThreeFish-AI/preening-substrate | pending |
-| guided-learn | ThreeFish-AI/guided-learn | pending |
-| vibe-video | ThreeFish-AI/vibe-video | pending |
+| preening-substrate | ThreeFish-AI/preening-substrate | live |
+| guided-learn | ThreeFish-AI/guided-learn | live |
+| vibe-video | ThreeFish-AI/vibe-video | live |
 | review-once | ThreeFish-AI/review-once | pending |
 
 `pending` = 该仓切换 PR 合并前，仍按仓内既有 RSI 流程运行；合并后置 `live`，SSOT 原子翻转。
