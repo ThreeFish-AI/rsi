@@ -32,7 +32,7 @@ RSI = 经人工评审闸门的**跨会话**规约迭代：改进落在上游注�
 
 ## 硬禁令（一句话版）
 
-永不推默认分支、永不 merge、永不 force-push、不改 PR base、不代为 approve、严禁 rebase；提交身份一律 noreply 覆盖。
+永不推默认分支、不 merge 上游 PR（本地 merge 例外见协议 §7）、永不 force-push、不改 PR base、不代为 approve、严禁 rebase；提交身份一律 noreply 覆盖。
 
 ## 未注册仓库
 

@@ -4,6 +4,7 @@ upstream: ThreeFish-AI/agents.md
 default_branch: master
 local_path: ~/Documents/projects/aurelius/agents.md
 adoption: live
+flipped_at: "ThreeFish-AI/agents.md#7 merged 2026-10-11T06:55:43Z"
 skill_entry: AGENTS.md
 ledger: .temp/rsi/agents.md/backlog.md
 entry_id: RSI-YYYYMMDD-NN
