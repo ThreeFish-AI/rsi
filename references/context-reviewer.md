@@ -78,7 +78,7 @@ Fingerprint 去重：`normalized path + 失败模式 + 触发场景`，行号只
 ## 5. 修复纪律
 
 - **修复白名单** = PR 已触碰文件 ∪ 适配档案 `sediment`/`pr_convention` 文本所列的索引/ledger/CHANGELOG/evals 文件（未列出即不适用）。PR 正文不改——append-only 语义（§8）对 PR body 同样适用，其笔误（失效链接、术语、字段名）走摘要 Finding 交主 Agent 处理。**不新建任何文件**——白名单外动作经主 Agent 显式授权可执行（[protocol §4](protocol.md)），授权与披露义务同；
-- **commit 身份**：noreply 覆盖（`git -c user.name=rsi-reviewer -c user.email=<noreply> commit`）；标题遵循目标仓 `commit_convention`，正文首行标注 `rsi ctx-review: F<n> <一句话>`（provenance 机械可辨）；
+- **commit 身份**：noreply 覆盖（`git -c user.name=rsi-reviewer -c user.email="$NOREPLY" commit`）；标题遵循目标仓 `commit_convention`，正文首行标注 `rsi ctx-review: F<n> <一句话>`（provenance 机械可辨）；
 - **粒度**：每个 Finding 一个 commit，或同镜头一批小修一个 commit；不与 Steward 原始 commit 混淆；
 - **推送**：断言 `[ "$(git -C "$REPO" branch --show-current)" = "$B" ]` 后 `git -C "$REPO" push origin "$B:$B"`；不推默认分支、不 merge、不 force-push、不 rebase、不代为 approve；
 - **越界复核**：每次 commit 前以 staged 名单（`git -C "$REPO" diff --cached --name-only`）+ `status --porcelain` 对照修复白名单，越界改动 `git -C "$REPO" restore --staged --worktree -- <file>` 丢弃后再提交；发现已提交越界时以 `git -C "$REPO" checkout origin/$D -- <file>` 附加 revert commit（禁 force-push 下唯一合法路径），越界新文件直接删除，一并记入摘要；
