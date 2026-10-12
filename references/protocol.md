@@ -92,7 +92,7 @@ case $S in ''|*[!a-z0-9-]*|*..*|-*|*-) echo "ABORT: 非法 slug"; exit 1;; esac
 - 结论：<门禁回执摘要 · PR 链接与 ctx-review 三态 · 分支 <B> · commit <sha> · patch <path>>
 ```
 
-> 编号式样（`RSI-NNN` 仓内 ledger 型 / `RSI-YYYYMMDD-NN` 项目 .temp 型）由适配档案 `entry_id` 供值。
+> 编号式样（`RSI-NNN` 仓内 ledger 型 / `RSI-YYYYMMDD-NN` 项目 .temp 型）由适配档案 `entry_id` 供值。仓内 ledger 型仓库（适配档案 `ledger` 指向仓内文件者）：PR 创建成功时由主 Agent 将条目转写仓内 ledger、沿用仓内编号（`entry_id` 仓内式样），.temp backlog 结论行同步指向仓内条目。
 
 | 分级 | 范围 | commit type | G2 要求 | 提交形态 |
 | :--- | :--- | :--- | :--- | :--- |
@@ -227,7 +227,7 @@ review_focus: <G2 比选/盲评中 Verifier 标注的最弱一环，或「无」
 | 无 Subagent 能力 | 交付后按角色隔离顺序执行，Verifier 从磁盘重读 `git diff`，T2/T3 仅 Draft PR；Context-Reviewer 由主 Agent 顺序执行并标注「冷启动自审，未经独立上下文复审」 |
 | 无后台能力 | 交付后在前台执行 |
 | 无网络 | 只捕获入 `backlog.md`，标记「待联网」，跨会话承接 |
-| 无 `gh` 或未认证 | G0a 改为报告中提示用户自查；`git clone` 继续；patch 与 PR 草稿照常产出交用户手动提交；绝不代装 gh、绝不索要 token |
+| 无 `gh` 或未认证 | G0a 改为报告中提示用户自查；`git clone` 继续；patch 与 PR 草稿照常产出交用户手动提交；PR 由用户手动创建后，主 Agent 依 `$W/pr/$S.review-request.md` 落盘块派发 Context-Reviewer（无 gh 时回执落 `$W/pr/$S-ctx.md` 由主 Agent 转述（对齐 context-reviewer.md §8 既有产物名））；绝不代装 gh、绝不索要 token |
 | 无 git 可用 | 条目照记 backlog，clone / patch / Steward 派发延后，报告注明宿主无 git |
 | 项目目录 `.temp` 不可写 | 不落盘，主 Agent 在最终报告以全字段呈现条目并提示用户手动记录 |
 | 统一 rsi skill 未安装 / 不可调用 | 调用方（注册仓钩子）直接拉取本仓 `references/protocol.md` 全文，按协议文本派发 Steward 与 Verifier；无法读取（离线）时只捕获入 backlog 标「待联网」，派发延后 |
