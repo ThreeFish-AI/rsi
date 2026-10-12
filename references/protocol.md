@@ -147,9 +147,9 @@ for w in 必须 严禁 绝不 禁止 不得 不可 一律 仅限 严格 强制 �
   add=$(printf '%s\n' "$D_" | grep -E '^\+' | grep -vE '^\+\+\+ (b/|/dev/null)' | grep -oF -- "$w" | wc -l | tr -d ' ')
   if [ "$del" -gt "$add" ]; then echo "LOSS $w: -$del +$add"; fi
 done
-# 按文件复核防跨文件对冲：整体守恒不豁免单文件净削减（如协议侧删约束词、CHANGELOG 叙事行补回）；词表用字面量 for 列表（zsh 不做变量 word splitting，$WORDS 整串迭代会静默假绿）
-git -C "$REPO" -c color.ui=never diff --name-only "origin/$D...$B" | while IFS= read -r f; do
-  F_=$(git -C "$REPO" -c color.ui=never diff -U0 --no-ext-diff "origin/$D...$B" -- "$f")
+# 按文件复核防跨文件对冲：整体守恒不豁免单文件净削减（如协议侧删约束词、CHANGELOG 叙事行补回）；词表用字面量 for 列表（zsh 不做变量 word splitting，$WORDS 整串迭代会静默假绿）；两处 git 钉 core.quotePath=false（非 ASCII 文件名默认八进制引注形态会令 pathspec 匹配空、该文件被静默跳过）
+git -C "$REPO" -c color.ui=never -c core.quotePath=false diff --name-only "origin/$D...$B" | while IFS= read -r f; do
+  F_=$(git -C "$REPO" -c color.ui=never -c core.quotePath=false diff -U0 --no-ext-diff "origin/$D...$B" -- "$f")
   for w in 必须 严禁 绝不 禁止 不得 不可 一律 仅限 严格 强制 铁律 硬约束 门禁 全绿 不放行 未通过 须 永不; do
     fd=$(printf '%s\n' "$F_" | grep -E '^-' | grep -vE '^--- (a/|/dev/null)' | grep -oF -- "$w" | wc -l | tr -d ' ')
     fa=$(printf '%s\n' "$F_" | grep -E '^\+' | grep -vE '^\+\+\+ (b/|/dev/null)' | grep -oF -- "$w" | wc -l | tr -d ' ')
@@ -245,7 +245,7 @@ PR 创建后，CHANGELOG PR 号回填由主 Agent 以 rsi-reviewer noreply 身�
 | :--- | :--- |
 | G1 不成立（无法复现 / 环境特异） | 转 `rejected`：ledger 记「不成立 + 证据」，闭环 |
 | G2 触碰不变量且无推翻论证 | 保持 `captured` 附注记「升级为用户决策项」（RSI 无权单方面推翻历史制度），用户裁定后再派发 |
-| G2 收益不足 | 保持 `captured` 附注记「待议：攒够证据再启」——不进 `rejected`（拒绝记忆只管辖缺陷不成立与上游拒绝，收益不足属时机问题） |
+| G2 收益不足 | 保持 `captured` 附注记「待议：攒够证据再启」——不进 `rejected`（拒绝记忆即 `rejected` / `declined` 两态，不收纳益不足类时机问题） |
 | G3 破坏不变量且无论证 | 阻断；唯一出路 = 显式权衡 + 全量同步 + 用户批准，三条件齐备；批准前条目保持 `captured` 附注记 |
 | Steward 修复 2 轮门禁仍不过 | `rejected`，丢弃分支，ledger 记死因（防下一轮重复踩坑） |
 | Context-Reviewer 第 2 轮仍有必须修 Finding | 停止，全部转「需人工裁决」，终态三态如实标注；条目状态随 PR 审阅摘要对接 |
