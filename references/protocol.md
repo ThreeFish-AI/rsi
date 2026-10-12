@@ -158,7 +158,7 @@ for f in $DF; do
   done
 done
 NRE=$(printf '%s' "$NOREPLY" | sed 's|[.]|\\.|g')  # '.' 为 noreply 形态唯一 BRE 元字符，转义防近形态误剥
-{ git -C "$REPO" -c color.ui=never --no-ext-diff diff "origin/$D...$B" | grep -E '^\+' | grep -vE '^\+\+\+ (b/|/dev/null)'
+{ git -C "$REPO" -c color.ui=never diff --no-ext-diff "origin/$D...$B" | grep -E '^\+' | grep -vE '^\+\+\+ (b/|/dev/null)'
   git -C "$REPO" -c color.ui=never log "origin/$D..$B" --format=%B; } \
   | sed -e ":a" -e "s|\([^[:alnum:]._%+-]\)$NRE\([^[:alnum:]._%+-]\)|\1\2|g" -e "ta" \
         -e "s|^$NRE\([^[:alnum:]._%+-]\)|\1|" -e "s|\([^[:alnum:]._%+-]\)$NRE\$|\1|" -e "s|^$NRE\$||" \
