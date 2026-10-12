@@ -150,7 +150,7 @@ NRE=$(printf '%s' "$NOREPLY" | sed 's|[.]|\\.|g')  # '.' 为 noreply 形态唯�
 
 **反刷分原则**：任一硬约束词在 diff 中按词计数净减少（删除多于新增），默认拒绝或升级 T3 [1][4]；计数守恒只是必要条件，Verifier 仍须逐条审阅被改写的硬约束句。
 
-**SSOT 整体迁移对账豁免**：协议或规约正文整体迁出 / 迁入注册仓库的 T3（如仓内协议整替为指针 stub），del 侧硬约束词可与接收仓对应 add 侧对账——Verifier 以同一脚本在接收仓对应文本上统计 add 侧词数，两侧合计不净减即视为守恒；核验回执须注明迁移对端仓、两侧统计数字与脚本输出。未做对账的整文件删除仍按反刷分原则默认拒绝。
+**SSOT 整体迁移对账豁免**：协议或规约正文整体迁出 / 迁入注册仓库的 T3（如仓内协议整替为指针 stub），del 侧硬约束词可与接收仓对应 add 侧对账——Verifier 以同一脚本在接收仓对应文本上统计 add 侧词数，两侧合计不净减即视为守恒；「接收仓对应文本」的测量面 = 迁移内容实际落入的接收文件集合的全部新增行（以接收仓骨架后首个含迁移内容的 PR 为界）；核验回执须注明迁移对端仓、两侧统计数字与脚本输出，并双口径披露：单协议文件口径与全部接收文件口径——判定以测量面口径为准；窄口径净减属孪生合并措辞收敛，须附逐词对账表佐证无语义丢失。未做对账的整文件删除仍按反刷分原则默认拒绝。
 
 回执格式（结论取 ✅ / ❌ / —；— 表示不在本角色职责内或待主 Agent 执行）：
 
@@ -169,7 +169,7 @@ NRE=$(printf '%s' "$NOREPLY" | sed 's|[.]|\\.|g')  # '.' 为 noreply 形态唯�
 - 一个 PR 只含一个正交改进；互相重叠的条目合并为一条或串行处理。
 - 单会话最多提交 2 个 PR，T1 优先。
 - 背压：当前用户在上游已开启 ≥3 个 RSI 分支 PR 时暂停提交——补丁照常完成并标记 `ready`，只报告、不推送（`gh pr list -R "$R" --author @me --state open --json headRefName` 按适配档案分支前缀过滤计数）。
-- 推送前 `git -C "$REPO" fetch origin`；若 `origin/$D` 已前进，执行 `git -C "$REPO" -c user.name=rsi-merge -c user.email=<noreply> merge origin/$D`（严禁 rebase；merge commit 身份须 noreply 覆盖），有冲突则重跑 G1、G3；merge 后推送前对 `origin/$D..$B` 全量 commit 重跑 G4a 元数据检查（无冲突也须跑）。
+- 推送前 `git -C "$REPO" fetch origin`；若 `origin/$D` 已前进，执行 `git -C "$REPO" -c user.name=rsi-merge -c user.email=<noreply> merge origin/$D`（严禁 rebase；merge commit 身份须 noreply 覆盖），有冲突则解冲突，提交前对全部触碰文件执行 `grep -cE '^(<<<<<<<|=======|>>>>>>>)'` 须全为 0（输出贴回执），并重跑 G1、G3；merge 后推送前对 `origin/$D..$B` 全量 commit 重跑 G4a 元数据检查（无冲突也须跑）。
 - 跨会话承接：下次会话 `captured` 条目照常处理；`ready` 条目推送前重跑 G0a/G0b 去重；`superseded` 条目复核其 PR——已合并即结案，关闭未合并转 `rejected`；`submitted` 条目先按 [§1](#1-流程总览) 复核 PR 终态，补跑判据见 [§8](#8-context-reviewer-挂载)。
 
 ## 7. 确认与提交
