@@ -17,3 +17,4 @@
 - 信任边界收口：§10 无 gh 降级补交接块消费路径（PR 手动创建后依 review-request.md 落盘块派发 Context-Reviewer、无 gh 时回执落 $S-ctx.md 由主 Agent 转述）、evals 触发正例补 rsi 自身与门禁无法判定 / 宿主能力不符两类运行时证据、§3 编号式样注补仓内 ledger 型双台账并线规则（PR 创建后转写仓内 ledger 沿用仓内编号、.temp backlog 结论行指向仓内条目）（#11）。
 - 制度收尾：§6 merge 流程补解冲突提交前冲突标记零残留核验（grep 计数全为 0 且输出贴回执，verifier 基线核验步骤同步抽查最终树）、§5 SSOT 整体迁移对账豁免补「接收仓对应文本」测量面定义（接收文件集合的全部新增行，以骨架后首个含迁移内容 PR 为界）与回执双口径披露、判定以测量面口径为准（#12）。
 - 散件 T1 批（第二轮）：vibe 档案正文门禁映射指称去重（与下句映射行重复）、「白名单」三义限定词对齐（协议首处裸用 / context-reviewer §5 定义改称修复白名单 / SKILL.md 正文）、verifier G2 步骤补 (a)/(b) 子编号对齐协议 §5、六适配档案 frontmatter 长值引号化（14 值，附录B 补登记判据）、rsi 档案 commit_convention 补 chore(changelog)、协议 §3 路径约定补 .temp 隔离 clone 路径过滤假绿警示（#13）。
+- SKILL.md 硬禁令一句话版对齐协议 §7——「永不 merge」改「不 merge 上游 PR（本地 merge 例外见协议 §7）」（#14）。
