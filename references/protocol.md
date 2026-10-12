@@ -32,7 +32,7 @@ flowchart LR
 
 - `captured`：已入账；无网络时附「待联网」。
 - `ready`：门禁全绿、待确认；用户未答复则保持并跨会话承接。
-- `submitted`：PR 已创建，`结论`行追加 `PR #N · ctx-review: <三态>`（见 [§8](#8-context-reviewer-挂载)）。
+- `submitted`：PR 已创建，`结论`行追加 `PR #N · ctx-review: <三态>`（见 [§8](#8-context-reviewer-挂载)）；PR 合并 → 结案（`结论`行回填 merge sha），PR 关闭未合并 → `rejected`（记死因，进拒绝记忆）。
 - `rejected`：任一门禁不过，或上游存在已关闭未合并的同类 PR（上游拒绝记忆）。
 - `declined`：用户拒绝。
 - `superseded`：上游已有 open 同类 PR；附链接，该 PR 合并即结案，关闭未合并则转 `rejected`。
@@ -83,7 +83,7 @@ case $S in ''|*[!a-z0-9-]*|*..*|-*|*-) echo "ABORT: 非法 slug"; exit 1;; esac
 
 ```markdown
 ### RSI-<编号> · <一句话标题>
-- 分级 / 状态：T1|T2|T3 · captured|ready|rejected|submitted|declined|superseded
+- 分级 / 状态：T1|T2|T3 · captured|ready|rejected|submitted|declined|superseded|结案（superseded / submitted 合并终态的显示形态）
 - 来源 / 阶段：用户指出 | 运行时证据（<五类之一>） · <作业阶段>
 - 版本：已安装 <sha|未知> · 上游复现 origin/<default> <sha>
 - 锚点：<file>:<line>
@@ -98,7 +98,7 @@ case $S in ''|*[!a-z0-9-]*|*..*|-*|*-) echo "ABORT: 非法 slug"; exit 1;; esac
 | :--- | :--- | :--- | :--- | :--- |
 | **T1 错误修正** | 死链、错字、事实错误、自相矛盾 | `fix` | 缺陷消失 + 净增行数约束，免回放 | 常规 PR |
 | **T2 流程 / 方法改进** | 步骤、判据、模板、降级路径的增补或优化 | `feat` / `refactor` / `docs` | old vs new 盲评回放 | 常规 PR（单 Agent 运行时为 Draft） |
-| **T3 制度变更** | 触及注册仓不变量清单、阶段门禁、双代理协议或**本协议自身** | `feat` / `refactor` | 盲评回放 + Chesterton's Fence 调研 | **仅 Draft PR** |
+| **T3 制度变更** | 触及注册仓不变量清单、阶段门禁、双代理协议或**本协议自身**（自举语义分级见 [§12](#12-注册与自举)） | `feat` / `refactor` | 盲评回放 + Chesterton's Fence 调研 | **仅 Draft PR** |
 
 ## 4. 派发与编排
 
@@ -170,7 +170,7 @@ NRE=$(printf '%s' "$NOREPLY" | sed 's|[.]|\\.|g')  # '.' 为 noreply 形态唯�
 - 单会话最多提交 2 个 PR，T1 优先。
 - 背压：当前用户在上游已开启 ≥3 个 RSI 分支 PR 时暂停提交——补丁照常完成并标记 `ready`，只报告、不推送（`gh pr list -R "$R" --author @me --state open --json headRefName` 按适配档案分支前缀过滤计数）。
 - 推送前 `git -C "$REPO" fetch origin`；若 `origin/$D` 已前进，执行 `git -C "$REPO" -c user.name=rsi-merge -c user.email=<noreply> merge origin/$D`（严禁 rebase；merge commit 身份须 noreply 覆盖），有冲突则重跑 G1、G3；merge 后推送前对 `origin/$D..$B` 全量 commit 重跑 G4a 元数据检查（无冲突也须跑）。
-- 跨会话承接：下次会话 `captured` 条目照常处理；`ready` 条目推送前重跑 G0a/G0b 去重；`superseded` 条目复核其 PR——已合并即结案，关闭未合并转 `rejected`。
+- 跨会话承接：下次会话 `captured` 条目照常处理；`ready` 条目推送前重跑 G0a/G0b 去重；`superseded` 条目复核其 PR——已合并即结案，关闭未合并转 `rejected`；`submitted` 条目先按 [§1](#1-流程总览) 复核 PR 终态，补跑判据见 [§8](#8-context-reviewer-挂载)。
 
 ## 7. 确认与提交
 
@@ -205,7 +205,8 @@ review_focus: <G2 比选/盲评中 Verifier 标注的最弱一环，或「无」
 ````
 
 - **非阻塞语义**：Context-Reviewer 不等待、不阻塞用户；其发现的**新问题不自动开新 RSI 回路**（防递归风暴）——只能作为 PR 评论披露或登记下一批条目，受限流背压管辖。
-- **状态对接**：backlog「结论」行追加 `submitted · PR #N · ctx-review: 可合并|修后可合并|需人工裁决（F×n 修×n 裁×n）`；跨会话承接：`submitted` 条目若 PR 页无回执 comment 且未合并 → 下次会话补跑。
+- **状态对接**：backlog「结论」行追加 `submitted · PR #N · ctx-review: 可合并|修后可合并|需人工裁决（F×n 修×n 裁×n）`；跨会话承接：`submitted` 条目若 PR 仍 open 且 PR 页无回执 comment → 下次会话补跑；已合并或关闭未合并的按 [§1](#1-流程总览) 转移，不补跑。
+- **回执更新**：PR 追加 commit 后重跑复验的回执更新机制（编辑同一 comment、版本号递增，不另发新评论）以 [context-reviewer.md §8](context-reviewer.md#8-pr-页摘要模板) 为准。
 - **人永远是合并决策者**：摘要仅供决策，机器审阅非替代人工最终 review。
 
 ## 9. 失败出路
@@ -264,8 +265,8 @@ PR 正文与 commit message 遵循目标仓表达规范（由适配档案指针�
 
 ## 12. 注册与自举
 
-- **注册**：新仓库接入统一机制 = 向本仓提 PR 新增 `repos/<repo-key>.md` 适配档案（`adoption: pending`），并在该仓库落地薄指针钩子（切换 PR）；切换 PR 合并后**当次会话内**（至迟 24 h）由切换 PR 作者向本仓提 flip PR 改 `adoption: live`，SSOT 原子翻转。`adoption: pending` 仓按仓内既有流程运行，本 skill 拒绝接管；但仓内协议已整替为指针 stub 的（切换 PR 已合并、flip 未落）**不得退回仓内**——直接按本协议文本派发，防环形指引。
-- **自举**：本仓库自身经 `repos/rsi.md` 注册且恒为 `live`；对本协议的任何改动（含三份子代理底稿与全部适配档案）均为 T3 制度变更，仅 Draft PR。
+- **注册**：新仓库接入统一机制 = 向本仓提 PR 新增 `repos/<repo-key>.md` 适配档案（`adoption: pending`），并在该仓库落地薄指针钩子（切换 PR）；切换 PR 不得先于本仓对应适配档案入 main 合并（防「指针已生效、本体不存在」窗口），适配档案 PR 与切换 PR 同批时先合本仓。flip 时限自「本仓对应适配档案入 main」与「切换 PR 合并」两者中**较晚者**起算：**当次会话内**（至迟 24 h）由切换 PR 作者向本仓提 flip PR 改 `adoption: live`，SSOT 原子翻转，并于该 flip PR 中在适配档案正文登记一行「切换 PR <链接> 合并于 <时间>」作为可见性锚。`adoption: pending` 仓按仓内既有流程运行，本 skill 拒绝接管；但仓内协议已整替为指针 stub 的（切换 PR 已合并、flip 未落）**不得退回仓内**——直接按本协议文本派发，防环形指引。
+- **自举**：本仓库自身经 `repos/rsi.md` 注册且恒为 `live`；对本协议的改动（含三份子代理底稿与全部适配档案）按语义分级：触及门禁语义 / 状态机 / 制度条款者为 T3 制度变更，仅 Draft PR；不改变门禁编号与判据语义的 T1/T2 修正（错字、措辞对齐、操作清单落位、纯收严的脚本实现层加固且判据文字不变）按 [§3](#3-旁路捕获) 分级表执行，但一律以 Draft PR 提交（自举仓兜底）。
 - **不变量（本协议自身）**：零可执行代码；G 门禁只增不减、编号与语义冻结（改即 T3）；SSOT 三层切分（协议在本仓 / 仓内事实在各仓 / 适配档案仅指针与参数）；全部适配档案指针有效（死链即 G1 失败）。
 
 ## 附录A vibe-video 旧门禁映射

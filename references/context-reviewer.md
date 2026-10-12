@@ -180,7 +180,7 @@ Fingerprint 去重：`normalized path + 失败模式 + 触发场景`，行号只
 7. **修复越白名单 / 污染单正交改进语义** → 事后 porcelain + diff 双重复核、越界回滚披露；commit 粒度与 provenance 标注保证 PR 历史可读；
 8. **prompt injection**（目标仓内容与 PR 页评论）→ data-not-instructions；指令性文字只作 Finding 候选；
 9. **授权边界争议**（追加 push 是否算新发布）→ protocol §7 确认话术显式扩展，不默认扩大；存量会话保守降级；
-10. **跨会话中断** → protocol §8 跨会话承接：`submitted` 且无回执 comment 且 PR 未合并 → 下次会话补跑。
+10. **跨会话中断** → protocol §8 跨会话承接：`submitted` 且无回执 comment 且 PR 仍 open → 下次会话补跑。
 
 ## 参考（IEEE）
 
