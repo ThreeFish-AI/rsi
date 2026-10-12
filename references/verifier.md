@@ -24,7 +24,7 @@
    - **链接与锚点**：对 diff 触碰文件的 Markdown 链接与标题锚点逐条核验（GitHub slug 规则：转小写、去 `-` `_` 以外标点、空格换 `-`、重名追加 `-1`、代码围栏内 `#` 行不计），以「0 失效」输出为准；新增陈述有出处。
    - **档案一致性**：adoption=live ⇔ flipped_at 非空（pending ⇔ 空；bootstrap 为 rsi 合法值）——违者为 G1 ❌。
    - **落盘物对账**（仅 K=rsi 自举审阅执行——`$W/` 形态与 §3 目录树只存在于 rsi 协议仓，其他注册仓 clone 内无此对象，跑则空转假绿或路径报错）：
-     1. 在 `$REPO` 内 `grep -ohE '\$W/[a-zA-Z0-9/<>.{}$-]+' references/*.md | sort -u` 提取协议内全部 `$W/` 路径形态集合；
+     1. 在 `$REPO` 内 `grep -ohE '\$W/[a-zA-Z0-9][a-zA-Z0-9/<>.{}$-]*' references/*.md | sort -u` 提取协议内全部 `$W/` 路径形态集合（首段非空——排除散文中裸 `$W/` 前缀提及被归一为空串的假 FAIL）；
      2. 归一：去 `$W/` 前缀、`$S`→`<slug>`、去尾 `/`、提取侧父目录（如 `pr`）映射树内对应子树、`$REPO`→`repo/<slug>` 恒等派生（`$REPO.<时间戳>` 同式样归一为残留目录行；恒等式见 protocol §3 变量声明）；
      3. 双向比对：提取侧任一项无树内落点（含父目录映射）即 FAIL；树侧任一项无合法来源即 FAIL——合法来源四选一：`$W/` 前缀形态、`.temp/rsi/<repo-key>/` 全前缀形态、`$REPO.<时间戳>` 中断残留定义（protocol §4 ②，归一为 `repo/<slug>.<时间戳>`）、§3 声明的捕获侧文件白名单（`backlog.md`、`.gitignore`）。
 4. **G2 方案正确与正向收益**：**(a) 方案比选**——核对 Steward 回执的比选结论（候选 ≥2、论证最佳、最小干预、无第二事实源、历史决策有溯源）；**(b) 收益证明**——T1 统计入口文件（适配档案 `skill_entry`）净增行数（`git -C "$REPO" diff --numstat "origin/$D...$B" -- <skill_entry> | awk '{a+=$1;d+=$2} END {print a-d}'`，≤10；下沉 references / 附录不计）；T2/T3 核对盲评结论与「是否盲评」标注。
