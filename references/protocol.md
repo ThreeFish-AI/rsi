@@ -200,7 +200,7 @@ gh repo view "$R" --json viewerPermission -q .viewerPermission  # ADMIN / MAINTA
 
 PR 创建成功（`submitted`）后，主 Agent 立即后台派发 Context-Reviewer 子代理（仓内 ledger 型仓库须先完成 §3 转写 commit，时序：PR 创建 → 转写 → 派发；fresh context，复用 Steward 的 `$REPO` 隔离 clone），执行 PR 后上下文审阅回路：八镜头审阅（跨文件一致性 / 词汇对齐 / 索引 ledger 同步 / 合并后时效 / 表达规范 / 锚点有效性 / 不变量冲突——只报不改 / 同批演进纪律）、白名单内修复、轻量复验（G1' 锚点 + G3' 反刷分 + G4a' 隐私）、PR 页摘要回执（三态：可合并 | 修后可合并 | 需人工裁决）。完整协议见 [context-reviewer.md](context-reviewer.md)。
 
-- **交接块**：`gh pr create` 成功后，主 Agent 将机器可读交接块追加至 PR 描述尾部（同内容落 `$W/pr/$S.review-request.md`，供跨会话与无 GitHub 权限宿主消费）：PR 创建后，CHANGELOG PR 号回填由主 Agent 以 rsi-reviewer noreply 身份追加 commit，标题式样 `chore(changelog): 回填 PR 号（#N）;`（正文含签名块）
+- **交接块**：`gh pr create` 成功后，主 Agent 将机器可读交接块追加至 PR 描述尾部（同内容落 `$W/pr/$S.review-request.md`，供跨会话与无 GitHub 权限宿主消费）：
 
 ````markdown
 <!-- rsi:context-review-request
@@ -209,6 +209,8 @@ base: <BASE sha> · gates: G0 ✅ / G1 ✅ / G2 ✅ / G3 ✅ / G4 ✅
 review_focus: <G2 比选/盲评中 Verifier 标注的最弱一环，或「无」>
 -->
 ````
+
+PR 创建后，CHANGELOG PR 号回填由主 Agent 以 rsi-reviewer noreply 身份追加 commit，标题式样 `chore(changelog): 回填 PR 号（#N）;`（正文含签名块）。
 
 - **非阻塞语义**：Context-Reviewer 不等待、不阻塞用户；其发现的**新问题不自动开新 RSI 回路**（防递归风暴）——只能作为 PR 评论披露或登记下一批条目，受限流背压管辖。
 - **状态对接**：backlog「结论」行追加 `submitted · PR #N · ctx-review: 可合并|修后可合并|需人工裁决（F×n 修×n 裁×n）`；跨会话承接：`submitted` 条目若 PR 仍 open 且 PR 页无回执 comment → 下次会话补跑；已合并或关闭未合并的按 [§1](#1-流程总览) 转移，不补跑。
