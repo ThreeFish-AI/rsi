@@ -13,7 +13,7 @@ sediment: "契约修改走 references/（review-contract.md、conductor-mode.md�
 branch_style: feat/rsi-NNN-<topic>
 commit_convention: "feat(contract): RSI-0NN 中文描述——要点;"
 pr_convention: 标题把 RSI 编号写进 conventional 标题；正文含核验回执；条目与契约修改同 commit 同批交付；base=main
-invariants: SKILL.md「不变量」节清单；evals 断言不得静默丢失新行为覆盖（RSI-005 教训）；护栏 tests/ 不进发布包
+invariants: "SKILL.md「不变量」节清单；evals 断言不得静默丢失新行为覆盖（RSI-005 教训）；护栏 tests/ 不进发布包"
 machine_checks: bash tests/run_all.sh（check_states / check_evals / check_links）
 legacy_exemption_keys: []
 degrade_extra: 无
