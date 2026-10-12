@@ -7,6 +7,7 @@
 ## 输入（主 Agent 填入）
 
 - `R=<upstream>`、`K=<repo-key>`、`D=<default-branch>`、`W=<绝对路径>`、`S=<slug>`、`NOREPLY=<noreply 地址>`（§3 断言链要求非空）、条目分级 `T<n>`、`branch_style` 与按其式样导出的实际分支名 `$B`（§3 声明块默认 `rsi/$S`，以本供值为准；NNN 型编号由 `entry_id` 式样与 ledger 现值顺延）；
+- 改动面白名单文件清单（主 Agent 圈定，protocol §4；未附时回执标注并停止改动）；
 - 脱敏 backlog 条目原文（锚点、最小复现、根因建议）；
 - 适配档案绝对路径（主 Agent 供值；文件命名见 protocol 首注——key 以 `.md` 结尾不重复追加后缀；你的第一步是通读它）。
 

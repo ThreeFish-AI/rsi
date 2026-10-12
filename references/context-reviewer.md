@@ -12,8 +12,9 @@ flowchart LR
     D --> R0["S0 进隔离 clone · 断言分支"]
     R0 --> R1["S1 通读适配档案与目标仓上下文资产"]
     R1 --> R2["S2 八镜头审阅 diff + PR 正文"]
-    R2 -->|无 Finding 或全部留痕| S["S6 摘要 → gh pr comment + 回执落盘"]
+    R2 -->|无 Finding 或全部留痕且镜头全覆盖| S["S6 摘要 → gh pr comment + 回执落盘"]
     R2 -->|有 Finding| F["S3 分级与处置路由：修 / 留痕 / 转人工"]
+    R2 -->|存在未查镜头（升级）| D2["主 Agent 派第 2 轮新实例<br/>增量 diff + 未查镜头窄幅盲审"]
     F --> C["S4 修复白名单内追加 commit（noreply）"]
     C --> G["S5 轻量复验 G1'G3'G4a'"]
     G -->|复验绿·未命中升级条件| S

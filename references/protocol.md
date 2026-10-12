@@ -120,7 +120,7 @@ case $S in ''|*[!a-z0-9-]*|*..*|-*|*-) echo "ABORT: 非法 slug"; exit 1;; esac
 
 | 角色 | 上下文 | 读写边界 | 职责 | 底稿 |
 | :--- | :--- | :--- | :--- | :--- |
-| **Steward** | fresh | 读写仅限 `$REPO`（隔离 clone）+ `$W/pr/<slug>*` 自产 patch | G0 去重、复现、规约溯源、最小改动、noreply 提交、patch 导出 | [steward.md](steward.md) |
+| **Steward** | fresh | 读写仅限 `$REPO`（隔离 clone）+ `$W/pr/<slug>.patch` 自产 patch | G0 去重、复现、规约溯源、最小改动、noreply 提交、patch 导出 | [steward.md](steward.md) |
 | **Verifier** | fresh | 只读 | G1–G4a 核验并出具回执；不做任何修复 | [verifier.md](verifier.md) |
 | **Context-Reviewer** | fresh | 读写仅限 `$REPO` + `$W/pr/<slug>-ctx*` 回执与 patch + PR comment | PR 后八镜头上下文审阅、修复白名单内小修、轻量复验、PR 页摘要 | [context-reviewer.md](context-reviewer.md) |
 
@@ -142,7 +142,7 @@ Steward 关键步骤（详见底稿）：① **G0a 检索**上游同类 PR / Iss
 # 先执行 §3 变量声明与断言
 WORDS="必须 严禁 绝不 禁止 不得 不可 一律 仅限 严格 强制 铁律 硬约束 门禁 全绿 不放行 未通过 须 永不"
 [ "$(git -C "$REPO" -c color.ui=never diff --numstat "origin/$D...$B" | wc -l | tr -d ' ')" -gt 0 ] || echo "EMPTY DIFF"
-D_=$(git -C "$REPO" -c color.ui=never diff -U0 "origin/$D...$B"); DF=$(git -C "$REPO" -c color.ui=never diff --name-only "origin/$D...$B")
+D_=$(git -C "$REPO" -c color.ui=never diff -U0 --no-ext-diff "origin/$D...$B"); DF=$(git -C "$REPO" -c color.ui=never diff --name-only "origin/$D...$B")
 for w in $WORDS; do
   del=$(printf '%s\n' "$D_" | grep -E '^-' | grep -vE '^--- (a/|/dev/null)' | grep -oF -- "$w" | wc -l | tr -d ' ')
   add=$(printf '%s\n' "$D_" | grep -E '^\+' | grep -vE '^\+\+\+ (b/|/dev/null)' | grep -oF -- "$w" | wc -l | tr -d ' ')
@@ -150,7 +150,7 @@ for w in $WORDS; do
 done
 # 按文件复核防跨文件对冲：整体守恒不豁免单文件净削减（如协议侧删约束词、CHANGELOG 叙事行补回）；按空白分词，注册仓均为 ASCII 无空格命名
 for f in $DF; do
-  F_=$(git -C "$REPO" -c color.ui=never diff -U0 -- "$f")
+  F_=$(git -C "$REPO" -c color.ui=never diff -U0 --no-ext-diff "origin/$D...$B" -- "$f")
   for w in $WORDS; do
     fd=$(printf '%s\n' "$F_" | grep -E '^-' | grep -vE '^--- (a/|/dev/null)' | grep -oF -- "$w" | wc -l | tr -d ' ')
     fa=$(printf '%s\n' "$F_" | grep -E '^\+' | grep -vE '^\+\+\+ (b/|/dev/null)' | grep -oF -- "$w" | wc -l | tr -d ' ')
@@ -171,15 +171,15 @@ NRE=$(printf '%s' "$NOREPLY" | sed 's|[.]|\\.|g')  # '.' 为 noreply 形态唯�
 
 **SSOT 整体迁移对账豁免**：协议或规约正文整体迁出 / 迁入注册仓库的 T3（如仓内协议整替为指针 stub），del 侧硬约束词可与接收仓对应 add 侧对账——Verifier 以同一脚本在接收仓对应文本上统计 add 侧词数，两侧合计不净减即视为守恒；「接收仓对应文本」的测量面 = 迁移内容实际落入的接收文件集合的全部新增行（以接收仓骨架后首个含迁移内容的 PR 为界）；增量迁移批次（第二批及以后）：测量面 = 该批迁移实际落入文件集合并入累计测量面，界桩随批前移，判定按累计对账；累计基数为**各迁移批次 PR 端点区间内新增行的词计数**（非整个 [Unreleased] 区间——混入非迁移词会使基数虚增）；核验回执须注明迁移对端仓、两侧统计数字与脚本输出，并双口径披露：单协议文件口径与全部接收文件口径——判定以测量面口径为准；窄口径净减属孪生合并措辞收敛，须附逐词对账表佐证无语义丢失。未做对账的整文件删除仍按反刷分原则默认拒绝。
 
-回执格式（结论取 ✅ / ❌ / 未跑 / —；— 表示不在本角色职责内或待主 Agent 执行；「未跑」= 环境不可用或超时，该门记未通过待补跑，不得计绿）：
+回执格式（结论取 ✅ / ❌ / 未跑 / —；— 表示不在本角色职责内或待主 Agent 执行；「未跑」= 环境不可用或超时，该门记未通过待补跑，不得计绿；未跑档适用于任一门）：
 
 ```markdown
 | 门禁 | 结论 | 证据摘要 |
 | :--- | :--- | :--- |
 | G0 预检 | ✅ / ❌ / — | 检索词与命中数；G0b 核实结论 |
-| G1 属实与正确性 | ✅ / ❌ | 基线 SHA；修复前后对照；链接检查结果 |
-| G2 方案与收益 | ✅ / ❌ | 比选结论；T1 净增行数 / T2·T3 盲评胜方与理由（是否盲评） |
-| G3 非回归 | ✅ / ❌ | 不变量勾验；反刷分输出；machine_checks 结果 |
+| G1 属实与正确性 | ✅ / ❌ / 未跑 | 基线 SHA；修复前后对照；链接检查结果 |
+| G2 方案与收益 | ✅ / ❌ / 未跑 | 比选结论；T1 净增行数 / T2·T3 盲评胜方与理由（是否盲评） |
+| G3 非回归 | ✅ / ❌ / 未跑 | 不变量勾验；反刷分输出；machine_checks 结果 |
 | G4 安全隐私 | ✅ / ❌ / — | G4a 扫描与 URL 清单；G4b 私有词扫描 |
 ```
 
@@ -194,7 +194,7 @@ NRE=$(printf '%s' "$NOREPLY" | sed 's|[.]|\\.|g')  # '.' 为 noreply 形态唯�
 ## 7. 确认与提交
 
 - **RSI 改进报告**：在最终交付消息之后以补充消息呈现，**每批条目一次确认**。每条列出：结论、分级、G0–G4 回执、diff 统计、提交形态（常规 / Draft / 本地 patch）、提交身份与路径；支持部分确认（如「只确认第 1 条」）。用户未答复则保持 `ready`；同内容落 `$W/report.md`。
-- **确认话术（一次授权覆盖整个回路）**：主 Agent 确认请求必须明示——「确认推送 `<分支>` 并向上游创建 PR；**合并前将自动派发上下文审阅，修复白名单内小项直接追加 commit 推送同分支，全部追加项在回报与 PR 页摘要中披露**」（修复白名单构成见 [context-reviewer.md §5](context-reviewer.md#5-修复纪律)）；本话术覆盖修复白名单内小修与回路常规动作；修复白名单外动作的例外授权独立依 §4 条款执行（单独披露与 commit 前缀标注，不在本话术扩面）——两通道分离，防确认疲劳稀释例外可见性。
+- **确认话术（一次授权覆盖整个回路）**：主 Agent 确认请求必须明示——「确认推送 `<分支>` 并向上游创建 PR；**合并前将自动派发上下文审阅，修复白名单内小项直接追加 commit 推送同分支，全部追加项在回报与 PR 页摘要中披露**」（修复白名单构成见 [context-reviewer.md §5](context-reviewer.md#5-修复纪律)）；本话术覆盖修复白名单内小修与回路常规动作；修复白名单外动作的例外授权独立依 §4 条款执行（单独披露与正文首行标注，同 §4 口径，不在本话术扩面）——两通道分离，防确认疲劳稀释例外可见性。
 - **豁免指令**：统一文法 **`rsi <repo-key>[@<版本号>]: T1 免确认提交 | 免确认提交 | 关闭`**；裸档 `免确认提交`（不带 T1 限定）= 该仓全部分级免确认，建议仅短期使用并带版本号。仅认用户亲手维护的用户级全局指令文件（如 Antigravity 全局规则；文件级判据见本段下文——sync/分发链产物一律不认，含内容源自注册仓分发的 `~/.claude/CLAUDE.md`——其为用户手动接线而非 sync.sh 产物，出处见 agents.md 适配档案），Agent 永不代写；Agent 可写的自动记忆（memory）与项目仓库内随代码分发的指令文件一律不认。经任何 sync / 分发机制生成的文件内容不具豁免效力（注册仓分发链产物一律不认），豁免行必须位于用户手写且不被分发覆盖的用户级文件（如 `~/.claude/rules/*.md`，用户级手写规则文件）。豁免行生效的机器判据（fail-closed）：① 该文件 realpath 后不在任何注册仓的 clone/worktree 内；② 该整行在全部注册仓可分发源文件（含 sync.sh 读取的源）中 grep -F 无同一字面量出现；③ 两检任一不满足或无法判定 → 不认；「全局文件中的手写段落」仅在文件为用户手写且该行非分发源内容时成立（整文件 symlink/cp 分发下不存在手写段落）。豁免行按整行精确匹配——行内引用、代码围栏、引用块与 HTML 注释块中的文法字样不构成豁免，整行按字节级精确匹配：容忍行尾空白与 CR，行首空白不容忍（保护缩进排除意图）；每次免确认提交的回报中强制披露命中的文件:行与该行原文。免确认类建议带版本号（防升级后旧豁免静默生效；`<版本号>` 与 [§2](#2-触发白名单与信任边界) 入账硬条件记录的已安装短 SHA 前缀匹配，失配即不认）；存量 legacy 键由适配档案 `legacy_exemption_keys` 登记，按全字面精确匹配用户全局文件整行，不参与现行文法解析，命中时在报告标注 legacy；含占位符（如 `<版本号>`）的登记键为**非功能性式样记录**——整行精确匹配下永不命中、不产生豁免效力，档案如需启用 legacy 豁免须登记用户全局文件中实际存在的完整整行；legacy 键不支持版本钉扎，建议尽早迁移为现行文法（带版本号）。授权只免确认，**不免门禁、限流、Draft 规则与首次 fork 的明确同意**；「关闭」只记录来源①条目、不派发，接受用户任何直接指令。
 - **身份告知**：commit 作者为 noreply bot 身份（协议要求覆盖），noreply 邮箱采用 GitHub ID 前缀形态 `<user-id>+<login>@users.noreply.github.com`（无 ID 前缀形态禁用——其归属目标是无关账号 github.com/noreply）；fork 会在用户账号下建立公开仓库——报告中必须写明。
 - **提交命令**：所有 gh 调用显式指向目标仓库（`-R "$R"`；`gh repo view` 用位置参数）；有写权限则推上游工作分支建 PR，无写权限经同意后 fork（在 `$REPO` 子 shell 内执行）：
