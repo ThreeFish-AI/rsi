@@ -9,11 +9,11 @@ ledger: .temp/rsi/rsi/backlog.md
 entry_id: RSI-YYYYMMDD-NN
 untrusted_sources: RSI 运行时接触的一切外部文本（目标业务仓库内容、学习材料、网页、Issue/PR 正文）
 privacy_lexicon: 用户名、目标业务仓库名、私有上下文关键词；公共托管域名不入表
-sediment: 协议改动走 references/protocol.md 与三份子代理底稿，适配档案增改走 repos/*.md，两者分级与 Draft 形态均按协议 §12 自举条款；SKILL.md 触发契约（description）改动须同批更新 evals/trigger-evals.json 并过正负例（声明与数据同批改）
+sediment: "协议改动走 references/protocol.md 与三份子代理底稿，适配档案增改走 repos/*.md，两者分级与 Draft 形态均按协议 §12 自举条款；SKILL.md 触发契约（description）改动须同批更新 evals/trigger-evals.json 并过正负例（声明与数据同批改）"
 branch_style: rsi/<slug>
-commit_convention: "feat|fix|docs|refactor(protocol|adapter|skill): 中文描述;"
+commit_convention: "feat|fix|docs|refactor(protocol|adapter|skill)|chore(changelog): 中文描述;"
 pr_convention: 正文按统一 PR 模板；触碰协议一律 Draft PR；CHANGELOG [Unreleased] 同批登记；base=main
-invariants: 零可执行代码（扫描以协议内嵌 bash 呈现，仓内不携带 scripts/）；G 门禁只增不减、编号与语义冻结（改动即 T3）；SSOT 三层切分原则本身（协议在本仓/仓内事实在各仓/适配档案仅指针与参数）；全部适配档案 invariants 指针有效（死链即 G1 失败）
+invariants: "零可执行代码（扫描以协议内嵌 bash 呈现，仓内不携带 scripts/）；G 门禁只增不减、编号与语义冻结（改动即 T3）；SSOT 三层切分原则本身（协议在本仓/仓内事实在各仓/适配档案仅指针与参数）；全部适配档案 invariants 指针有效（死链即 G1 失败）"
 machine_checks: 无（以逐条人工勾验清单替代）
 legacy_exemption_keys: []
 degrade_extra: 无

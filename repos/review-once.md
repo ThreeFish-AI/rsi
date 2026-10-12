@@ -9,7 +9,7 @@ ledger: docs/.agents/issue.md（仓内 ledger）
 entry_id: RSI-NNN（三位递增，从 ledger 既有最大号顺延）
 untrusted_sources: 被 Review 的目标仓库内容（源码、注释、Issue/PR 正文）、Review 私有内容、Conductor 平台内部状态
 privacy_lexicon: 用户名、目标仓库名、Review request 私有内容关键词；公共托管域名不入表
-sediment: 契约修改走 references/（review-contract.md、conductor-mode.md、git-mode.md）+ SKILL.md + evals 同批演进；每条新契约词汇同批落入 tests/check_states.py 的 NEW_CONTRACT 断言（RSI-007 纪律）
+sediment: "契约修改走 references/（review-contract.md、conductor-mode.md、git-mode.md）+ SKILL.md + evals 同批演进；每条新契约词汇同批落入 tests/check_states.py 的 NEW_CONTRACT 断言（RSI-007 纪律）"
 branch_style: feat/rsi-NNN-<topic>
 commit_convention: "feat(contract): RSI-0NN 中文描述——要点;"
 pr_convention: 标题把 RSI 编号写进 conventional 标题；正文含核验回执；条目与契约修改同 commit 同批交付；base=main

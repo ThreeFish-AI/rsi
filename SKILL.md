@@ -28,7 +28,7 @@ RSI = 经人工评审闸门的**跨会话**规约迭代：改进落在上游注�
 
 ## 最小流程
 
-捕获入账 → 当前任务先交付 → 派发 **Steward**（隔离 clone · G0 去重 · 复现 · 规约溯源 · 最小改动 · noreply 提交，[底稿](references/steward.md)）→ 派发 **Verifier**（只读核验 G1–G4a，[底稿](references/verifier.md)）→ RSI 改进报告**每批一次确认**（话术含 PR 后自动审阅授权）→ 推送分支建 PR → 派发 **Context-Reviewer**（八镜头上下文审阅 · 白名单内修复 · PR 页摘要回执，[底稿](references/context-reviewer.md)）→ 回报 PR 链接与摘要 → **人工决策合并**。
+捕获入账 → 当前任务先交付 → 派发 **Steward**（隔离 clone · G0 去重 · 复现 · 规约溯源 · 最小改动 · noreply 提交，[底稿](references/steward.md)）→ 派发 **Verifier**（只读核验 G1–G4a，[底稿](references/verifier.md)）→ RSI 改进报告**每批一次确认**（话术含 PR 后自动审阅授权）→ 推送分支建 PR → 派发 **Context-Reviewer**（八镜头上下文审阅 · 修复白名单内修复 · PR 页摘要回执，[底稿](references/context-reviewer.md)）→ 回报 PR 链接与摘要 → **人工决策合并**。
 
 ## 硬禁令（一句话版）
 

@@ -71,7 +71,7 @@ Fingerprint 去重：`normalized path + 失败模式 + 触发场景`，行号只
 
 ## 5. 修复纪律
 
-- **白名单** = PR 已触碰文件 ∪ 适配档案登记的索引/ledger/CHANGELOG/evals 文件 ∪ PR 正文（笔误级：失效链接、术语、字段名）。**不新建任何文件**；
+- **修复白名单** = PR 已触碰文件 ∪ 适配档案登记的索引/ledger/CHANGELOG/evals 文件 ∪ PR 正文（笔误级：失效链接、术语、字段名）。**不新建任何文件**；
 - **commit 身份**：noreply 覆盖（`git -c user.name=rsi-reviewer -c user.email=<noreply> commit`）；标题遵循目标仓 `commit_convention`，正文首行标注 `rsi ctx-review: F<n> <一句话>`（provenance 机械可辨）；
 - **粒度**：每个 Finding 一个 commit，或同镜头一批小修一个 commit；不与 Steward 原始 commit 混淆；
 - **推送**：断言 `[ "$(git -C "$REPO" branch --show-current)" = "$B" ]` 后 `git -C "$REPO" push origin "$B:$B"`；不推默认分支、不 merge、不 force-push、不 rebase、不代为 approve；
