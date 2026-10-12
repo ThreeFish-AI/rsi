@@ -14,4 +14,4 @@
 - 豁免文法加固：受信载体排除 sync / 分发链产物（豁免行须手写且不被分发覆盖）、整行精确匹配语义与免确认回报强制披露命中行、裸「免确认提交」三档口径统一（README 同步）、legacy 键全字面整行匹配与 `<版本号>` 式样占位注明（#8）。
 - 评审 P3 池 T1 快修：report.md 指派主 Agent 呈现报告时同步落盘（§3 目录树 + §7）、README / SKILL description「隔离分支」统一为「隔离 clone」、evals 正例孤立术语 RSID 换为上游现存术语 Diff、README repos/ 行字段摘要改为指向协议附录B、「五仓」补定义注并校准为六注册仓、preening-substrate 档案 invariants 值加双引号修复 YAML 解析（#9）。
 - 状态机与时序收口：submitted 补终态转移（合并结案回填 merge sha / 关闭未合并转 rejected）且条目模板状态枚举补「结案」终态显示、跨会话补跑限定 PR 仍 open、切换 PR 不得先于本仓适配档案入 main 合并、flip 时限改两者较晚者起算并于 flip PR 登记切换合并时间（SKILL.md 路由表旧起算点同步对齐）、自举改动按语义分级（不改门禁编号与判据语义的修正按分级表执行且一律 Draft）、回执更新条款指针化至 context-reviewer.md §8（#10）。
-- 散件 T1 批（第二轮）：vibe 档案正文门禁映射指称去重（与下句映射行重复）、「白名单」三义限定词对齐（协议首处裸用 / context-reviewer §5 定义改称修复白名单 / SKILL.md 正文）、verifier G2 步骤补 (a)/(b) 子编号对齐协议 §5、六适配档案 frontmatter 长值引号化（14 值，附录B 补登记判据）、rsi 档案 commit_convention 补 chore(changelog)、协议 §3 路径约定补 .temp 隔离 clone 路径过滤假绿警示（#<PR>）。
+- 散件 T1 批（第二轮）：vibe 档案正文门禁映射指称去重（与下句映射行重复）、「白名单」三义限定词对齐（协议首处裸用 / context-reviewer §5 定义改称修复白名单 / SKILL.md 正文）、verifier G2 步骤补 (a)/(b) 子编号对齐协议 §5、六适配档案 frontmatter 长值引号化（14 值，附录B 补登记判据）、rsi 档案 commit_convention 补 chore(changelog)、协议 §3 路径约定补 .temp 隔离 clone 路径过滤假绿警示（#13）。
