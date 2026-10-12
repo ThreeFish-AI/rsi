@@ -294,7 +294,7 @@ PR 正文与 commit message 遵循目标仓表达规范（由适配档案指针�
 | :--- | :--- |
 | `key` / `upstream` / `default_branch` / `local_path` | repo-key（豁免键与 `.temp/rsi/<key>/` 用）、上游仓库、默认分支、本机源码仓路径（提示性）（脱敏占位——公开仓不落本机实际路径，安装时自行替换） |
 | `adoption` | `pending` \| `live`，切换 PR 合并后置 live |
-| `flipped_at` | 切换 PR 链接与合并时间；由 flip PR 填写，未切换仓为空 |
+| `flipped_at` | 切换 PR 链接与合并时间（式样 `<owner>/<repo>#<N> merged <ISO8601Z>`；rsi 自举仓为 `bootstrap`）；由 flip PR 填写，未切换仓为空 |
 | `skill_entry` | 规约入口文件（skill 仓为 SKILL.md，规范仓为 AGENTS.md） |
 | `ledger` / `entry_id` | ledger 位置（仓内 issue.md 或项目 .temp backlog）与编号式样 |
 | `untrusted_sources` / `privacy_lexicon` | 不可信来源定义、G4b 私有词表构造规则 |
