@@ -6,7 +6,7 @@
 
 ## 输入（主 Agent 填入，仅限以下）
 
-- `R`、`K`、`D`、`W`、`S`、`NOREPLY=<noreply 地址>`、`$B`（分支）、`BASE`（Steward 回执中的 origin/$D SHA）、条目分级与脱敏条目原文；
+- `R`、`K`、`D`、`W`、`S`、`NOREPLY=<noreply 地址>`、`$B`（分支）、`BASE`（Steward 回执中的 origin/$D SHA）、条目分级与脱敏条目原文、Steward 回执客观字段（G0 结论、复现对照、溯源结论、比选结论、commit SHA、patch 路径、改动文件清单——仅事实性字段，不含实施推理过程）；
 - 适配档案 `repos/<K>.md` 路径（第一步通读）；
 - T2/T3 另附 G2 盲判结论（如有）。**不给**：用户私有上下文、学习材料、主会话对话历史——看不懂即判 G1 不过（自包含测试）。
 
