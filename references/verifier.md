@@ -7,7 +7,8 @@
 ## 输入（主 Agent 填入，仅限以下）
 
 - `R`、`K`、`D`、`W`、`S`、`NOREPLY=<noreply 地址>`、`$B`（分支）、`BASE`（Steward 回执中的 origin/$D SHA）、条目分级与脱敏条目原文、Steward 回执客观字段（G0 结论、复现对照、溯源结论、比选结论、commit SHA、patch 路径、改动文件清单——仅事实性字段，不含实施推理过程）；
-- 适配档案 `repos/<K>.md` 路径（第一步通读）；
+- `machine_checks` 复跑副本路径（护栏为路径过滤类且 `$REPO` 位于 `.temp` 下时由主 Agent 预置供值；无则不适用）；
+- 适配档案绝对路径（主 Agent 供值；文件命名见 [protocol.md](protocol.md) 首注——key 以 `.md` 结尾不重复追加后缀）（第一步通读）；
 - T2/T3 另附 G2 盲判结论（如有）。**不给**：用户私有上下文、学习材料、主会话对话历史——看不懂即判 G1 不过（自包含测试）。
 
 ## 纪律
@@ -24,14 +25,14 @@
    - **档案一致性**：adoption=live ⇔ flipped_at 非空（pending ⇔ 空；bootstrap 为 rsi 合法值）——违者为 G1 ❌。
    - **落盘物对账**（仅 K=rsi 自举审阅执行——`$W/` 形态与 §3 目录树只存在于 rsi 协议仓，其他注册仓 clone 内无此对象，跑则空转假绿或路径报错）：
      1. 在 `$REPO` 内 `grep -ohE '\$W/[a-zA-Z0-9/<>.{}$-]+' references/*.md | sort -u` 提取协议内全部 `$W/` 路径形态集合；
-     2. 归一：去 `$W/` 前缀、`$S`→`<slug>`、去尾 `/`、提取侧父目录（如 `pr`）映射树内对应子树；
-     3. 双向比对：提取侧任一项无树内落点（含父目录映射）即 FAIL；树侧任一项无合法来源即 FAIL——合法来源三选一：`$W/` 前缀形态、`.temp/rsi/<repo-key>/` 全前缀形态、§3 声明的捕获侧文件白名单（`backlog.md`、`.gitignore`）。
+     2. 归一：去 `$W/` 前缀、`$S`→`<slug>`、去尾 `/`、提取侧父目录（如 `pr`）映射树内对应子树、`$REPO`→`repo/<slug>` 恒等派生（`$REPO.<时间戳>` 同式样归一为残留目录行；恒等式见 protocol §3 变量声明）；
+     3. 双向比对：提取侧任一项无树内落点（含父目录映射）即 FAIL；树侧任一项无合法来源即 FAIL——合法来源四选一：`$W/` 前缀形态、`.temp/rsi/<repo-key>/` 全前缀形态、`$REPO.<时间戳>` 中断残留定义（protocol §4 ②，归一为 `repo/<slug>.<时间戳>`）、§3 声明的捕获侧文件白名单（`backlog.md`、`.gitignore`）。
 4. **G2 方案正确与正向收益**：**(a) 方案比选**——核对 Steward 回执的比选结论（候选 ≥2、论证最佳、最小干预、无第二事实源、历史决策有溯源）；**(b) 收益证明**——T1 统计入口文件（适配档案 `skill_entry`）净增行数（`git -C "$REPO" diff --numstat "origin/$D...$B" -- <skill_entry> | awk '{a+=$1;d+=$2} END {print a-d}'`，≤10；下沉 references / 附录不计）；T2/T3 核对盲评结论与「是否盲评」标注。
 5. **G3 非回归与机器执法**：不变量逐项三档勾验（未触碰 / 触碰有权衡与同步 / 破坏无论证=阻断）；执行协议 §5 反刷分脚本（输出须为空、无 EMPTY DIFF）；缺陷类回归测试新增核查——被修缺陷须有钉住失败形态的新增回归测试（无测试基建的文档仓以锚点核验 / 逐条人工勾验清单替代，由适配档案定）；逐条列出 diff 中被改写或删除的硬约束句与全部命令式约束句（词表命中行 + 不含词表字面的命令式改写，不以词表命中为限），逐句给出『语义未弱化』论证；仅计数守恒不构成通过。数值阈值改动逐条人工审阅；`machine_checks` 非「无」则在 `$REPO` 内执行并记录输出与退出码（时长受限，超时记「未跑」）；`$REPO` 位于 `.temp` 下，路径过滤类检查按 [protocol §3](protocol.md) 警示以无 `.temp` 组件路径复跑（复跑所需副本由主 Agent 预置并作为输入路径传入）。
 6. **G4a 安全隐私**：执行协议 §5 隐私扫描脚本（输出须为空）；`git -C "$REPO" log "origin/$D..$B" --format='%an %ae %cn %ce'` 仅允许 noreply 域或空；新增 URL 单列清单与新增非文档文件清点逐条说明来源（新增可执行代码 / 第三方依赖 / 外部抓取指令零容忍，协议 §5 G4a 判据四，确需时显式标注并升级 T3）：
 
 ```bash
 git -C "$REPO" -c color.ui=never diff "origin/$D...$B" | grep -E '^\+' | grep -vE '^\+\+\+ (b/|/dev/null)' | grep -oE 'https?://[^ )>"`]+' | sort -u
-git -C "$REPO" -c color.ui=never diff --name-only "origin/$D...$B" | grep -vE '\.(md|json|txt|svg)$|^LICENSE$|^\.gitignore$'  # 非文档新增文件清点，输出须为空
+git -C "$REPO" -c color.ui=never diff --name-only "origin/$D...$B" | grep -vE '\.(md|json|txt|svg)$|^LICENSE$|^\.gitignore$'  # 非文档触碰文件清点（--name-only 含修改文件），逐条说明来源；命中可执行代码/第三方依赖/外部抓取指令按协议 §5 G4a 判据四处置，新增回归测试类文件属合规命中
 ```
 7. **回执**（最终输出）：按协议 §5 回执表格式，G0 行填「—」；每门附证据摘要；任一 ❌ 时在表后给「不过原因与建议出路」（对齐 protocol §9 失败出路），不自行修复。

@@ -16,7 +16,7 @@
 | [references/protocol.md](references/protocol.md) | 统一协议 SSOT：白名单、状态机六态、G0–G4、T1/T2/T3、限流背压、确认与豁免、降级矩阵、PR 模板、失败出路 |
 | [references/steward.md](references/steward.md) | Steward 子代理底稿（实施侧） |
 | [references/verifier.md](references/verifier.md) | Verifier 子代理底稿（核验侧） |
-| [references/context-reviewer.md](references/context-reviewer.md) | Context-Reviewer 子代理底稿（PR 后八镜头审阅、白名单修复、摘要回执） |
+| [references/context-reviewer.md](references/context-reviewer.md) | Context-Reviewer 子代理底稿（PR 后八镜头审阅、修复白名单内小修、摘要回执） |
 | [repos/](repos/) | 适配层：每仓一份档案（upstream、ledger、沉淀格式、分支/commit 约定、不变量**指针**、机器执法命令、adoption 状态等；全部字段见[协议附录B](references/protocol.md#附录b-适配档案字段)） |
 | [evals/trigger-evals.json](evals/trigger-evals.json) | 触发边界正负例（改动 SKILL.md description 须同批过评测） |
 | [CHANGELOG.md](CHANGELOG.md) | 变更登记（Keep a Changelog 格式；[Unreleased] 同批登记义务见 [repos/rsi.md](repos/rsi.md) pr_convention） |
