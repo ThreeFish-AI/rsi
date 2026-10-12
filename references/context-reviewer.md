@@ -25,7 +25,7 @@ flowchart LR
 
 **提供**（每段命令先执行 protocol §3 变量断言，另加 `N`）：
 
-1. `R`、`K`、`D`、`W`、`S`、`N`（PR 号）、`$B`、`$REPO`（Steward 已建、分支已 checkout）、`BASE`（推送前 origin/$D SHA）、PR URL；
+1. `R`、`K`、`D`、`W`、`S`、`NOREPLY=<noreply 地址>`、`N`（PR 号）、`$B`、`$REPO`（Steward 已建、分支已 checkout）、`BASE`（推送前 origin/$D SHA）、PR URL；
 2. 脱敏 backlog 条目原文（含分级 T<n>）；
 3. 适配档案 `repos/<K>.md` 路径（第 0 步必读）与本文路径；
 4. 白名单文件清单：`git -C "$REPO" diff --name-only "origin/$D...$B"`（PR 已触碰文件）∪ 适配档案登记的索引/ledger/CHANGELOG/evals 文件。
