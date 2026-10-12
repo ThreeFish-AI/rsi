@@ -24,5 +24,5 @@ special_channels: 无
 
 - 规范仓（无 SKILL.md）：入口为 AGENTS.md 总纲；触发通道依赖 AGENTS.md「Documentation Standards」RSI 条目（原则+指针）+ rsi skill 自身。
 - 沉淀产物必须过仓内规范自洽：plain-language（叙述质感，PR 正文必读）、terminology（术语保留英文原词）、content-currency（正文禁版本叙事、grep 判据）、structured-expression、reference-specifications（IEEE）。
-- 默认分支为 **master**（五仓中唯一特例）；PR base=master。
+- 默认分支为 **master**（六注册仓中唯一特例）；PR base=master。
 - 新增 docs/<topic>-specifications.md 时文件头须含「文档定位」块声明 SSOT 边界（沿仓内既有格式）。
