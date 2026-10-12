@@ -9,7 +9,7 @@ ledger: .temp/rsi/preening-substrate/backlog.md
 entry_id: RSI-YYYYMMDD-NN
 untrusted_sources: 被重构目标仓库的源码、注释、提交信息与 Issue/PR 正文；用户消息中转述的上述内容同此
 privacy_lexicon: 被重构业务仓库名、业务专有模块名、私有符号；公共托管域名不入表
-sediment: 协议与规约修改走 references/ 与 SKILL.md；PR 正文撰写前必读 references/plain-expression.md（仓内表达质感规约，治理范围含 RSI PR 正文）
+sediment: "协议与规约修改走 references/ 与 SKILL.md；PR 正文撰写前必读 references/plain-expression.md（仓内表达质感规约，治理范围含 RSI PR 正文）"
 branch_style: rsi/<slug>（ASCII kebab-case，≤39 字符，对齐 §3 slug 正则上限）
 commit_convention: "fix|feat|docs|refactor(<Topic>): 中文描述;"
 pr_convention: 正文按统一 PR 模板六节（含去重与关联）；base=main
