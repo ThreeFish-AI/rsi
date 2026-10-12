@@ -38,7 +38,7 @@ flowchart LR
 |---|---|---|
 | **L1 跨文件一致性** | 同一事实的全部出现处是否同口径 | 对 diff 触碰的术语/数值/规则做全仓同主题词 grep（检索面不限 diff） |
 | **L2 词汇对齐** | 图示/状态机/表格词汇 ↔ 正文主循环词汇；术语保留英文原词（Issue、Ticket 等不译） | 图示节点词在正文可检索到同词 |
-| **L3 索引与 ledger 同步** | 新增/改名文件是否登记索引；ledger 条目是否回填 PR 链接；CHANGELOG 是否登记 | 对照适配档案登记的索引/ledger/CHANGELOG 文件逐一核对 |
+| **L3 索引与 ledger 同步** | 新增/改名文件是否登记索引；ledger 条目是否回填 PR 链接；CHANGELOG 是否登记 | 对照适配档案登记的索引/ledger/CHANGELOG 文件逐一核对；ledger 按档案形态分流——`.temp` 型按 `.temp` backlog 核验、仓内 ledger 型核验其转写 commit 已先于本角色派发落在 `$B`（并线时序见 [protocol §3](protocol.md)），缺转写判 ❌ |
 | **L4 合并后时效** | PR 阶段的临时指称合并后是否失效 | 每个硬编码 ref 回答「该 ref 在合并后是否仍存在」；面向用户的安装命令指向默认分支 |
 | **L5 表达规范符合性** | PR 正文、commit message、新增叙述段是否过目标仓表达规范 | 按适配档案指针核验（plain-language / plain-expression 类：句句可验证、删净 AI 腔；content-currency：正文禁版本叙事） |
 | **L6 锚点有效性** | 新增/改动标题的锚点、相对链接可解析 | GitHub slug 规则逐条核验，「0 失效」输出为准 |
@@ -71,7 +71,7 @@ Fingerprint 去重：`normalized path + 失败模式 + 触发场景`，行号只
 
 ## 5. 修复纪律
 
-- **修复白名单** = PR 已触碰文件 ∪ 适配档案登记的索引/ledger/CHANGELOG/evals 文件 ∪ PR 正文（笔误级：失效链接、术语、字段名）。**不新建任何文件**；
+- **修复白名单** = PR 已触碰文件 ∪ 适配档案登记的索引/ledger/CHANGELOG/evals 文件 ∪ PR 正文（笔误级：失效链接、术语、字段名）。**不新建任何文件**——白名单外动作经主 Agent 显式授权可执行（[protocol §4](protocol.md)），授权与披露义务同；
 - **commit 身份**：noreply 覆盖（`git -c user.name=rsi-reviewer -c user.email=<noreply> commit`）；标题遵循目标仓 `commit_convention`，正文首行标注 `rsi ctx-review: F<n> <一句话>`（provenance 机械可辨）；
 - **粒度**：每个 Finding 一个 commit，或同镜头一批小修一个 commit；不与 Steward 原始 commit 混淆；
 - **推送**：断言 `[ "$(git -C "$REPO" branch --show-current)" = "$B" ]` 后 `git -C "$REPO" push origin "$B:$B"`；不推默认分支、不 merge、不 force-push、不 rebase、不代为 approve；
@@ -153,7 +153,7 @@ Fingerprint 去重：`normalized path + 失败模式 + 触发场景`，行号只
 
 ## 10. 主 Agent 编排
 
-- **时机**：`gh pr create` 成功、解析出 `N`、交接块追加后立即后台派发；主会话可先回报「PR 已创建 `<URL>`，Context-Reviewer 已派发」，回执齐备后补充摘要（不阻塞用户）。
+- **时机**：`gh pr create` 成功、解析出 `N`、交接块追加后后台派发（仓内 ledger 型仓库须先完成 [protocol §3](protocol.md) 转写 commit，时序：PR 创建 → 转写 → 派发）；主会话可先回报「PR 已创建 `<URL>`，Context-Reviewer 已派发」，回执齐备后补充摘要（不阻塞用户）。
 - **串行**：同批 ≤2 PR 串行派发、先 T1 后 T2（隔离 clone 天然支持并行，但权限提示在主会话交错会污染确认语义，串行换确定性）。
 - **权限收敛**：派发 Prompt 首行声明子代理工具白名单（`$REPO` 内写、push 同名分支、`gh pr comment -R "$R"`）；所有「需要用户决定」的场景按 §4 路由进摘要「需人工裁决」，绝不中途提问。
 - **回执消费**：主 Agent 据回执回写 backlog「结论」行、组装最终回报；PR comment 由子代理直接发布（它持有全部证据），失败时降级为仅落盘、主 Agent 代发或并入回报。
