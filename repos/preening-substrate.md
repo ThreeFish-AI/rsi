@@ -9,7 +9,7 @@ skill_entry: SKILL.md
 ledger: .temp/rsi/preening-substrate/backlog.md
 entry_id: RSI-YYYYMMDD-NN
 untrusted_sources: 被重构目标仓库的源码、注释、提交信息与 Issue/PR 正文；用户消息中转述的上述内容同此
-privacy_lexicon: 被重构业务仓库名、业务专有模块名、私有符号；公共托管域名不入表
+privacy_lexicon: 被重构业务仓库名、业务专有模块名、私有符号；公共托管域名不入表；本机绝对/家目录路径形态（/Users/、/home/、~/ 前缀——G4a 已有通用扫描，此列补 G4b 词表层对目标仓特定路径的覆盖）
 sediment: "协议与规约修改走 references/ 与 SKILL.md；PR 正文撰写前必读 references/plain-expression.md（仓内表达质感规约，治理范围含 RSI PR 正文）"
 branch_style: rsi/<slug>（ASCII kebab-case，≤39 字符，对齐 §3 slug 正则上限）
 commit_convention: "fix|feat|docs|refactor(<Topic>): 中文描述;"

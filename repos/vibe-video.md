@@ -9,7 +9,7 @@ skill_entry: SKILL.md
 ledger: docs/.agents/issue.md（仓内 ledger）
 entry_id: RSI-NNN（三位递增，从 ledger 既有最大号顺延；刻意不用 ISSUE- 前缀，与上游 negentropy ledger 区分）
 untrusted_sources: 视频工作区内容、上游 negentropy Issue 正文；上游教训一律写全 URL 引用
-privacy_lexicon: 声音样本生物特征纪律——样本路径与音频绝不进任何 RSI 材料；工作区/集目录名；公共托管域名不入表
+privacy_lexicon: 声音样本生物特征纪律——样本路径与音频绝不进任何 RSI 材料；工作区/集目录名；公共托管域名不入表；本机绝对/家目录路径形态（/Users/、/home/、~/ 前缀——G4a 已有通用扫描，此列补 G4b 词表层对目标仓特定路径的覆盖）
 sediment: "规格修改走 references/ 与 SKILL.md（按需加载表等量压缩守 8000 字预算）；CHANGELOG [Unreleased] 登记；ledger 条目回填 PR 与 commit 链接；复发不新开编号，原条目追加带日期复盘点"
 branch_style: ThreeFish-AI/rsi-NNN-<topic>
 commit_convention: "feat(rsi): 中文描述（RSI-0NN）;"

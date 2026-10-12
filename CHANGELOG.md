@@ -23,3 +23,4 @@
 - local_path 脱敏占位与回填 commit 规范式样：六适配档案 local_path 统一为 `~/Documents/projects/<本机实际仓目录>` 脱敏占位（附录B 释义同步补「脱敏占位——公开仓不落本机实际路径，安装时自行替换」）、§8 交接块段末补 CHANGELOG PR 号回填 commit 规范（主 Agent 以 rsi-reviewer noreply 身份追加 commit，标题式样 `chore(changelog): 回填 PR 号（#N）;`，正文含签名块）（#17）。
 - flipped_at 一致性判据入勾验清单、§3 树-落盘物双向差集对账配方：附录B flipped_at 行补值式样（`<owner>/<repo>#<N> merged <ISO8601Z>`；rsi 自举仓为 `bootstrap`）、verifier G1 补档案一致性勾验（adoption=live ⇔ flipped_at 非空，pending ⇔ 空）与 $W/ 路径形态集合对 §3 目录树双向差集对账（新落盘物只定义不入树即 FAIL）（#18）。
 - §7 授权话术与 §4 例外授权通道分离裁定：确认话术明示覆盖面仅限白名单内修复与回路常规动作，白名单外动作的例外授权独立依 §4 条款执行（单独披露与 commit 前缀标注，不在本话术扩面）——两通道分离，防确认疲劳稀释例外可见性（#19）。
+- 六仓 privacy_lexicon 补本机绝对/家目录路径形态模式（/Users/、/home/、~/ 前缀——G4a 已有通用扫描，此列补 G4b 词表层对目标仓特定路径的覆盖；#17 ctx-review F5 词表层根因封口）（#20）。
