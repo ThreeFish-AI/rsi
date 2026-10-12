@@ -1,6 +1,6 @@
 # RSI 统一协议（Recursive Self-Improvement Unified Protocol）
 
-> 本文是统一 RSI 机制的唯一事实源（SSOT）：触发契约、状态机、门禁、分级、限流、确认与降级均以此为准；各注册仓库的差异以 [repos/](../repos/) 适配档案供值（`<repo-key>` 对应 `repos/<repo-key>.md`），不变量清单等仓内事实仅以指针引用。子代理角色底稿：[steward.md](steward.md) · [verifier.md](verifier.md) · [context-reviewer.md](context-reviewer.md)。
+> 本文是统一 RSI 机制的唯一事实源（SSOT）：触发契约、状态机、门禁、分级、限流、确认与降级均以此为准；各注册仓库的差异以 [repos/](../repos/) 适配档案供值（`<repo-key>` 对应 `repos/<repo-key>.md`——文件名规则：key 按 `<repo-key>.md` 拼接，唯 key 本身以 `.md` 结尾者不重复追加后缀，如 `agents.md` → `repos/agents.md`），不变量清单等仓内事实仅以指针引用。子代理角色底稿：[steward.md](steward.md) · [verifier.md](verifier.md) · [context-reviewer.md](context-reviewer.md)。
 
 **目录**：[§0 定位与术语](#0-定位与术语) · [§1 流程总览](#1-流程总览) · [§2 触发白名单与信任边界](#2-触发白名单与信任边界) · [§3 旁路捕获](#3-旁路捕获) · [§4 派发与编排](#4-派发与编排) · [§5 核验门禁](#5-核验门禁) · [§6 限流与背压](#6-限流与背压) · [§7 确认与提交](#7-确认与提交) · [§8 Context-Reviewer 挂载](#8-context-reviewer-挂载) · [§9 失败出路](#9-失败出路) · [§10 降级矩阵](#10-降级矩阵) · [§11 PR 模板](#11-pr-模板) · [§12 注册与自举](#12-注册与自举) · [附录A 门禁映射](#附录a-vibe-video-旧门禁映射) · [附录B 适配档案字段](#附录b-适配档案字段) · [参考（IEEE）](#参考ieee)
 
@@ -30,10 +30,10 @@ flowchart LR
 
 **条目状态机**：
 
-- `captured`：已入账；无网络时附「待联网」。
+- `captured`：已入账；无网络时附「待联网」；G2 收益不足（「待议」）、G2 触碰不变量（升级用户决策项）、G3 阻断待批准的条目保持本态并附注记（[§9](#9-失败出路)），不另设状态。
 - `ready`：门禁全绿、待确认；用户未答复则保持并跨会话承接。
 - `submitted`：PR 已创建，`结论`行追加 `PR #N · ctx-review: <三态>`（见 [§8](#8-context-reviewer-挂载)）；PR 合并 → 结案（`结论`行回填 merge sha），PR 关闭未合并 → `rejected`（记死因，进拒绝记忆）。
-- `rejected`：任一门禁不过，或上游存在已关闭未合并的同类 PR（上游拒绝记忆）。
+- `rejected`：条目级终止——G1 不成立、Steward 修复 2 轮门禁仍不过（[§9](#9-失败出路)），或上游存在已关闭未合并的同类 PR（上游拒绝记忆）；无新证据不再追问、不再提交。
 - `declined`：用户拒绝。
 - `superseded`：上游已有 open 同类 PR；附链接，该 PR 合并即结案，关闭未合并则转 `rejected`。
 
@@ -59,6 +59,7 @@ flowchart LR
 ├── .gitignore      # 首次捕获时写入，内容仅一行 `*`：目录自忽略，防止污染业务仓库 git 状态
 ├── backlog.md      # 条目 ledger
 ├── repo/<slug>/    # 上游隔离 clone（每条目独占，Steward 工作区，Context-Reviewer 复用）
+├── repo/<slug>.<时间戳>/  # 中断残留（$REPO 已存在时改名移入，不删除；条目终态后经用户确认清理）
 ├── pr/<slug>.md    # PR 正文草稿（主 Agent 撰写）
 ├── pr/<slug>.patch # 本地 patch（Steward 提交后一律导出）
 ├── pr/<slug>.review-request.md # §8 交接块落盘（供跨会话与无 GitHub 权限宿主消费）
@@ -67,7 +68,7 @@ flowchart LR
 └── pr/<slug>-ctx.patch   # Context-Reviewer 修复 patch（无一次授权或 push 受阻时只 commit 不 push 导出）
 ```
 
-**路径约定**：主 Agent 在用户项目根计算一次绝对路径 `W="$(git rev-parse --show-toplevel)/.temp/rsi/<repo-key>"`（非 git 项目取项目根绝对路径），连同 `R`、`K`、`<slug>` 写入派发 Prompt；子代理不自行推导（其 cwd 可能被重置）。`<slug>` 由标题转写：去停用词、kebab-case 化，必须匹配 `^[a-z0-9]([a-z0-9-]{0,37}[a-z0-9])?$`（1–39 字符、首尾须字母数字；与下方 case 断言、steward 底稿副本三处判据须同步修改）。宿主每次工具调用都是独立 shell，**每段命令开头都先声明并断言变量非空与 slug 字符集**：
+**路径约定**：主 Agent 在用户项目根计算一次绝对路径 `W="$(git rev-parse --show-toplevel)/.temp/rsi/<repo-key>"`（非 git 项目取项目根绝对路径），连同 `R`、`K`、`<slug>` 写入派发 Prompt；子代理不自行推导（其 cwd 可能被重置）。`<slug>` 由标题转写：去停用词、kebab-case 化，必须匹配 `^[a-z0-9]([a-z0-9-]{0,37}[a-z0-9])?$`（1–39 字符、首尾须字母数字；五处判据须同步修改：下方长度断言与 case 断言、steward 底稿副本、适配档案 `branch_style` 内嵌「≤39」注记）。宿主每次工具调用都是独立 shell，**每段命令开头都先声明并断言变量非空与 slug 字符集**：
 
 ```bash
 R=<upstream>; K=<repo-key>; D=<default-branch>; W=<主 Agent 传入的绝对路径>; S=<slug>
@@ -98,7 +99,7 @@ case $S in ''|*[!a-z0-9-]*|*..*|-*|*-) echo "ABORT: 非法 slug"; exit 1;; esac
 - 结论：<门禁回执摘要 · PR 链接与 ctx-review 三态 · 分支 <B> · commit <sha> · patch <path>>
 ```
 
-> 编号式样（`RSI-NNN` 仓内 ledger 型 / `RSI-YYYYMMDD-NN` 项目 .temp 型）由适配档案 `entry_id` 供值。仓内 ledger 型仓库（适配档案 `ledger` 指向仓内文件者）：PR 创建成功时由主 Agent 将条目转写仓内 ledger、沿用仓内编号（`entry_id` 仓内式样），.temp backlog 结论行同步指向仓内条目；转写由主 Agent 在 `$REPO` 以 noreply 身份追加独立 commit 完成，且须先于 Context-Reviewer 派发（时序：PR 创建 → 转写 commit → 派发）。
+> 编号式样（`RSI-NNN` 仓内 ledger 型 / `RSI-YYYYMMDD-NN` 项目 .temp 型）由适配档案 `entry_id` 供值。仓内 ledger 型仓库（适配档案 `ledger` 指向仓内文件者）：PR 创建成功时由主 Agent 将条目转写仓内 ledger、沿用仓内编号（`entry_id` 仓内式样），.temp backlog 结论行同步指向仓内条目；转写由主 Agent 在 `$REPO` 以 rsi-reviewer noreply 身份追加独立 commit 完成，且须先于 Context-Reviewer 派发（时序：PR 创建 → 转写 commit → 派发）。
 
 | 分级 | 范围 | commit type | G2 要求 | 提交形态 |
 | :--- | :--- | :--- | :--- | :--- |
@@ -114,7 +115,7 @@ case $S in ''|*[!a-z0-9-]*|*..*|-*|*-) echo "ABORT: 非法 slug"; exit 1;; esac
 - **宿主层写边界强化**：派发 Prompt 首行显式声明该子代理的工具白名单与可写根（宿主支持受限工具集派发则配置之）；否则以 Prompt 强约束 + 事后 `git -C "$REPO" status --porcelain` 与工作区 diff 复核越界写入，复核结果记入回执。
 - **改动面白名单**：派发 Prompt 附初步圈定的允许触碰文件清单（问题锚点周边的最小集合）；Steward 判定需扩圈时在回执中列明新增文件与理由，由主 Agent 记入 PR 描述——改动面裁量权锚在持任务上下文的主 Agent 侧，不随 fresh context 子代理自定。
 - **编排者**：主 Agent 统一派发三个子代理角色，不依赖子代理嵌套；后台子代理的权限提示会出现在主会话，且子代理无法向用户提问——所有确认收敛到 [§7](#7-确认与提交)，所有需用户裁决的发现收敛到 Context-Reviewer 摘要的「需人工裁决」节。
-- **修复白名单例外授权**：主 Agent 可显式授权修复白名单外动作（如新建必要文件——54c66a2 `.gitignore` 先例），授权与执行须在当轮回报及 PR 摘要中披露、执行 commit message 首行带「rsi 主 Agent 授权例外:」前缀；修复白名单外动作不属 §7 一次授权话术覆盖面（通道分离裁定见 §7 确认话术条目），主 Agent 自批自用仅限笔误级/文件级微修、触门禁语义者须用户当轮确认。
+- **修复白名单例外授权**：主 Agent 可显式授权修复白名单外动作（如新建必要文件——54c66a2 `.gitignore` 先例），授权与执行须在当轮回报及 PR 摘要中披露、执行 commit message 正文首行标注「rsi 主 Agent 授权例外: <事项>」（不占标题行）；修复白名单外动作不属 §7 一次授权话术覆盖面（通道分离裁定见 §7 确认话术条目），主 Agent 自批自用仅限笔误级/文件级微修、触门禁语义者须用户当轮确认。
 - **角色分工**：
 
 | 角色 | 上下文 | 读写边界 | 职责 | 底稿 |
@@ -196,7 +197,16 @@ NRE=$(printf '%s' "$NOREPLY" | sed 's|[.]|\\.|g')  # '.' 为 noreply 形态唯�
 - **确认话术（一次授权覆盖整个回路）**：主 Agent 确认请求必须明示——「确认推送 `<分支>` 并向上游创建 PR；**合并前将自动派发上下文审阅，修复白名单内小项直接追加 commit 推送同分支，全部追加项在回报与 PR 页摘要中披露**」（修复白名单构成见 [context-reviewer.md §5](context-reviewer.md#5-修复纪律)）；本话术覆盖修复白名单内小修与回路常规动作；修复白名单外动作的例外授权独立依 §4 条款执行（单独披露与 commit 前缀标注，不在本话术扩面）——两通道分离，防确认疲劳稀释例外可见性。
 - **豁免指令**：统一文法 **`rsi <repo-key>[@<版本号>]: T1 免确认提交 | 免确认提交 | 关闭`**；裸档 `免确认提交`（不带 T1 限定）= 该仓全部分级免确认，建议仅短期使用并带版本号。仅认用户亲手维护的用户级全局指令文件（如 Antigravity 全局规则；文件级判据见本段下文——sync/分发链产物一律不认，含经分发链落地的 `~/.claude/CLAUDE.md`），Agent 永不代写；Agent 可写的自动记忆（memory）与项目仓库内随代码分发的指令文件一律不认。经任何 sync / 分发机制生成的文件内容不具豁免效力（注册仓分发链产物一律不认），豁免行必须位于用户手写且不被分发覆盖的用户级文件（如 `~/.claude/rules/*.md`，用户级手写规则文件）。豁免行生效的机器判据（fail-closed）：① 该文件 realpath 后不在任何注册仓的 clone/worktree 内；② 该整行在全部注册仓可分发源文件（含 sync.sh 读取的源）中 grep -F 无同一字面量出现；③ 两检任一不满足或无法判定 → 不认；「全局文件中的手写段落」仅在文件为用户手写且该行非分发源内容时成立（整文件 symlink/cp 分发下不存在手写段落）。豁免行按整行精确匹配——行内引用、代码围栏、引用块与 HTML 注释块中的文法字样不构成豁免，整行按字节级精确匹配：容忍行尾空白与 CR，行首空白不容忍（保护缩进排除意图）；每次免确认提交的回报中强制披露命中的文件:行与该行原文。免确认类建议带版本号（防升级后旧豁免静默生效）；存量 legacy 键由适配档案 `legacy_exemption_keys` 登记，按全字面精确匹配用户全局文件整行，不参与现行文法解析，命中时在报告标注 legacy；含占位符（如 `<版本号>`）的登记键为**非功能性式样记录**——整行精确匹配下永不命中、不产生豁免效力，档案如需启用 legacy 豁免须登记用户全局文件中实际存在的完整整行；legacy 键不支持版本钉扎，建议尽早迁移为现行文法（带版本号）。授权只免确认，**不免门禁、限流、Draft 规则与首次 fork 的明确同意**；「关闭」只记录来源①条目、不派发，接受用户任何直接指令。
 - **身份告知**：commit 作者为 noreply bot 身份（协议要求覆盖），noreply 邮箱采用 GitHub ID 前缀形态 `<user-id>+<login>@users.noreply.github.com`（无 ID 前缀形态禁用——其归属目标是无关账号 github.com/noreply）；fork 会在用户账号下建立公开仓库——报告中必须写明。
-- **提交命令**：所有 gh 调用显式指向目标仓库（`-R "$R"`；`gh repo view` 用位置参数）；有写权限则推上游工作分支建 PR，无写权限经同意后 fork（在 `$REPO` 子 shell 内执行）。
+- **提交命令**：所有 gh 调用显式指向目标仓库（`-R "$R"`；`gh repo view` 用位置参数）；有写权限则推上游工作分支建 PR，无写权限经同意后 fork（在 `$REPO` 子 shell 内执行）：
+
+```bash
+# 无写权限 fork 配方（经用户明确同意后——fork 会在用户账号下建立公开仓库；先执行 §3 变量声明与断言）
+OWNER=$(gh api user -q .login)
+gh repo fork "$R" --remote=false  # 建 fork，不动本地 remote
+git -C "$REPO" remote add fork "https://github.com/$OWNER/${R#*/}.git"
+[ "$(git -C "$REPO" branch --show-current)" = "$B" ] && git -C "$REPO" push -u fork "$B:$B"
+gh pr create -R "$R" --base "$D" --head "$OWNER:$B" --title "<type>(<Topic>): 中文描述" --body-file "$W/pr/$S.md"
+```
 
 ```bash
 # 先执行 §3 变量声明与断言；需要 Draft 时在 gh pr create 末尾追加 --draft
@@ -222,7 +232,7 @@ review_focus: <G2 比选/盲评中 Verifier 标注的最弱一环，或「无」
 -->
 ````
 
-PR 创建后，CHANGELOG PR 号回填由主 Agent 以 rsi-reviewer noreply 身份追加 commit，标题式样 `chore(changelog): 回填 PR 号（#N）;`（正文含签名块）。
+PR 创建后，CHANGELOG PR 号回填由主 Agent 以 rsi-reviewer noreply 身份追加 commit，标题式样 `chore(changelog): 回填 PR 号（#N）;`（正文含签名块）；回填与转写并入同一时序链——PR 创建 → 仓内 ledger 转写（如适用）→ 回填 commit → 派发 Context-Reviewer（共用同一 `$REPO` clone，防并发 push 非快进拒绝与 L3 检查误报）。
 
 - **非阻塞语义**：Context-Reviewer 不等待、不阻塞用户；其发现的**新问题不自动开新 RSI 回路**（防递归风暴）——只能作为 PR 评论披露或登记下一批条目，受限流背压管辖。
 - **状态对接**：backlog「结论」行追加 `submitted · PR #N · ctx-review: 可合并|修后可合并|需人工裁决（F×n 修×n 裁×n）`；跨会话承接：`submitted` 条目若 PR 仍 open 且 PR 页无回执 comment → 下次会话补跑；已合并或关闭未合并的按 [§1](#1-流程总览) 转移，不补跑。
@@ -231,27 +241,27 @@ PR 创建后，CHANGELOG PR 号回填由主 Agent 以 rsi-reviewer noreply 身�
 
 ## 9. 失败出路
 
-| 情形 | 出路 |
+| 情形 | 出路（条目状态落点） |
 | :--- | :--- |
-| G1 不成立（无法复现 / 环境特异） | ledger 记「不成立 + 证据」，闭环 |
-| G2 触碰不变量且无推翻论证 | **升级为用户决策项**（RSI 无权单方面推翻历史制度） |
-| G2 收益不足 | 降级「待议」，攒够证据再启 |
-| G3 破坏不变量且无论证 | 阻断；唯一出路 = 显式权衡 + 全量同步 + 用户批准，三条件齐备 |
+| G1 不成立（无法复现 / 环境特异） | 转 `rejected`：ledger 记「不成立 + 证据」，闭环 |
+| G2 触碰不变量且无推翻论证 | 保持 `captured` 附注记「升级为用户决策项」（RSI 无权单方面推翻历史制度），用户裁定后再派发 |
+| G2 收益不足 | 保持 `captured` 附注记「待议：攒够证据再启」——不进 `rejected`（拒绝记忆只管辖缺陷不成立与上游拒绝，收益不足属时机问题） |
+| G3 破坏不变量且无论证 | 阻断；唯一出路 = 显式权衡 + 全量同步 + 用户批准，三条件齐备；批准前条目保持 `captured` 附注记 |
 | Steward 修复 2 轮门禁仍不过 | `rejected`，丢弃分支，ledger 记死因（防下一轮重复踩坑） |
-| Context-Reviewer 第 2 轮仍有必须修 Finding | 停止，全部转「需人工裁决」，终态三态如实标注 |
+| Context-Reviewer 第 2 轮仍有必须修 Finding | 停止，全部转「需人工裁决」，终态三态如实标注；条目状态随 PR 审阅摘要对接 |
 
 ## 10. 降级矩阵
 
 | 条件 | 行为 |
 | :--- | :--- |
-| 无 Subagent 能力 | 交付后按角色隔离顺序执行，Verifier 从磁盘重读 `git diff`，T2/T3 仅 Draft PR；Context-Reviewer 由主 Agent 顺序执行并标注「冷启动自审，未经独立上下文复审」 |
+| 无 Subagent 能力 | 交付后按角色隔离顺序执行，Verifier 从磁盘重读 `git diff`，T2/T3 仅 Draft PR；Context-Reviewer 由主 Agent 顺序执行并标注「冷启动自审，未经独立上下文复审」；G2(b) 盲评结构性不可执行时以顺序自评替代并在回执标注「未经独立盲评」，仍仅 Draft PR |
 | 无后台能力 | 交付后在前台执行 |
 | 无网络 | 只捕获入 `backlog.md`，标记「待联网」，跨会话承接 |
 | 无 `gh` 或未认证 | G0a 改为报告中提示用户自查；`git clone` 继续；patch 与 PR 草稿照常产出交用户手动提交（交接块同 §8，由主 Agent 于交付时即落盘 `$W/pr/$S.review-request.md`，不必等待 PR 创建）；PR 由用户手动创建后（判定来源仅限用户第一人称告知或提供 PR 链接，落盘文件不构成该信号），主 Agent 依落盘块派发 Context-Reviewer（无 gh 时回执落 `$W/pr/$S-ctx.md` 由主 Agent 转述（对齐 context-reviewer.md §8 既有产物名））；绝不代装 gh、绝不索要 token |
 | 无 git 可用 | 条目照记 backlog，clone / patch / Steward 派发延后，报告注明宿主无 git |
 | 项目目录 `.temp` 不可写 | 不落盘，主 Agent 在最终报告以全字段呈现条目并提示用户手动记录 |
 | 统一 rsi skill 未安装 / 不可调用 | 调用方（注册仓 Hook）直接拉取本仓 `references/protocol.md` 全文，按协议文本派发 Steward 与 Verifier；无法读取（离线）时只捕获入 backlog 标「待联网」，派发延后 |
-| 无写权限 | 报告中声明将 fork，经同意后 fork 并推送 |
+| 无写权限 | 报告中声明将 fork，经同意后按 [§7](#7-确认与提交) fork 配方推送 |
 | 用户拒绝 | `declined`，保留 patch，不再追问 |
 | 背压触发 | 补丁完成标 `ready`，只报告不推送 |
 | 授权为「关闭」 | 只记录来源①条目，不派发 |
@@ -259,7 +269,7 @@ PR 创建后，CHANGELOG PR 号回填由主 Agent 以 rsi-reviewer noreply 身�
 
 ## 11. PR 模板
 
-标题按目标仓 `commit_convention` 式样（commit message 末尾按仓惯例加 `;`，仅含标题行与可选 noreply 署名，不写个人邮箱）；正文经 `--body-file` 传入：
+commit message 首行按目标仓 `commit_convention` 式样（末尾按仓惯例加 `;`）；provenance 与授权例外标注一律放正文首行、不占标题行（[§4](#4-派发与编排) 授权例外与 context-reviewer §5 审阅修复同一口径）；正文自由文本不写个人邮箱；署名 trailer（`Co-Authored-By` / `Signed-off-by` 等）归 [§5 G4a 豁免②](#5-核验门禁)管辖——对贡献者的如实标注而非回路泄漏，豁免时优先 noreply 形态；正文经 `--body-file` 传入：
 
 ```markdown
 ## 问题
