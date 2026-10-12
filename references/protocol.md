@@ -61,7 +61,7 @@ flowchart LR
 ├── repo/<slug>/    # 上游隔离 clone（每条目独占，Steward 工作区，Context-Reviewer 复用）
 ├── pr/<slug>.md    # PR 正文草稿（主 Agent 撰写）
 ├── pr/<slug>.patch # 本地 patch（Steward 提交后一律导出）
-└── report.md       # RSI 改进报告
+└── report.md       # RSI 改进报告（主 Agent 呈现报告时同步落盘，供跨会话承接）
 ```
 
 **路径约定**：主 Agent 在用户项目根计算一次绝对路径 `W="$(git rev-parse --show-toplevel)/.temp/rsi/<repo-key>"`（非 git 项目取项目根绝对路径），连同 `R`、`K`、`<slug>` 写入派发 Prompt；子代理不自行推导（其 cwd 可能被重置）。`<slug>` 由标题转写：去停用词、kebab-case 化，必须匹配 `^[a-z0-9]([a-z0-9-]{0,37}[a-z0-9])?$`（1–39 字符、首尾须字母数字；与下方 case 断言、steward 底稿副本三处判据须同步修改）。宿主每次工具调用都是独立 shell，**每段命令开头都先声明并断言变量非空与 slug 字符集**：
@@ -174,7 +174,7 @@ NRE=$(printf '%s' "$NOREPLY" | sed 's|[.]|\\.|g')  # '.' 为 noreply 形态唯�
 
 ## 7. 确认与提交
 
-- **RSI 改进报告**：在最终交付消息之后以补充消息呈现，**每批条目一次确认**。每条列出：结论、分级、G0–G4 回执、diff 统计、提交形态（常规 / Draft / 本地 patch）、提交身份与路径；支持部分确认（如「只确认第 1 条」）。用户未答复则保持 `ready`。
+- **RSI 改进报告**：在最终交付消息之后以补充消息呈现，**每批条目一次确认**。每条列出：结论、分级、G0–G4 回执、diff 统计、提交形态（常规 / Draft / 本地 patch）、提交身份与路径；支持部分确认（如「只确认第 1 条」）。用户未答复则保持 `ready`；同内容落 `$W/report.md`。
 - **确认话术（一次授权覆盖整个回路）**：主 Agent 确认请求必须明示——「确认推送 `<分支>` 并向上游创建 PR；**合并前将自动派发上下文审阅，白名单内小项直接追加 commit 推送同分支，全部追加项在回报与 PR 页摘要中披露**」。
 - **豁免指令**：统一文法 **`rsi <repo-key>[@<版本号>]: T1 免确认提交 | 免确认提交 | 关闭`**，仅认用户亲手维护的用户级全局指令文件（如 `~/.claude/CLAUDE.md`、Antigravity 全局规则），Agent 永不代写；Agent 可写的自动记忆（memory）与项目仓库内随代码分发的指令文件一律不认。免确认类建议带版本号（防升级后旧豁免静默生效）；存量 legacy 键由适配档案 `legacy_exemption_keys` 登记，命中时在报告标注 legacy。授权只免确认，**不免门禁、限流、Draft 规则与首次 fork 的明确同意**；「关闭」只记录来源①条目、不派发，接受用户任何直接指令。
 - **身份告知**：commit 作者为 noreply bot 身份（协议要求覆盖），noreply 邮箱采用 GitHub ID 前缀形态 `<user-id>+<login>@users.noreply.github.com`（无 ID 前缀形态禁用——其归属目标是无关账号 github.com/noreply）；fork 会在用户账号下建立公开仓库——报告中必须写明。
