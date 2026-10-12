@@ -4,6 +4,7 @@ upstream: ThreeFish-AI/review-once
 default_branch: main
 local_path: ~/Documents/projects/aurelius/review-once
 adoption: live
+flipped_at: "ThreeFish-AI/review-once#8 merged 2026-10-11T16:01:49Z"
 skill_entry: SKILL.md
 ledger: docs/.agents/issue.md（仓内 ledger）
 entry_id: RSI-NNN（三位递增，从 ledger 既有最大号顺延）

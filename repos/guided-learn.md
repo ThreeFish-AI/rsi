@@ -4,6 +4,7 @@ upstream: ThreeFish-AI/guided-learn
 default_branch: main
 local_path: ~/Documents/projects/aurelius/guided-learn
 adoption: live
+flipped_at: "ThreeFish-AI/guided-learn#20 merged 2026-10-11T14:19:51Z"
 skill_entry: SKILL.md
 ledger: .temp/rsi/guided-learn/backlog.md
 entry_id: RSI-YYYYMMDD-NN

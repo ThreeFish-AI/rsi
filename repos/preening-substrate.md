@@ -4,6 +4,7 @@ upstream: ThreeFish-AI/preening-substrate
 default_branch: main
 local_path: ~/Documents/projects/aurelius/preening-substrate
 adoption: live
+flipped_at: "ThreeFish-AI/preening-substrate#3 merged 2026-10-11T14:17:53Z"
 skill_entry: SKILL.md
 ledger: .temp/rsi/preening-substrate/backlog.md
 entry_id: RSI-YYYYMMDD-NN
