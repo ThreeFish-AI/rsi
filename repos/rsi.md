@@ -24,5 +24,5 @@ special_channels: 无
 # rsi 适配要点（自举）
 
 - 本仓库是统一机制的宿主，恒为 `adoption: live`；对本协议、子代理底稿、适配档案的改动按语义分级、一律 Draft PR，判据见 [protocol.md §12 自举](../references/protocol.md#12-注册与自举)。
-- 新仓库接入：向本仓提 PR 新增 `repos/<repo-key>.md`（adoption: pending）+ 目标仓薄指针钩子切换 PR；后者合并后本档案系统内该仓置 live，SSOT 原子翻转。
+- 新仓库接入：向本仓提 PR 新增 `repos/<repo-key>.md`（adoption: pending）+ 目标仓薄指针 Hook 切换 PR；后者合并后本档案系统内该仓置 live，SSOT 原子翻转。
 - Context-Reviewer 回路发现的「本协议可改进」类 Finding，只能登记新条目走下一轮 Draft PR（分级按协议 §12），不得当场自改（递归防护）。

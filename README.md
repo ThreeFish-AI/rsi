@@ -6,7 +6,7 @@
 
 ## 为什么
 
-此前 5 个仓库（5 个非自举上游仓，rsi 自身除外；现六注册仓已全部 live）各自实现了 RSI 机制：`preening-substrate` 与 `guided-learn` 的 rsi-hook 协议是孪生拷贝（机制改进需逐仓修改的 Split-Brain），`review-once` 的 ledger 无运行时钩子（沉淀全靠人工显式驱动），且每次沉淀后需人工切到目标仓上下文反复 Review-Fix。本仓库把**机制**收归一处（协议、门禁、三份子代理底稿、5+1 适配档案），把**仓内事实**留在各仓（不变量清单、ledger、特殊通道），并以 Context-Reviewer 回路把 PR 后的第一轮上下文审阅自动化。
+此前 5 个仓库（5 个非自举上游仓，rsi 自身除外；现六注册仓已全部 live）各自实现了 RSI 机制：`preening-substrate` 与 `guided-learn` 的 rsi-hook 协议是孪生拷贝（机制改进需逐仓修改的 Split-Brain），`review-once` 的 ledger 无运行时 Hook（沉淀全靠人工显式驱动），且每次沉淀后需人工切到目标仓上下文反复 Review-Fix。本仓库把**机制**收归一处（协议、门禁、三份子代理底稿、5+1 适配档案），把**仓内事实**留在各仓（不变量清单、ledger、特殊通道），并以 Context-Reviewer 回路把 PR 后的第一轮上下文审阅自动化。
 
 ## 仓库结构
 
@@ -52,4 +52,4 @@ ln -sfn ~/projects/rsi ~/.agents/skills/rsi   # Codex 等其他 agent CLI
 
 ## 约束
 
-零可执行运行时代码（协议级钩子，宿主通用）；G 门禁只增不减；适配档案只放指针与参数，不变量清单复述即违规；MIT License。
+零可执行运行时代码（协议级 Hook，宿主通用）；G 门禁只增不减；适配档案只放指针与参数，不变量清单复述即违规；MIT License。
