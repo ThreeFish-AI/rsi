@@ -184,6 +184,4 @@ Fingerprint 去重：`normalized path + 失败模式 + 触发场景`，行号只
 
 ## 参考（IEEE）
 
-[1] N. Shinn, F. Cassano, A. Gopinath, K. Narasimhan, and S. Yao, "Reflexion: Language agents with verbal reinforcement learning," in *Adv. Neural Inf. Process. Syst. (NeurIPS)*, 2023. [Online]. Available: https://arxiv.org/abs/2303.11366
-
-[2] M. Strathern, "'Improving ratings': Audit in the British University system," *Eur. Rev.*, vol. 5, no. 3, pp. 305–321, 1997, doi: 10.1017/S1062798700002660.
+文献引用以 [protocol.md 参考（IEEE）](protocol.md#参考ieee) 为唯一事实源，本文不另维护文献表。

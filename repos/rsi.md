@@ -4,7 +4,7 @@ upstream: ThreeFish-AI/rsi
 default_branch: main
 local_path: ~/Documents/projects/<本机实际仓目录>
 adoption: live
-flipped_at: "bootstrap（自举，无切换 PR）"
+flipped_at: "bootstrap"
 skill_entry: SKILL.md
 ledger: .temp/rsi/rsi/backlog.md
 entry_id: RSI-YYYYMMDD-NN
