@@ -4,6 +4,7 @@ upstream: ThreeFish-AI/rsi
 default_branch: main
 local_path: ~/Documents/projects/aurelius/rsi
 adoption: live
+flipped_at: "bootstrap（自举，无切换 PR）"
 skill_entry: SKILL.md
 ledger: .temp/rsi/rsi/backlog.md
 entry_id: RSI-YYYYMMDD-NN
