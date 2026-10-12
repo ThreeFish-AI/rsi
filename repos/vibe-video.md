@@ -2,7 +2,7 @@
 key: vibe-video
 upstream: ThreeFish-AI/vibe-video
 default_branch: main
-local_path: ~/Documents/projects/aurelius/vibe-video
+local_path: ~/Documents/projects/<本机实际仓目录>
 adoption: live
 flipped_at: "ThreeFish-AI/vibe-video#43 merged 2026-10-11T14:15:03Z"
 skill_entry: SKILL.md
