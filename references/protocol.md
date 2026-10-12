@@ -73,6 +73,7 @@ flowchart LR
 R=<upstream>; K=<repo-key>; D=<default-branch>; W=<主 Agent 传入的绝对路径>; S=<slug>
 NOREPLY=24806149+ThreeFish-AI@users.noreply.github.com  # 由主 Agent 于派发时供值（各仓值待档案增设字段后可指针化）
 REPO="$W/repo/$S"; B="rsi/$S"; : "${R:?}" "${K:?}" "${D:?}" "${W:?}" "${S:?}" "${NOREPLY:?}"
+export LC_ALL=C  # 固定 collation：case 字符类断言与正则跨宿主/跨 locale 逐字节等价（bash 3.2 + UTF-8 下 [!a-z0-9-] 会误放行大写与变音符）
 [ -d "$W" ] || { echo "ABORT: W 不存在"; exit 1; }
 [ "${#S}" -le 39 ] || { echo "ABORT: slug 超 39 字符"; exit 1; }
 case $S in ''|*[!a-z0-9-]*|*..*|-*|*-) echo "ABORT: 非法 slug"; exit 1;; esac
@@ -138,23 +139,34 @@ Steward 关键步骤（详见底稿）：① **G0a 检索**上游同类 PR / Iss
 
 ```bash
 # 先执行 §3 变量声明与断言
-[ "$(git -C "$REPO" diff --numstat "origin/$D...$B" | wc -l | tr -d ' ')" -gt 0 ] || echo "EMPTY DIFF"
-D_=$(git -C "$REPO" diff -U0 "origin/$D...$B")
-for w in 必须 严禁 绝不 禁止 不得 不可 一律 仅限 严格 强制 铁律 硬约束 门禁 全绿 不放行 未通过; do
+WORDS="必须 严禁 绝不 禁止 不得 不可 一律 仅限 严格 强制 铁律 硬约束 门禁 全绿 不放行 未通过 须 永不"
+[ "$(git -C "$REPO" -c color.ui=never diff --numstat "origin/$D...$B" | wc -l | tr -d ' ')" -gt 0 ] || echo "EMPTY DIFF"
+D_=$(git -C "$REPO" -c color.ui=never diff -U0 "origin/$D...$B"); DF=$(git -C "$REPO" -c color.ui=never diff --name-only "origin/$D...$B")
+for w in $WORDS; do
   del=$(printf '%s\n' "$D_" | grep -E '^-' | grep -vE '^--- (a/|/dev/null)' | grep -oF -- "$w" | wc -l | tr -d ' ')
-  add=$(printf '%s\n' "$D_" | grep -E '^\+' | grep -vE '^\+\+\+ ' | grep -oF -- "$w" | wc -l | tr -d ' ')
+  add=$(printf '%s\n' "$D_" | grep -E '^\+' | grep -vE '^\+\+\+ (b/|/dev/null)' | grep -oF -- "$w" | wc -l | tr -d ' ')
   if [ "$del" -gt "$add" ]; then echo "LOSS $w: -$del +$add"; fi
 done
+# 按文件复核防跨文件对冲：整体守恒不豁免单文件净削减（如协议侧删约束词、CHANGELOG 叙事行补回）；按空白分词，注册仓均为 ASCII 无空格命名
+for f in $DF; do
+  F_=$(git -C "$REPO" -c color.ui=never diff -U0 -- "$f")
+  for w in $WORDS; do
+    fd=$(printf '%s\n' "$F_" | grep -E '^-' | grep -vE '^--- (a/|/dev/null)' | grep -oF -- "$w" | wc -l | tr -d ' ')
+    fa=$(printf '%s\n' "$F_" | grep -E '^\+' | grep -vE '^\+\+\+ (b/|/dev/null)' | grep -oF -- "$w" | wc -l | tr -d ' ')
+    if [ "$fd" -gt "$fa" ]; then echo "LOSS $f $w: -$fd +$fa"; fi
+  done
+done
 NRE=$(printf '%s' "$NOREPLY" | sed 's|[.]|\\.|g')  # '.' 为 noreply 形态唯一 BRE 元字符，转义防近形态误剥
-{ git -C "$REPO" diff "origin/$D...$B" | grep -E '^\+' | grep -vE '^\+\+\+ '
-  git -C "$REPO" log "origin/$D..$B" --format=%B; } \
+{ git -C "$REPO" -c color.ui=never --no-ext-diff diff "origin/$D...$B" | grep -E '^\+' | grep -vE '^\+\+\+ (b/|/dev/null)'
+  git -C "$REPO" -c color.ui=never log "origin/$D..$B" --format=%B; } \
   | sed -e ":a" -e "s|\([^[:alnum:]._%+-]\)$NRE\([^[:alnum:]._%+-]\)|\1\2|g" -e "ta" \
         -e "s|^$NRE\([^[:alnum:]._%+-]\)|\1|" -e "s|\([^[:alnum:]._%+-]\)$NRE\$|\1|" -e "s|^$NRE\$||" \
-  | grep -E '/Users/|/home/|[A-Za-z]:\\Users|[[:alnum:]._%+-]+@[[:alnum:].-]+\.[a-z]{2,}|gh[pousr]_[[:alnum:]]{20,}|github_pat_|sk-[[:alnum:]_-]{20,}|AKIA[0-9A-Z]{16}|BEGIN [A-Z ]*PRIVATE KEY'
-# 上述 sed 四段式仅用 POSIX BRE（捕获组/否定字符类/^$ 锚/:a-ta 循环），BSD 与 GNU sed 均可运行；仅剥独立成 token 的 noreply 地址
+  | grep -E '/Users/|/home/|[A-Za-z]:\\Users|[[:alnum:]._%+-]+@[[:alnum:].-]+\.[a-zA-Z]{2,}|gh[pousr]_[[:alnum:]]{20,}|github_pat_|sk-[[:alnum:]_-]{20,}|AKIA[0-9A-Z]{16}|BEGIN [A-Z ]*PRIVATE KEY'
+# 上述 sed 四段式仅用 POSIX BRE（捕获组/否定字符类/^$ 锚/:a-ta 循环），BSD 与 GNU sed 均可运行；仅剥独立成 token 的 noreply 地址；
+# git 全程 -c color.ui=never（防 ANSI 色码吃掉 +/- 行首致扫描假绿）并 --no-ext-diff（防外部 diff 驱动改写输出）；行头过滤假定标准 a/ b/ 前缀（diff.noprefix/mnemonicPrefix 定制者须先归一）
 ```
 
-**反刷分原则**：任一硬约束词在 diff 中按词计数净减少（删除多于新增），默认拒绝或升级 T3 [1][4]；计数守恒只是必要条件，Verifier 仍须逐条审阅被改写的硬约束句。
+**反刷分原则**：任一硬约束词在 diff 中按词计数净减少（全局或任一单文件内删除多于新增），默认拒绝或升级 T3 [1][4]；计数守恒只是必要条件，Verifier 仍须逐条审阅被改写的硬约束句。
 
 **SSOT 整体迁移对账豁免**：协议或规约正文整体迁出 / 迁入注册仓库的 T3（如仓内协议整替为指针 stub），del 侧硬约束词可与接收仓对应 add 侧对账——Verifier 以同一脚本在接收仓对应文本上统计 add 侧词数，两侧合计不净减即视为守恒；「接收仓对应文本」的测量面 = 迁移内容实际落入的接收文件集合的全部新增行（以接收仓骨架后首个含迁移内容的 PR 为界）；增量迁移批次（第二批及以后）：测量面 = 该批迁移实际落入文件集合并入累计测量面，界桩随批前移，判定按累计对账；累计基数为**各迁移批次 PR 端点区间内新增行的词计数**（非整个 [Unreleased] 区间——混入非迁移词会使基数虚增）；核验回执须注明迁移对端仓、两侧统计数字与脚本输出，并双口径披露：单协议文件口径与全部接收文件口径——判定以测量面口径为准；窄口径净减属孪生合并措辞收敛，须附逐词对账表佐证无语义丢失。未做对账的整文件删除仍按反刷分原则默认拒绝。
 
