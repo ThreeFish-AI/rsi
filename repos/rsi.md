@@ -2,7 +2,7 @@
 key: rsi
 upstream: ThreeFish-AI/rsi
 default_branch: main
-local_path: ~/Documents/projects/aurelius/rsi
+local_path: ~/Documents/projects/<本机实际仓目录>
 adoption: live
 flipped_at: "bootstrap（自举，无切换 PR）"
 skill_entry: SKILL.md

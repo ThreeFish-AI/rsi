@@ -210,6 +210,8 @@ review_focus: <G2 比选/盲评中 Verifier 标注的最弱一环，或「无」
 -->
 ````
 
+PR 创建后，CHANGELOG PR 号回填由主 Agent 以 rsi-reviewer noreply 身份追加 commit，标题式样 `chore(changelog): 回填 PR 号（#N）;`（正文含签名块）。
+
 - **非阻塞语义**：Context-Reviewer 不等待、不阻塞用户；其发现的**新问题不自动开新 RSI 回路**（防递归风暴）——只能作为 PR 评论披露或登记下一批条目，受限流背压管辖。
 - **状态对接**：backlog「结论」行追加 `submitted · PR #N · ctx-review: 可合并|修后可合并|需人工裁决（F×n 修×n 裁×n）`；跨会话承接：`submitted` 条目若 PR 仍 open 且 PR 页无回执 comment → 下次会话补跑；已合并或关闭未合并的按 [§1](#1-流程总览) 转移，不补跑。
 - **回执更新**：PR 追加 commit 后重跑复验的回执更新机制（编辑同一 comment、版本号递增，不另发新评论）以 [context-reviewer.md §8](context-reviewer.md#8-pr-页摘要模板) 为准。
@@ -290,7 +292,7 @@ PR 正文与 commit message 遵循目标仓表达规范（由适配档案指针�
 
 | 字段 | 含义 |
 | :--- | :--- |
-| `key` / `upstream` / `default_branch` / `local_path` | repo-key（豁免键与 `.temp/rsi/<key>/` 用）、上游仓库、默认分支、本机源码仓路径（提示性） |
+| `key` / `upstream` / `default_branch` / `local_path` | repo-key（豁免键与 `.temp/rsi/<key>/` 用）、上游仓库、默认分支、本机源码仓路径（提示性）（脱敏占位——公开仓不落本机实际路径，安装时自行替换） |
 | `adoption` | `pending` \| `live`，切换 PR 合并后置 live |
 | `flipped_at` | 切换 PR 链接与合并时间（式样 `<owner>/<repo>#<N> merged <ISO8601Z>`；rsi 自举仓为 `bootstrap`）；由 flip PR 填写，未切换仓为空 |
 | `skill_entry` | 规约入口文件（skill 仓为 SKILL.md，规范仓为 AGENTS.md） |
