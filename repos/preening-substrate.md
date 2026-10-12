@@ -2,7 +2,7 @@
 key: preening-substrate
 upstream: ThreeFish-AI/preening-substrate
 default_branch: main
-local_path: ~/Documents/projects/aurelius/preening-substrate
+local_path: ~/Documents/projects/<本机实际仓目录>
 adoption: live
 flipped_at: "ThreeFish-AI/preening-substrate#3 merged 2026-10-11T14:17:53Z"
 skill_entry: SKILL.md

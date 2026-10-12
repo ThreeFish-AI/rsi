@@ -200,7 +200,7 @@ gh repo view "$R" --json viewerPermission -q .viewerPermission  # ADMIN / MAINTA
 
 PR 创建成功（`submitted`）后，主 Agent 立即后台派发 Context-Reviewer 子代理（仓内 ledger 型仓库须先完成 §3 转写 commit，时序：PR 创建 → 转写 → 派发；fresh context，复用 Steward 的 `$REPO` 隔离 clone），执行 PR 后上下文审阅回路：八镜头审阅（跨文件一致性 / 词汇对齐 / 索引 ledger 同步 / 合并后时效 / 表达规范 / 锚点有效性 / 不变量冲突——只报不改 / 同批演进纪律）、白名单内修复、轻量复验（G1' 锚点 + G3' 反刷分 + G4a' 隐私）、PR 页摘要回执（三态：可合并 | 修后可合并 | 需人工裁决）。完整协议见 [context-reviewer.md](context-reviewer.md)。
 
-- **交接块**：`gh pr create` 成功后，主 Agent 将机器可读交接块追加至 PR 描述尾部（同内容落 `$W/pr/$S.review-request.md`，供跨会话与无 GitHub 权限宿主消费）：
+- **交接块**：`gh pr create` 成功后，主 Agent 将机器可读交接块追加至 PR 描述尾部（同内容落 `$W/pr/$S.review-request.md`，供跨会话与无 GitHub 权限宿主消费）：PR 创建后，CHANGELOG PR 号回填由主 Agent 以 rsi-reviewer noreply 身份追加 commit，标题式样 `chore(changelog): 回填 PR 号（#N）;`（正文含签名块）
 
 ````markdown
 <!-- rsi:context-review-request
@@ -290,7 +290,7 @@ PR 正文与 commit message 遵循目标仓表达规范（由适配档案指针�
 
 | 字段 | 含义 |
 | :--- | :--- |
-| `key` / `upstream` / `default_branch` / `local_path` | repo-key（豁免键与 `.temp/rsi/<key>/` 用）、上游仓库、默认分支、本机源码仓路径（提示性） |
+| `key` / `upstream` / `default_branch` / `local_path` | repo-key（豁免键与 `.temp/rsi/<key>/` 用）、上游仓库、默认分支、本机源码仓路径（提示性）（脱敏占位——公开仓不落本机实际路径，安装时自行替换） |
 | `adoption` | `pending` \| `live`，切换 PR 合并后置 live |
 | `flipped_at` | 切换 PR 链接与合并时间；由 flip PR 填写，未切换仓为空 |
 | `skill_entry` | 规约入口文件（skill 仓为 SKILL.md，规范仓为 AGENTS.md） |

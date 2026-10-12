@@ -2,7 +2,7 @@
 key: guided-learn
 upstream: ThreeFish-AI/guided-learn
 default_branch: main
-local_path: ~/Documents/projects/aurelius/guided-learn
+local_path: ~/Documents/projects/<本机实际仓目录>
 adoption: live
 flipped_at: "ThreeFish-AI/guided-learn#20 merged 2026-10-11T14:19:51Z"
 skill_entry: SKILL.md

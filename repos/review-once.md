@@ -2,7 +2,7 @@
 key: review-once
 upstream: ThreeFish-AI/review-once
 default_branch: main
-local_path: ~/Documents/projects/aurelius/review-once
+local_path: ~/Documents/projects/<本机实际仓目录>
 adoption: live
 flipped_at: "ThreeFish-AI/review-once#8 merged 2026-10-11T16:01:49Z"
 skill_entry: SKILL.md
