@@ -21,7 +21,7 @@ flowchart LR
     D --> S["Steward Subagent<br/>G0 去重 · 隔离 clone · 规约溯源 · 最小修改"]
     S --> V["Verifier Subagent<br/>G1 属实 · G2 方案与收益 · G3 非回归 · G4 隐私"]
     V -- "G0~G4 全绿" --> A["RSI 报告一次确认"]
-    A -- "用户授权 / T1 豁免" --> P["推送 rsi 分支 &amp; 创建 PR"]
+    A -- "用户授权 / 豁免指令" --> P["推送 rsi 分支 &amp; 创建 PR"]
     P --> X["Context-Reviewer Subagent<br/>八镜头上下文审阅 · 白名单内修复 · 轻量复验"]
     X --> M["PR 页摘要回执 + 主会话回报"]
     M --> H["人工决策合并"]
