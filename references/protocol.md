@@ -149,7 +149,7 @@ for w in 必须 严禁 绝不 禁止 不得 不可 一律 仅限 严格 强制 �
 done
 # 按文件复核防跨文件对冲：整体守恒不豁免单文件净削减（如协议侧删约束词、CHANGELOG 叙事行补回）；词表用字面量 for 列表（zsh 不做变量 word splitting，$WORDS 整串迭代会静默假绿）；两处 git 钉 core.quotePath=false（非 ASCII 文件名默认八进制引注形态会令 pathspec 匹配空、该文件被静默跳过）
 git -C "$REPO" -c color.ui=never -c core.quotePath=false diff --name-only "origin/$D...$B" | while IFS= read -r f; do
-  F_=$(git -C "$REPO" -c color.ui=never -c core.quotePath=false diff -U0 --no-ext-diff "origin/$D...$B" -- "$f")
+  F_=$(git -C "$REPO" -c color.ui=never -c core.quotePath=false diff -U0 --no-ext-diff "origin/$D...$B" -- ":(literal)$f")
   for w in 必须 严禁 绝不 禁止 不得 不可 一律 仅限 严格 强制 铁律 硬约束 门禁 全绿 不放行 未通过 须 永不; do
     fd=$(printf '%s\n' "$F_" | grep -E '^-' | grep -vE '^--- (a/|/dev/null)' | grep -oF -- "$w" | wc -l | tr -d ' ')
     fa=$(printf '%s\n' "$F_" | grep -E '^\+' | grep -vE '^\+\+\+ (b/|/dev/null)' | grep -oF -- "$w" | wc -l | tr -d ' ')
@@ -232,7 +232,7 @@ review_focus: <G2 比选/盲评中 Verifier 标注的最弱一环，或「无」
 -->
 ````
 
-PR 创建后，CHANGELOG PR 号回填由主 Agent 以 rsi-reviewer noreply 身份追加 commit，标题式样 `chore(changelog): 回填 PR 号（#N）;`（正文含签名块）；回填与转写并入同一时序链——PR 创建 → 仓内 ledger 转写（如适用）→ 回填 commit → 派发 Context-Reviewer（共用同一 `$REPO` clone，防并发 push 非快进拒绝与 L3 检查误报）。
+PR 创建后，CHANGELOG PR 号回填由主 Agent 以 rsi-reviewer noreply 身份追加 commit，标题式样 `chore(changelog): 回填 PR 号（#N）;`（正文含签名块）；回填与转写并入同一时序链——PR 创建 → 仓内 ledger 转写（如适用）→ 回填 commit（如适用——适配档案登记 CHANGELOG 号登记义务者）→ 派发 Context-Reviewer（共用同一 `$REPO` clone，防并发 push 非快进拒绝与 L3 检查误报）。
 
 - **非阻塞语义**：Context-Reviewer 不等待、不阻塞用户；其发现的**新问题不自动开新 RSI 回路**（防递归风暴）——只能作为 PR 评论披露或登记下一批条目，受限流背压管辖。
 - **状态对接**：backlog「结论」行追加 `submitted · PR #N · ctx-review: 可合并|修后可合并|需人工裁决（F×n 修×n 裁×n）`；跨会话承接：`submitted` 条目若 PR 仍 open 且 PR 页无回执 comment → 下次会话补跑；已合并或关闭未合并的按 [§1](#1-流程总览) 转移，不补跑。
