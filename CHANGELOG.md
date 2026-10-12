@@ -8,6 +8,7 @@
 - 统一 RSI 经验沉淀协议 v0.1 首次落地：G0–G4 门禁、六态状态机、限流背压与降级矩阵（references/protocol.md）；Steward / Verifier / Context-Reviewer 三份子代理底稿；5+1 仓库适配档案；SKILL.md 薄入口与触发正负例评测（#1）。
 
 ### 修复
+- 注册状态 flip 补登：agents.md（#2）、preening-substrate / guided-learn / vibe-video（#3）、review-once（#6）依次置 `live`——`adoption`、SKILL 路由表与 README 注册表同步翻转（#2、#3、#6）。
 - 评审遗留 T1 机械修正集：slug 判据统一（正则/case/底稿三处同步）、无 gh 降级 clone 补目标目录（协议侧补齐）、降级矩阵补两行、安装预处理、backlog 模板结论行扩字段、四道门残留表述清理（#4）。
 - 执法判据加固：G4a noreply 剔除改精确字面量（封闭机密洗白通道）、不可信来源补 PR/Issue 标题与 comment、反刷分逐句审阅入 Verifier 必查清单、NOREPLY 纳入 §3 断言链（#5）。
 - 执法判据收尾：G4a noreply 剥除改独立成 token 判据并转义 `.`（封闭子串包含洗白与近形态误剥，POSIX BRE 四段式 BSD/GNU 均可运行）、verifier G3 清单补缺陷类回归测试核查项、§3 NOREPLY 供值注释校准为主 Agent 派发时供值（#7）。
@@ -24,3 +25,4 @@
 - flipped_at 一致性判据入勾验清单、§3 树-落盘物双向差集对账配方：附录B flipped_at 行补值式样（`<owner>/<repo>#<N> merged <ISO8601Z>`；rsi 自举仓为 `bootstrap`）、verifier G1 补档案一致性勾验（adoption=live ⇔ flipped_at 非空，pending ⇔ 空）与 $W/ 路径形态集合对 §3 目录树双向差集对账（新落盘物只定义不入树即 FAIL）（#18）。
 - §7 授权话术与 §4 例外授权通道分离裁定：确认话术明示覆盖面仅限白名单内修复与回路常规动作，白名单外动作的例外授权独立依 §4 条款执行（单独披露与 commit 前缀标注，不在本话术扩面）——两通道分离，防确认疲劳稀释例外可见性（#19）。
 - 六仓 privacy_lexicon 补本机绝对/家目录路径形态模式（/Users/、/home/、~/ 前缀——G4a 已有通用扫描，此列补 G4b 词表层对目标仓特定路径的覆盖；#17 ctx-review F5 词表层根因封口）（#20）。
+- 全量评审修复批（review-once 授权，三路独立评审 48 缺陷归并为 14 簇）：verifier 执法面（G4a 裸 diff 假绿、G1 判据回注协议 §5、落盘物对账白名单化、非文档文件清点）、扫描脚本加固（邮箱 TLD 大小写、`+++` 行头精确过滤、color.ui 钉扎、LC_ALL=C、词表 16→18、按文件 LOSS 防对冲）、协议断链闭合（agents.md 档案名派生、§9 出路六态落点、fork 配方、回填时序、盲评降级、树补残留行、slug 五处点名）、角色边界与输入契约（$W/pr 写边界、NOREPLY 供值、$B 覆盖顺序、改动面白名单承接）、G2(a) 比选链闭合、ctx 底稿流程自洽（轮次语义、新实例派发主体、白名单取值落点、重建配方、越界回滚、BASE 刷新）、G4b 词表口径显式化与豁免通道（RSI-20261012-50）、豁免文法版本号比对对象、事实与引用修正（README 断言、档案悬空指针、孤儿文献、bootstrap 式样、编辑残留）、术语对齐（Hook/ledger/Prompt/修复白名单消歧）、evals 例句上游词汇锚定（#N 待回填）。
