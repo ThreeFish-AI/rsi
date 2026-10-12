@@ -15,7 +15,7 @@ commit_convention: "fix|feat|docs|refactor(<Topic>): 中文描述;"
 pr_convention: 正文按统一 PR 模板六节（含去重与关联）；base=main
 invariants: 重构铁律 1–10 与 SSOT 指针索引（SKILL.md）；name: preening-substrate 与 negentropy 预设调用契约零变更；六阶段单向演进与阶段验收总表；双代理对抗核验（SKILL.md §双代理对抗核验）；零运行时外部依赖
 machine_checks: 无（以逐条人工勾验清单替代）
-legacy_exemption_keys: ["preening-substrate RSI <版本号>: T1 免确认提交"]  # <版本号> 为式样占位：按用户全局文件中的既有整行全字面精确匹配（协议 §7），不参与现行文法解析
+legacy_exemption_keys: ["preening-substrate RSI <版本号>: T1 免确认提交"]  # 式样记录，非功能键；启用须登记实际整行（协议 §7）
 degrade_extra: 无
 special_channels: 无
 ---
