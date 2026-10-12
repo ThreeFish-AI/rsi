@@ -122,7 +122,7 @@ case $S in ''|*[!a-z0-9-]*|*..*|-*|*-) echo "ABORT: 非法 slug"; exit 1;; esac
 | :--- | :--- | :--- | :--- | :--- |
 | **Steward** | fresh | 读写仅限 `$REPO`（隔离 clone）+ `$W/pr/<slug>.patch` 自产 patch | G0 去重、复现、规约溯源、最小改动、noreply 提交、patch 导出 | [steward.md](steward.md) |
 | **Verifier** | fresh | 只读 | G1–G4a 核验并出具回执；不做任何修复 | [verifier.md](verifier.md) |
-| **Context-Reviewer** | fresh | 读写仅限 `$REPO` + `$W/pr/<slug>-ctx*` 回执与 patch + PR comment | PR 后八镜头上下文审阅、修复白名单内小修、轻量复验、PR 页摘要 | [context-reviewer.md](context-reviewer.md) |
+| **Context-Reviewer** | fresh | 读写仅限 `$REPO` + `$W/pr/<slug>-ctx.md`/`$W/pr/<slug>-ctx.patch` 回执与 patch + PR comment | PR 后八镜头上下文审阅、修复白名单内小修、轻量复验、PR 页摘要 | [context-reviewer.md](context-reviewer.md) |
 
 Steward 关键步骤（详见底稿）：① **G0a 检索**上游同类 PR / Issue（clone 前）；② **隔离 clone** `gh repo clone "$R" "$REPO"`（无 `gh` 时 `git clone "https://github.com/$R.git" "$REPO"`）并按 `branch_style` 创建 `$B`（`--no-track`）；**不复用、不改动已安装目录**；`$REPO` 已存在（中断残留）时移至 `$REPO.<时间戳>` 后重新 clone（不删除）；条目终态（结案/`rejected`/`declined`）后对应 clone 与全部时间戳残留目录，由主 Agent 经用户确认可清理（declined 条目 patch 仍按 §10 保留）；未经确认不删除；③ **G0b 核实**：命中 PR 时 fetch 其 diff，修复同一 `文件:锚点` 即同类——open → `superseded`，已关闭未合并 → `rejected`，止于此；④ **复现**：在 `origin/$D` 上复现，无法复现 → `rejected`；⑤ **规约溯源**：`git log -S` 与 `git blame` 查明原规约引入初衷；回退检测：上游已合并 RSI 类分支 PR（按适配档案 `branch_style` 识别，字面 `rsi/*` 对 `feat/rsi-` 等式样漏检）与 blame 比对，若本次在回退它们，升级 T3 并引用原 PR；⑥ **方案比选与最小改动**：按 G2(a) 完成比选（候选、论证最佳、最小干预面、无第二事实源、历史决策溯源）并将比选结论写入回执；只改唯一定义处（SSOT），同步全部指针（链接、表格、结构树）；⑦ **本地提交**：原生 `git commit`（禁用可能自带 push 的宿主提交命令），遵循目标仓 commit 格式；隔离 clone 内一律按本协议命令执行（原生 `git commit`）——宿主/注册仓对用户项目的提交纪律（如 agents.md『一律 `/commit`』）适用于用户项目目录，不约束 `$REPO`；目标仓 pre-commit hooks 在 fresh clone 不激活，机器校验以适配档案 `machine_checks` 为准；**提交身份必须以 noreply 邮箱覆盖**（`git -c user.name=rsi-steward -c user.email="$NOREPLY" commit`）；导出 patch；⑧ **回执**：回传基线 SHA、G0 结论、复现对照、溯源结论、分支与 commit SHA、patch 路径，由主 Agent 回写 backlog。
 
@@ -140,18 +140,17 @@ Steward 关键步骤（详见底稿）：① **G0a 检索**上游同类 PR / Iss
 
 ```bash
 # 先执行 §3 变量声明与断言
-WORDS="必须 严禁 绝不 禁止 不得 不可 一律 仅限 严格 强制 铁律 硬约束 门禁 全绿 不放行 未通过 须 永不"
 [ "$(git -C "$REPO" -c color.ui=never diff --numstat "origin/$D...$B" | wc -l | tr -d ' ')" -gt 0 ] || echo "EMPTY DIFF"
-D_=$(git -C "$REPO" -c color.ui=never diff -U0 --no-ext-diff "origin/$D...$B"); DF=$(git -C "$REPO" -c color.ui=never diff --name-only "origin/$D...$B")
-for w in $WORDS; do
+D_=$(git -C "$REPO" -c color.ui=never diff -U0 --no-ext-diff "origin/$D...$B")
+for w in 必须 严禁 绝不 禁止 不得 不可 一律 仅限 严格 强制 铁律 硬约束 门禁 全绿 不放行 未通过 须 永不; do
   del=$(printf '%s\n' "$D_" | grep -E '^-' | grep -vE '^--- (a/|/dev/null)' | grep -oF -- "$w" | wc -l | tr -d ' ')
   add=$(printf '%s\n' "$D_" | grep -E '^\+' | grep -vE '^\+\+\+ (b/|/dev/null)' | grep -oF -- "$w" | wc -l | tr -d ' ')
   if [ "$del" -gt "$add" ]; then echo "LOSS $w: -$del +$add"; fi
 done
-# 按文件复核防跨文件对冲：整体守恒不豁免单文件净削减（如协议侧删约束词、CHANGELOG 叙事行补回）；按空白分词，注册仓均为 ASCII 无空格命名
-for f in $DF; do
+# 按文件复核防跨文件对冲：整体守恒不豁免单文件净削减（如协议侧删约束词、CHANGELOG 叙事行补回）；词表用字面量 for 列表（zsh 不做变量 word splitting，$WORDS 整串迭代会静默假绿）
+git -C "$REPO" -c color.ui=never diff --name-only "origin/$D...$B" | while IFS= read -r f; do
   F_=$(git -C "$REPO" -c color.ui=never diff -U0 --no-ext-diff "origin/$D...$B" -- "$f")
-  for w in $WORDS; do
+  for w in 必须 严禁 绝不 禁止 不得 不可 一律 仅限 严格 强制 铁律 硬约束 门禁 全绿 不放行 未通过 须 永不; do
     fd=$(printf '%s\n' "$F_" | grep -E '^-' | grep -vE '^--- (a/|/dev/null)' | grep -oF -- "$w" | wc -l | tr -d ' ')
     fa=$(printf '%s\n' "$F_" | grep -E '^\+' | grep -vE '^\+\+\+ (b/|/dev/null)' | grep -oF -- "$w" | wc -l | tr -d ' ')
     if [ "$fd" -gt "$fa" ]; then echo "LOSS $f $w: -$fd +$fa"; fi
@@ -176,11 +175,11 @@ NRE=$(printf '%s' "$NOREPLY" | sed 's|[.]|\\.|g')  # '.' 为 noreply 形态唯�
 ```markdown
 | 门禁 | 结论 | 证据摘要 |
 | :--- | :--- | :--- |
-| G0 预检 | ✅ / ❌ / — | 检索词与命中数；G0b 核实结论 |
+| G0 预检 | ✅ / ❌ / 未跑 / — | 检索词与命中数；G0b 核实结论 |
 | G1 属实与正确性 | ✅ / ❌ / 未跑 | 基线 SHA；修复前后对照；链接检查结果 |
 | G2 方案与收益 | ✅ / ❌ / 未跑 | 比选结论；T1 净增行数 / T2·T3 盲评胜方与理由（是否盲评） |
 | G3 非回归 | ✅ / ❌ / 未跑 | 不变量勾验；反刷分输出；machine_checks 结果 |
-| G4 安全隐私 | ✅ / ❌ / — | G4a 扫描与 URL 清单；G4b 私有词扫描 |
+| G4 安全隐私 | ✅ / ❌ / 未跑 / — | G4a 扫描与 URL 清单；G4b 私有词扫描 |
 ```
 
 ## 6. 限流与背压
