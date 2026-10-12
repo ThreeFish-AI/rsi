@@ -68,7 +68,7 @@ flowchart LR
 
 ```bash
 R=<upstream>; K=<repo-key>; D=<default-branch>; W=<主 Agent 传入的绝对路径>; S=<slug>
-NOREPLY=24806149+ThreeFish-AI@users.noreply.github.com  # 各仓实际值由适配档案/主 Agent 供值
+NOREPLY=24806149+ThreeFish-AI@users.noreply.github.com  # 由主 Agent 于派发时供值（各仓值待档案增设字段后可指针化）
 REPO="$W/repo/$S"; B="rsi/$S"; : "${R:?}" "${K:?}" "${D:?}" "${W:?}" "${S:?}" "${NOREPLY:?}"
 [ -d "$W" ] || { echo "ABORT: W 不存在"; exit 1; }
 [ "${#S}" -le 39 ] || { echo "ABORT: slug 超 39 字符"; exit 1; }
@@ -126,7 +126,7 @@ Steward 关键步骤（详见底稿）：① **G0a 检索**上游同类 PR / Iss
 | **G1 问题属实与正确性**（Verifier） | 基线新鲜（Steward 记录 `BASE=$(git -C "$REPO" rev-parse origin/$D)`；Verifier 核验前 fetch 并比对，不等则退回重跑 G1/G3）；缺陷在 `origin/$D` 可复现、在 `$B` 消失；排除环境特异（配置错 / 旧版本）；**定性正确**——按适配档案分流，作业对象问题退回仓内既有回路；链接与锚点解析「0 失效」（GitHub slug 规则）；新增陈述有出处 | 修复前后对照 + `BASE` 比对 + 链接核验输出 |
 | **G2 方案正确与正向收益**（Verifier 汇总） | **(a) 方案比选**：仓内先例 + 业界经典设计模式（必要时联网），列候选、论证最佳；最小干预面（能改文档不改代码、能改一处不改两处）；**不造第二事实源**（只加指针不复制正文）；触碰历史决策须引用原决策理由并论证推翻的成本收益（Chesterton's Fence）。**(b) 收益证明**：T1 缺陷消失且入口文件（适配档案 `skill_entry`）净增 ≤10 行（超出部分下沉 references / 附录，不计入）；T2/T3 盲评回放——主 Agent 编写只覆盖受影响步骤的合成夹具，派发两个互不知情的全新子代理分别按 `origin/$D` 与 `$B` 规约产出 A / B，打乱标签后交给一个**不读 diff** 的全新判定子代理，按 content / structure 两维 rubric 盲判 [6]，新版胜出且两维均不退步 | 比选结论 + 净增统计或盲评结论 |
 | **G3 非回归与机器执法**（Verifier） | 适配档案 `invariants` 指针逐项三档勾验（未触碰=过 / 触碰有显式权衡与同步=过且 PR 点名 / 破坏无论证=**阻断**）；反刷分扫描输出为空且无 `EMPTY DIFF`；**缺陷类必须新增回归测试**钉住失败形态（无测试基建的文档仓以锚点核验 / 逐条人工勾验清单替代，由适配档案定）；`machine_checks` 命令全绿（声明为「无」的仓以勾验清单替代） | 勾验表 + 反刷分输出 + 命令输出 |
-| **G4 安全隐私** | **G4a**（Verifier）：diff 新增行与 commit message 通用模式扫描为空（noreply 剔除仅限实例化后的已知地址字面量，token 部分命中机密模式仍然报错）；新增 URL 单列清单逐条说明来源；commit author/committer 元数据仅允许 noreply 域或空；无新增可执行代码、第三方依赖或外部抓取指令（确需时显式标注并升级 T3）。**G4b**（主 Agent，只有它知道私有上下文）：按适配档案 `privacy_lexicon` 构造私有词表，对 diff 新增行、commit message、分支名与 `pr/<slug>.md` 执行 `grep -F`，均须为空 | G4a/G4b 扫描空输出 |
+| **G4 安全隐私** | **G4a**（Verifier）：diff 新增行与 commit message 通用模式扫描为空（noreply 剔除仅限独立成 token 的实例化地址——前后字符均非 email 本地部/域部字符集，嵌入更大 token 的 noreply 形态保留并照常命中；token 部分命中机密模式仍然报错）；新增 URL 单列清单逐条说明来源；commit author/committer 元数据仅允许 noreply 域或空；无新增可执行代码、第三方依赖或外部抓取指令（确需时显式标注并升级 T3）。**G4b**（主 Agent，只有它知道私有上下文）：按适配档案 `privacy_lexicon` 构造私有词表，对 diff 新增行、commit message、分支名与 `pr/<slug>.md` 执行 `grep -F`，均须为空 | G4a/G4b 扫描空输出 |
 
 **G3 反刷分与 G4a 隐私扫描脚本**（输出均须为空；以下字面量命中类可人工豁免并在回执逐项注明：① 改动本协议扫描规则行本身；② commit message 署名 trailer（`Co-Authored-By` / `Signed-off-by` 等）中的作者邮箱——署名是对贡献者的如实标注而非本回路泄漏，豁免时署名仍应优先 noreply 形态；③ `git@github.com:<owner>/<repo>.git` 形态 SSH URL——与 https 等价，按新增 URL 清单披露）：
 
@@ -139,9 +139,13 @@ for w in 必须 严禁 绝不 禁止 不得 不可 一律 仅限 严格 强制 �
   add=$(printf '%s\n' "$D_" | grep -E '^\+' | grep -vE '^\+\+\+ ' | grep -oF -- "$w" | wc -l | tr -d ' ')
   if [ "$del" -gt "$add" ]; then echo "LOSS $w: -$del +$add"; fi
 done
+NRE=$(printf '%s' "$NOREPLY" | sed 's|[.]|\\.|g')  # '.' 为 noreply 形态唯一 BRE 元字符，转义防近形态误剥
 { git -C "$REPO" diff "origin/$D...$B" | grep -E '^\+' | grep -vE '^\+\+\+ '
-  git -C "$REPO" log "origin/$D..$B" --format=%B; } | sed "s|$NOREPLY||g" \
+  git -C "$REPO" log "origin/$D..$B" --format=%B; } \
+  | sed -e ":a" -e "s|\([^[:alnum:]._%+-]\)$NRE\([^[:alnum:]._%+-]\)|\1\2|g" -e "ta" \
+        -e "s|^$NRE\([^[:alnum:]._%+-]\)|\1|" -e "s|\([^[:alnum:]._%+-]\)$NRE\$|\1|" -e "s|^$NRE\$||" \
   | grep -E '/Users/|/home/|[A-Za-z]:\\Users|[[:alnum:]._%+-]+@[[:alnum:].-]+\.[a-z]{2,}|gh[pousr]_[[:alnum:]]{20,}|github_pat_|sk-[[:alnum:]_-]{20,}|AKIA[0-9A-Z]{16}|BEGIN [A-Z ]*PRIVATE KEY'
+# 上述 sed 四段式仅用 POSIX BRE（捕获组/否定字符类/^$ 锚/:a-ta 循环），BSD 与 GNU sed 均可运行；仅剥独立成 token 的 noreply 地址
 ```
 
 **反刷分原则**：任一硬约束词在 diff 中按词计数净减少（删除多于新增），默认拒绝或升级 T3 [1][4]；计数守恒只是必要条件，Verifier 仍须逐条审阅被改写的硬约束句。
