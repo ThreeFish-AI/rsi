@@ -38,7 +38,7 @@ flowchart LR
 |---|---|---|
 | **L1 跨文件一致性** | 同一事实的全部出现处是否同口径 | 对 diff 触碰的术语/数值/规则做全仓同主题词 grep（检索面不限 diff） |
 | **L2 词汇对齐** | 图示/状态机/表格词汇 ↔ 正文主循环词汇；术语保留英文原词（Issue、Ticket 等不译） | 图示节点词在正文可检索到同词 |
-| **L3 索引与 ledger 同步** | 新增/改名文件是否登记索引；ledger 条目是否回填 PR 链接；CHANGELOG 是否登记 | 对照适配档案登记的索引/ledger/CHANGELOG 文件逐一核对 |
+| **L3 索引与 ledger 同步** | 新增/改名文件是否登记索引；ledger 条目是否回填 PR 链接；CHANGELOG 是否登记 | 对照适配档案登记的索引/ledger/CHANGELOG 文件逐一核对；仓内 ledger 型仓库的 `.temp` 未转写条目按 `.temp` backlog 核验（并线时序见 [protocol §3](protocol.md)），转写 commit 先于本角色派发——缺转写判 ❌ |
 | **L4 合并后时效** | PR 阶段的临时指称合并后是否失效 | 每个硬编码 ref 回答「该 ref 在合并后是否仍存在」；面向用户的安装命令指向默认分支 |
 | **L5 表达规范符合性** | PR 正文、commit message、新增叙述段是否过目标仓表达规范 | 按适配档案指针核验（plain-language / plain-expression 类：句句可验证、删净 AI 腔；content-currency：正文禁版本叙事） |
 | **L6 锚点有效性** | 新增/改动标题的锚点、相对链接可解析 | GitHub slug 规则逐条核验，「0 失效」输出为准 |
@@ -71,7 +71,7 @@ Fingerprint 去重：`normalized path + 失败模式 + 触发场景`，行号只
 
 ## 5. 修复纪律
 
-- **修复白名单** = PR 已触碰文件 ∪ 适配档案登记的索引/ledger/CHANGELOG/evals 文件 ∪ PR 正文（笔误级：失效链接、术语、字段名）。**不新建任何文件**；
+- **修复白名单** = PR 已触碰文件 ∪ 适配档案登记的索引/ledger/CHANGELOG/evals 文件 ∪ PR 正文（笔误级：失效链接、术语、字段名）。**不新建任何文件**——白名单外动作经主 Agent 显式授权可执行（[protocol §4](protocol.md)），授权与披露义务同；
 - **commit 身份**：noreply 覆盖（`git -c user.name=rsi-reviewer -c user.email=<noreply> commit`）；标题遵循目标仓 `commit_convention`，正文首行标注 `rsi ctx-review: F<n> <一句话>`（provenance 机械可辨）；
 - **粒度**：每个 Finding 一个 commit，或同镜头一批小修一个 commit；不与 Steward 原始 commit 混淆；
 - **推送**：断言 `[ "$(git -C "$REPO" branch --show-current)" = "$B" ]` 后 `git -C "$REPO" push origin "$B:$B"`；不推默认分支、不 merge、不 force-push、不 rebase、不代为 approve；

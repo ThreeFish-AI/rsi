@@ -94,7 +94,7 @@ case $S in ''|*[!a-z0-9-]*|*..*|-*|*-) echo "ABORT: 非法 slug"; exit 1;; esac
 - 结论：<门禁回执摘要 · PR 链接与 ctx-review 三态 · 分支 <B> · commit <sha> · patch <path>>
 ```
 
-> 编号式样（`RSI-NNN` 仓内 ledger 型 / `RSI-YYYYMMDD-NN` 项目 .temp 型）由适配档案 `entry_id` 供值。仓内 ledger 型仓库（适配档案 `ledger` 指向仓内文件者）：PR 创建成功时由主 Agent 将条目转写仓内 ledger、沿用仓内编号（`entry_id` 仓内式样），.temp backlog 结论行同步指向仓内条目。
+> 编号式样（`RSI-NNN` 仓内 ledger 型 / `RSI-YYYYMMDD-NN` 项目 .temp 型）由适配档案 `entry_id` 供值。仓内 ledger 型仓库（适配档案 `ledger` 指向仓内文件者）：PR 创建成功时由主 Agent 将条目转写仓内 ledger、沿用仓内编号（`entry_id` 仓内式样），.temp backlog 结论行同步指向仓内条目；转写由主 Agent 在 `$REPO` 以 noreply 身份追加独立 commit 完成，且须先于 Context-Reviewer 派发（时序：PR 创建 → 转写 commit → 派发）。
 
 | 分级 | 范围 | commit type | G2 要求 | 提交形态 |
 | :--- | :--- | :--- | :--- | :--- |
@@ -110,6 +110,7 @@ case $S in ''|*[!a-z0-9-]*|*..*|-*|*-) echo "ABORT: 非法 slug"; exit 1;; esac
 - **宿主层写边界强化**：派发 Prompt 首行显式声明该子代理的工具白名单与可写根（宿主支持受限工具集派发则配置之）；否则以 prompt 强约束 + 事后 `git -C "$REPO" status --porcelain` 与工作区 diff 复核越界写入，复核结果记入回执。
 - **改动面白名单**：派发 Prompt 附初步圈定的允许触碰文件清单（问题锚点周边的最小集合）；Steward 判定需扩圈时在回执中列明新增文件与理由，由主 Agent 记入 PR 描述——改动面裁量权锚在持任务上下文的主 Agent 侧，不随 fresh context 子代理自定。
 - **编排者**：主 Agent 统一派发三个子代理角色，不依赖子代理嵌套；后台子代理的权限提示会出现在主会话，且子代理无法向用户提问——所有确认收敛到 [§7](#7-确认与提交)，所有需用户裁决的发现收敛到 Context-Reviewer 摘要的「需人工裁决」节。
+- **白名单例外授权**：主 Agent 可显式授权白名单外动作（如新建必要文件——54c66a2 `.gitignore` 先例），授权与执行须在当轮回报及 PR 摘要中披露并标注『主 Agent 授权例外』。
 - **角色分工**：
 
 | 角色 | 上下文 | 读写边界 | 职责 | 底稿 |
@@ -118,7 +119,7 @@ case $S in ''|*[!a-z0-9-]*|*..*|-*|*-) echo "ABORT: 非法 slug"; exit 1;; esac
 | **Verifier** | fresh | 只读 | G1–G4a 核验并出具回执；不做任何修复 | [verifier.md](verifier.md) |
 | **Context-Reviewer** | fresh | 读写仅限 `$REPO` + PR comment | PR 后八镜头上下文审阅、白名单内修复、轻量复验、PR 页摘要 | [context-reviewer.md](context-reviewer.md) |
 
-Steward 关键步骤（详见底稿）：① **G0a 检索**上游同类 PR / Issue（clone 前）；② **隔离 clone** `gh repo clone "$R" "$REPO"`（无 `gh` 时 `git clone "https://github.com/$R.git" "$REPO"`）并按 `branch_style` 创建 `$B`（`--no-track`）；**不复用、不改动已安装目录**；`$REPO` 已存在（中断残留）时移至 `$REPO.<时间戳>` 后重新 clone（不删除）；③ **G0b 核实**：命中 PR 时 fetch 其 diff，修复同一 `文件:锚点` 即同类——open → `superseded`，已关闭未合并 → `rejected`，止于此；④ **复现**：在 `origin/$D` 上复现，无法复现 → `rejected`；⑤ **规约溯源**：`git log -S` 与 `git blame` 查明原规约引入初衷；回退检测：上游 `rsi/*` 已合并 PR 与 blame 比对，若本次在回退它们，升级 T3 并引用原 PR；⑥ **最小改动**：只改唯一定义处（SSOT），同步全部指针（链接、表格、结构树）；⑦ **本地提交**：原生 `git commit`（禁用可能自带 push 的宿主提交命令），遵循目标仓 commit 格式；**提交身份必须以 noreply 邮箱覆盖**（`git -c user.name=rsi-steward -c user.email=<noreply> commit`）；导出 patch；⑧ **回执**：回传基线 SHA、G0 结论、复现对照、溯源结论、分支与 commit SHA、patch 路径，由主 Agent 回写 backlog。
+Steward 关键步骤（详见底稿）：① **G0a 检索**上游同类 PR / Issue（clone 前）；② **隔离 clone** `gh repo clone "$R" "$REPO"`（无 `gh` 时 `git clone "https://github.com/$R.git" "$REPO"`）并按 `branch_style` 创建 `$B`（`--no-track`）；**不复用、不改动已安装目录**；`$REPO` 已存在（中断残留）时移至 `$REPO.<时间戳>` 后重新 clone（不删除）；条目终态（结案/`rejected`）后对应 clone 与全部时间戳残留目录，经用户确认可清理；未经确认不删除；③ **G0b 核实**：命中 PR 时 fetch 其 diff，修复同一 `文件:锚点` 即同类——open → `superseded`，已关闭未合并 → `rejected`，止于此；④ **复现**：在 `origin/$D` 上复现，无法复现 → `rejected`；⑤ **规约溯源**：`git log -S` 与 `git blame` 查明原规约引入初衷；回退检测：上游 `rsi/*` 已合并 PR 与 blame 比对，若本次在回退它们，升级 T3 并引用原 PR；⑥ **最小改动**：只改唯一定义处（SSOT），同步全部指针（链接、表格、结构树）；⑦ **本地提交**：原生 `git commit`（禁用可能自带 push 的宿主提交命令），遵循目标仓 commit 格式；隔离 clone 内一律按本协议命令执行（原生 `git commit`）——宿主/注册仓对用户项目的提交纪律（如 agents.md『一律 `/commit`』）适用于用户项目目录，不约束 `$REPO`；目标仓 pre-commit hooks 在 fresh clone 不激活，机器校验以适配档案 `machine_checks` 为准；**提交身份必须以 noreply 邮箱覆盖**（`git -c user.name=rsi-steward -c user.email=<noreply> commit`）；导出 patch；⑧ **回执**：回传基线 SHA、G0 结论、复现对照、溯源结论、分支与 commit SHA、patch 路径，由主 Agent 回写 backlog。
 
 ## 5. 核验门禁
 
@@ -152,7 +153,7 @@ NRE=$(printf '%s' "$NOREPLY" | sed 's|[.]|\\.|g')  # '.' 为 noreply 形态唯�
 
 **反刷分原则**：任一硬约束词在 diff 中按词计数净减少（删除多于新增），默认拒绝或升级 T3 [1][4]；计数守恒只是必要条件，Verifier 仍须逐条审阅被改写的硬约束句。
 
-**SSOT 整体迁移对账豁免**：协议或规约正文整体迁出 / 迁入注册仓库的 T3（如仓内协议整替为指针 stub），del 侧硬约束词可与接收仓对应 add 侧对账——Verifier 以同一脚本在接收仓对应文本上统计 add 侧词数，两侧合计不净减即视为守恒；「接收仓对应文本」的测量面 = 迁移内容实际落入的接收文件集合的全部新增行（以接收仓骨架后首个含迁移内容的 PR 为界）；核验回执须注明迁移对端仓、两侧统计数字与脚本输出，并双口径披露：单协议文件口径与全部接收文件口径——判定以测量面口径为准；窄口径净减属孪生合并措辞收敛，须附逐词对账表佐证无语义丢失。未做对账的整文件删除仍按反刷分原则默认拒绝。
+**SSOT 整体迁移对账豁免**：协议或规约正文整体迁出 / 迁入注册仓库的 T3（如仓内协议整替为指针 stub），del 侧硬约束词可与接收仓对应 add 侧对账——Verifier 以同一脚本在接收仓对应文本上统计 add 侧词数，两侧合计不净减即视为守恒；「接收仓对应文本」的测量面 = 迁移内容实际落入的接收文件集合的全部新增行（以接收仓骨架后首个含迁移内容的 PR 为界）；增量迁移批次（第二批及以后）：测量面 = 该批迁移实际落入文件集合并入累计测量面，界桩随批前移，判定按累计对账；核验回执须注明迁移对端仓、两侧统计数字与脚本输出，并双口径披露：单协议文件口径与全部接收文件口径——判定以测量面口径为准；窄口径净减属孪生合并措辞收敛，须附逐词对账表佐证无语义丢失。未做对账的整文件删除仍按反刷分原则默认拒绝。
 
 回执格式（结论取 ✅ / ❌ / —；— 表示不在本角色职责内或待主 Agent 执行）：
 
@@ -171,7 +172,7 @@ NRE=$(printf '%s' "$NOREPLY" | sed 's|[.]|\\.|g')  # '.' 为 noreply 形态唯�
 - 一个 PR 只含一个正交改进；互相重叠的条目合并为一条或串行处理。
 - 单会话最多提交 2 个 PR，T1 优先。
 - 背压：当前用户在上游已开启 ≥3 个 RSI 分支 PR 时暂停提交——补丁照常完成并标记 `ready`，只报告、不推送（`gh pr list -R "$R" --author @me --state open --json headRefName` 按适配档案分支前缀过滤计数）。
-- 推送前 `git -C "$REPO" fetch origin`；若 `origin/$D` 已前进，执行 `git -C "$REPO" -c user.name=rsi-merge -c user.email=<noreply> merge origin/$D`（严禁 rebase；merge commit 身份须 noreply 覆盖），有冲突则解冲突，提交前对全部触碰文件执行 `grep -cE '^(<<<<<<<|=======|>>>>>>>)'` 须全为 0（输出贴回执），并重跑 G1、G3；merge 后推送前对 `origin/$D..$B` 全量 commit 重跑 G4a 元数据检查（无冲突也须跑）。
+- 推送前 `git -C "$REPO" fetch origin`；若 `origin/$D` 已前进，执行 `git -C "$REPO" -c user.name=rsi-merge -c user.email=<noreply> merge origin/$D`（严禁 rebase；merge commit 身份须 noreply 覆盖），有冲突则解冲突，提交前对全部触碰文件执行 `grep -cE '^(<<<<<<<|=======|>>>>>>>)'` 须全为 0（输出贴回执；合法 setext 标题下划线——上一行非空且为标题文本、本行为 ≥4 等号纯序列——可人工豁免并在回执注明，本仓现状 `^={4,}` 零行），并重跑 G1、G3；merge 后推送前对 `origin/$D..$B` 全量 commit 重跑 G4a 元数据检查（无冲突也须跑）。
 - 跨会话承接：下次会话 `captured` 条目照常处理；`ready` 条目推送前重跑 G0a/G0b 去重；`superseded` 条目复核其 PR——已合并即结案，关闭未合并转 `rejected`；`submitted` 条目先按 [§1](#1-流程总览) 复核 PR 终态，补跑判据见 [§8](#8-context-reviewer-挂载)。
 
 ## 7. 确认与提交
@@ -194,7 +195,7 @@ gh repo view "$R" --json viewerPermission -q .viewerPermission  # ADMIN / MAINTA
 
 ## 8. Context-Reviewer 挂载
 
-PR 创建成功（`submitted`）后，主 Agent 立即后台派发 Context-Reviewer 子代理（fresh context，复用 Steward 的 `$REPO` 隔离 clone），执行 PR 后上下文审阅回路：八镜头审阅（跨文件一致性 / 词汇对齐 / 索引 ledger 同步 / 合并后时效 / 表达规范 / 锚点有效性 / 不变量冲突——只报不改 / 同批演进纪律）、白名单内修复、轻量复验（G1' 锚点 + G3' 反刷分 + G4a' 隐私）、PR 页摘要回执（三态：可合并 | 修后可合并 | 需人工裁决）。完整协议见 [context-reviewer.md](context-reviewer.md)。
+PR 创建成功（`submitted`）后，主 Agent 立即后台派发 Context-Reviewer 子代理（仓内 ledger 型仓库须先完成 §3 转写 commit，时序：PR 创建 → 转写 → 派发；fresh context，复用 Steward 的 `$REPO` 隔离 clone），执行 PR 后上下文审阅回路：八镜头审阅（跨文件一致性 / 词汇对齐 / 索引 ledger 同步 / 合并后时效 / 表达规范 / 锚点有效性 / 不变量冲突——只报不改 / 同批演进纪律）、白名单内修复、轻量复验（G1' 锚点 + G3' 反刷分 + G4a' 隐私）、PR 页摘要回执（三态：可合并 | 修后可合并 | 需人工裁决）。完整协议见 [context-reviewer.md](context-reviewer.md)。
 
 - **交接块**：`gh pr create` 成功后，主 Agent 将机器可读交接块追加至 PR 描述尾部（同内容落 `$W/pr/$S.review-request.md`，供跨会话与无 GitHub 权限宿主消费）：
 
