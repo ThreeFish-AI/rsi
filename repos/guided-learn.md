@@ -14,7 +14,7 @@ sediment: "协议与规约修改走 references/ 与 SKILL.md；图表资产遵�
 branch_style: rsi/<slug>（ASCII kebab-case，≤39 字符，对齐 §3 slug 正则上限）
 commit_convention: "fix|feat|docs|refactor(<Topic>): 中文描述;"
 pr_convention: 正文按统一 PR 模板六节（含去重与关联）；base=main
-invariants: "教学铁律 1–10、六阶段单向演进与阶段验收标准（SKILL.md）；双代理对抗内省机制角色隔离；SSOT 指针索引完整性；frontmatter 触发契约；archify 四件套纪律（references/diagram-assets.md）；零可执行代码与依赖"
+invariants: "教学铁律 1–10、六阶段单向演进与阶段验收标准（SKILL.md）；双代理对抗内省机制角色隔离；SSOT 指针索引完整性；frontmatter 触发契约；archify 四件套纪律（references/diagram-assets.md）"
 machine_checks: 无（以逐条人工勾验清单替代）
 legacy_exemption_keys: ["guided-learn RSI: 免确认提交"]  # 历史真实授权行（无占位符，整行精确匹配可命中；命中时按协议 §7 报告标注 legacy）
 degrade_extra: 无

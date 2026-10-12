@@ -326,7 +326,7 @@ PR 正文与 commit message 遵循目标仓表达规范（由适配档案指针�
 | `machine_checks` | 机器执法命令（或「无」，以勾验清单替代） |
 | `legacy_exemption_keys` / `degrade_extra` / `special_channels` | 存量豁免键、仓内扩展降级行、特殊通道指针 |
 
-frontmatter 长值一律加引号（防含冒号值静默截断）。
+frontmatter 值含 `: `、行内 ` #`、引号或行首 YAML 指示字符（`&`、`*`、`!`、`|`、`>`、`%`、`@`、`` ` ``）时必须加引号（含冒号值不加引号会被 YAML 判错而非「静默截断」，按风险字符判定、不以长度论）。
 
 ## 参考（IEEE）
 
