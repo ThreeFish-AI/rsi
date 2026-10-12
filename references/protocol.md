@@ -75,7 +75,7 @@ REPO="$W/repo/$S"; B="rsi/$S"; : "${R:?}" "${K:?}" "${D:?}" "${W:?}" "${S:?}" "$
 case $S in ''|*[!a-z0-9-]*|*..*|-*|*-) echo "ABORT: 非法 slug"; exit 1;; esac
 ```
 
-隔离 clone 位于 .temp 下时，目标仓护栏的路径过滤类检查可能空转假绿——运行 machine_checks 时以无 .temp 组件路径复跑取真实证据（review-once check_links 先例，RSI-20261011-25）。
+隔离 clone 位于 .temp 下时，目标仓护栏的路径过滤类检查可能空转假绿——运行 machine_checks 时以无 .temp 组件路径复跑取真实证据（review-once check_links 先例，review-once#10）。
 
 > 各仓分支命名式样以适配档案 `branch_style` 为准（如 review-once 为 `feat/rsi-NNN-<topic>`、vibe-video 为 `ThreeFish-AI/rsi-NNN-<topic>`），上式 `$B` 按式样替换；`--no-track` 创建以防裸 `git push` 误推默认分支。
 
