@@ -11,4 +11,6 @@
 - 评审遗留 T1 机械修正集：slug 判据统一（正则/case/底稿三处同步）、无 gh 降级 clone 补目标目录（协议侧补齐）、降级矩阵补两行、安装预处理、backlog 模板结论行扩字段、四道门残留表述清理（#4）。
 - 执法判据加固：G4a noreply 剔除改精确字面量（封闭机密洗白通道）、不可信来源补 PR/Issue 标题与 comment、反刷分逐句审阅入 Verifier 必查清单、NOREPLY 纳入 §3 断言链（#5）。
 - 执法判据收尾：G4a noreply 剥除改独立成 token 判据并转义 `.`（封闭子串包含洗白与近形态误剥，POSIX BRE 四段式 BSD/GNU 均可运行）、verifier G3 清单补缺陷类回归测试核查项、§3 NOREPLY 供值注释校准为主 Agent 派发时供值（#7）。
+- 豁免文法加固：受信载体排除 sync / 分发链产物（豁免行须手写且不被分发覆盖）、整行精确匹配语义与免确认回报强制披露命中行、裸「免确认提交」三档口径统一（README 同步）、legacy 键全字面整行匹配与 `<版本号>` 式样占位注明（#8）。
+- 评审 P3 池 T1 快修：report.md 指派主 Agent 呈现报告时同步落盘（§3 目录树 + §7）、README / SKILL description「隔离分支」统一为「隔离 clone」、evals 正例孤立术语 RSID 换为上游现存术语 Diff、README repos/ 行字段摘要改为指向协议附录B、「五仓」补定义注并校准为六注册仓、preening-substrate 档案 invariants 值加双引号修复 YAML 解析（#9）。
 - 状态机与时序收口：submitted 补终态转移（合并结案回填 merge sha / 关闭未合并转 rejected）且条目模板状态枚举补「结案」终态显示、跨会话补跑限定 PR 仍 open、切换 PR 不得先于本仓适配档案入 main 合并、flip 时限改两者较晚者起算并于 flip PR 登记切换合并时间（SKILL.md 路由表旧起算点同步对齐）、自举改动按语义分级（不改门禁编号与判据语义的修正按分级表执行且一律 Draft）、回执更新条款指针化至 context-reviewer.md §8（#<PR>）。

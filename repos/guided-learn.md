@@ -15,7 +15,7 @@ commit_convention: "fix|feat|docs|refactor(<Topic>): 中文描述;"
 pr_convention: 正文按统一 PR 模板六节（含去重与关联）；base=main
 invariants: 教学铁律 1–10、六阶段单向演进与阶段验收标准（SKILL.md）；双代理对抗内省机制角色隔离；SSOT 指针索引完整性；frontmatter 触发契约；archify 四件套纪律（references/diagram-assets.md）；零可执行代码与依赖
 machine_checks: 无（以逐条人工勾验清单替代）
-legacy_exemption_keys: ["guided-learn RSI: 免确认提交"]
+legacy_exemption_keys: ["guided-learn RSI: 免确认提交"]  # 式样记录，非功能键；启用须登记实际整行（协议 §7）
 degrade_extra: 无
 special_channels: 无
 ---

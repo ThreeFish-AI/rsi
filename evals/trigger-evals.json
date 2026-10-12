@@ -5,7 +5,7 @@
     "我在用 guided-learn 精读论文时发现它的模板缺一节，提个 RSI 条目改进这个 skill",
     "preening-substrate 的 rsi 流程里有个死链，修复并回流上游",
     "vibe-video 的建手册候选区规则可以更好，走自改进回路提个 PR",
-    "AGENTS.md 的术语规范表格应该加一行 RSID 的约束，按 RSI 机制沉淀到 agents.md 仓库",
+    "AGENTS.md 的术语规范表格应该加一行 Diff 的约束，按 RSI 机制沉淀到 agents.md 仓库",
     "这个 PR 提给 ThreeFish-AI/review-once 之后，帮忙自动做一轮上下文审阅并生成摘要"
   ],
   "negative": [
