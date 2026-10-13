@@ -5,7 +5,7 @@
 ## [Unreleased]
 
 ### 新增
-- 论文精读机制引入批（精选 7 项，均 ≥2 篇材料独立互证、零可执行代码、纯协议文本级）：G1(b) 结构冒烟短路预检（frontmatter 形状 / 模板槽位 / 解析触发近似）；G2(b) 盲评三补强（异源场景 / 候选集必含现任 / 无关任务护栏）与统计死区（每维 ≥2 场景贡献、T2≥3/T3≥4 最小场景数、预登记软指标豁免）；T2/T3 PR「可证伪预测」小节与 §6 跨会话预测回验钩子；G0c 负证据核查与拒绝诊断四分类（repairable 类可凭同类新证据重开为新条目）；§12 门禁判据单调演化律与 Verifier G3 固定点名检查；§11 规约句三属性写作约定（Context-Reviewer L5 并入核验）；IEEE 参考 [7]–[12]；新增 docs/research/ 调研报告（#<PR>）。
+- 论文精读机制引入批（精选 7 项，均 ≥2 篇材料独立互证、零可执行代码、纯协议文本级）：G1(b) 结构冒烟短路预检（frontmatter 形状 / 模板槽位 / 解析触发近似）；G2(b) 盲评三补强（异源场景 / 候选集必含现任 / 无关任务护栏）与统计死区（每维 ≥2 场景贡献、T2≥3/T3≥4 最小场景数、预登记软指标豁免）；T2/T3 PR「可证伪预测」小节与 §6 跨会话预测回验钩子；G0c 负证据核查与拒绝诊断四分类（repairable 类可凭同类新证据重开为新条目）；§12 门禁判据单调演化律与 Verifier G3 固定点名检查；§11 规约句三属性写作约定（Context-Reviewer L5 并入核验）；IEEE 参考 [7]–[12]；新增 docs/research/ 调研报告（#25）。
 - 注册 dub（ThreeFish-AI/dub，独立配音 Skill）：新增适配档案 `repos/dub.md`（`adoption: pending`，待 dub 切换 PR 合并后 flip）；SKILL.md 路由表与 description 枚举、README 注册表同步；适配档案与 README 中随清单漂移的计数（vibe-video 的「十五条」、agents 的「六注册仓」、README 的「5+1 适配档案」）改为不含数字的指针式表述；trigger-evals 正负例各增一条（#22）。
 - 统一 RSI 经验沉淀协议 v0.1 首次落地：G0–G4 门禁、六态状态机、限流背压与降级矩阵（references/protocol.md）；Steward / Verifier / Context-Reviewer 三份子代理底稿；5+1 仓库适配档案；SKILL.md 薄入口与触发正负例评测（#1）。
 
