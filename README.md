@@ -56,4 +56,4 @@ ln -sfn ~/projects/rsi ~/.agents/skills/rsi   # Codex 等其他 agent CLI
 
 ## 约束
 
-零可执行运行时代码（协议级 Hook，宿主通用）；G 门禁只增不减；适配档案只放指针与参数，不变量清单复述即违规；MIT License。
+零可执行运行时代码（协议级 Hook，宿主通用）；G 门禁只增不减、判据只许收严；适配档案只放指针与参数，不变量清单复述即违规；MIT License。
