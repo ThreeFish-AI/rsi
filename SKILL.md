@@ -20,7 +20,7 @@ RSI = 经人工评审闸门的**跨会话**规约迭代：改进落在上游注�
 | preening-substrate | ThreeFish-AI/preening-substrate | [repos/preening-substrate.md](repos/preening-substrate.md) | live |
 | guided-learn | ThreeFish-AI/guided-learn | [repos/guided-learn.md](repos/guided-learn.md) | live |
 | vibe-video | ThreeFish-AI/vibe-video | [repos/vibe-video.md](repos/vibe-video.md) | live |
-| vibe-tts | ThreeFish-AI/vibe-tts | [repos/vibe-tts.md](repos/vibe-tts.md) | pending |
+| vibe-tts | ThreeFish-AI/vibe-tts | [repos/vibe-tts.md](repos/vibe-tts.md) | live |
 | review-once | ThreeFish-AI/review-once | [repos/review-once.md](repos/review-once.md) | live |
 | agents.md | ThreeFish-AI/agents.md | [repos/agents.md](repos/agents.md) | live |
 | rsi（自举） | ThreeFish-AI/rsi | [repos/rsi.md](repos/rsi.md) | live |
