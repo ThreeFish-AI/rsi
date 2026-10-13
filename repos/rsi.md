@@ -14,7 +14,7 @@ sediment: "协议改动走 references/protocol.md 与三份子代理底稿，适
 branch_style: rsi/<slug>
 commit_convention: "feat|fix|docs|refactor(protocol|adapter|skill)|chore(changelog): 中文描述;"
 pr_convention: 正文按统一 PR 模板；触碰协议一律 Draft PR；CHANGELOG [Unreleased] 同批登记；base=main
-invariants: "零可执行代码（扫描以协议内嵌 bash 呈现，仓内不携带 scripts/）；G 门禁只增不减、编号与语义冻结（改动即 T3）；SSOT 三层切分原则本身（协议在本仓/仓内事实在各仓/适配档案仅指针与参数）；全部适配档案 invariants 指针有效（死链即 G1 失败）"
+invariants: "零可执行代码（扫描以协议内嵌 bash 呈现，仓内不携带 scripts/）；G 门禁只增不减、编号与语义冻结（改动即 T3）；门禁判据单调演化律（判据见协议 §12，本档案不复述）；SSOT 三层切分原则本身（协议在本仓/仓内事实在各仓/适配档案仅指针与参数）；全部适配档案 invariants 指针有效（死链即 G1 失败）"
 machine_checks: 无（以逐条人工勾验清单替代）
 legacy_exemption_keys: []
 degrade_extra: 无
