@@ -12,7 +12,7 @@
 - 上游仓更名同步：ThreeFish-AI/dub → ThreeFish-AI/vibe-tts（上游改名 PR 已合并），适配档案 git mv `repos/dub.md` → `repos/vibe-tts.md`（frontmatter `key`/`upstream` 同步），SKILL.md description 枚举与路由表、README 注册表、trigger-evals 正负例语料一并迁移，正文指称同步（库模块 `dub_` 前缀 → `vibe_tts_` 前缀）；存量 CHANGELOG 条目、既有 PR/issue URL 与 flipped_at 历史锚点保留原文（GitHub 仓库重定向保活），历史台账不改写（#23）。
 
 ### 修复
-- vibe-tts 适配档案的「须与 vibe-video 同值」表述改为「黄金哈希测试只住 vibe-tts，vibe-video 经委托继承、不留镜像副本」：vibe-tts 与 vibe-video 的配音测试按被测对象归属拆分，不再要求双仓人工同步。
+- vibe-tts 适配档案的「须与 vibe-video 同值」表述改为「黄金哈希测试只住 vibe-tts，vibe-video 经委托继承、不留镜像副本」：vibe-tts 与 vibe-video 的配音测试按被测对象归属拆分，不再要求双仓人工同步（#23）。
 - 注册状态 flip 补登：agents.md（#2）、preening-substrate / guided-learn / vibe-video（#3）、review-once（#6）依次置 `live`——`adoption`、SKILL 路由表与 README 注册表同步翻转（#2、#3、#6）。
 - dub 注册完成：切换 PR（ThreeFish-AI/dub#1）已合并，适配档案置 `live`，SKILL 路由表与 README 注册表同步翻转（#24）。
 - 评审遗留 T1 机械修正集：slug 判据统一（正则/case/底稿三处同步）、无 gh 降级 clone 补目标目录（协议侧补齐）、降级矩阵补两行、安装预处理、backlog 模板结论行扩字段、四道门残留表述清理（#4）。
