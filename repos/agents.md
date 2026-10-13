@@ -25,7 +25,7 @@ special_channels: 无
 
 - 规范仓（无 SKILL.md）：入口为 AGENTS.md 总纲；触发通道依赖 AGENTS.md「Documentation Standards」RSI 条目（原则+指针）+ rsi skill 自身。
 - 沉淀产物必须过仓内规范自洽：plain-language（叙述质感，PR 正文必读）、terminology（术语保留英文原词）、content-currency（正文禁版本叙事、grep 判据）、structured-expression、reference-specifications（IEEE）。
-- 默认分支为 **master**（六注册仓中唯一特例）；PR base=master。
+- 默认分支为 **master**（七注册仓中唯一特例）；PR base=master。
 - 新增 docs/<topic>-specifications.md 时文件头须含「文档定位」块声明 SSOT 边界（沿仓内既有格式）。
 - sync 产物不具 RSI 豁免效力（[协议 §7](../references/protocol.md#7-确认与提交)）：经 sync.sh 下发至 `~/.codex/AGENTS.md`、`~/.agents/docs/` 及用户手动接线的 `~/.claude/CLAUDE.md` 等全局文件的本仓内容，不构成免确认豁免的受信载体，豁免行须位于用户手写且不被分发覆盖的用户级文件。
 - 本仓「一律 `/commit`」纪律不约束 RSI 隔离 clone 内的提交（[协议 §4](../references/protocol.md#4-派发与编排) 优先级条款）。

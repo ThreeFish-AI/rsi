@@ -14,7 +14,7 @@ sediment: "规格修改走 references/ 与 SKILL.md（按需加载表等量压�
 branch_style: ThreeFish-AI/rsi-NNN-<topic>
 commit_convention: "feat(rsi): 中文描述（RSI-0NN）;"
 pr_convention: 标题中文 conventional、单条或攒批编号都入标题；描述含 G0–G4 核验回执表（统一协议 §5 格式）；触碰不变量逐项点名；base=main
-invariants: "十五条不变量清单（RSI.md 第九节，清单本体留仓内：阶段编号对齐、narration.md 唯一 SSOT、frozen Remotion skeleton、复制不共享边界、SKILL.md 路由壳纪律、建模手册有界等）；部分条目自带执法测试标记（上游清单内注）"
+invariants: "十六条不变量清单（RSI.md 第九节，清单本体留仓内：阶段编号对齐、narration.md 唯一 SSOT、frozen Remotion skeleton、复制不共享边界、SKILL.md 路由壳纪律、建模手册有界等）；部分条目自带执法测试标记（上游清单内注）"
 machine_checks: "uv run --no-project --with pytest --with numpy --with pillow --with mutagen --with soundfile python -m pytest tests -q"
 legacy_exemption_keys: []
 degrade_extra: 拷贝式安装（$T 无 .git）时大声退出，绝不改无版本控制副本；出路=GitHub Issue 草稿或 clone 正式仓迁移条目
