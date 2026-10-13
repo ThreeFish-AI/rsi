@@ -1,6 +1,6 @@
 ---
 name: rsi
-description: 统一 RSI（Recursive Self-Improvement）经验沉淀回路：在使用 ThreeFish-AI 自研 skill 与规范体系（preening-substrate、guided-learn、vibe-video、dub、review-once、agents.md 协作规约、rsi 自身）的过程中，把发现的 Skill/规范自身缺陷或可沉淀的改进经验，经登记 ledger、隔离 clone、G0–G4 门禁核验后，以 PR 形式回流对应维护仓库，并在 PR 后自动做上下文审阅与摘要。当用户指出上述某个 skill 的缺陷或提出改进建议、要求把经验沉淀成 PR、登记 RSI 条目、走自改进回路，或 Agent 运行时发现门禁无法判定、规约自相矛盾、死链/锚点失效、模板缺位、宿主能力不符且无降级路径等运行时证据时使用。不用于目标业务仓库自身的代码缺陷（属作业对象）、一次性代码 review、一般 Git 操作，或与注册仓库无关的经验总结。
+description: 统一 RSI（Recursive Self-Improvement）经验沉淀回路：在使用 ThreeFish-AI 自研 skill 与规范体系（preening-substrate、guided-learn、vibe-video、vibe-tts、review-once、agents.md 协作规约、rsi 自身）的过程中，把发现的 Skill/规范自身缺陷或可沉淀的改进经验，经登记 ledger、隔离 clone、G0–G4 门禁核验后，以 PR 形式回流对应维护仓库，并在 PR 后自动做上下文审阅与摘要。当用户指出上述某个 skill 的缺陷或提出改进建议、要求把经验沉淀成 PR、登记 RSI 条目、走自改进回路，或 Agent 运行时发现门禁无法判定、规约自相矛盾、死链/锚点失效、模板缺位、宿主能力不符且无降级路径等运行时证据时使用。不用于目标业务仓库自身的代码缺陷（属作业对象）、一次性代码 review、一般 Git 操作，或与注册仓库无关的经验总结。
 ---
 
 # rsi · 统一 RSI 经验沉淀回路
@@ -20,7 +20,7 @@ RSI = 经人工评审闸门的**跨会话**规约迭代：改进落在上游注�
 | preening-substrate | ThreeFish-AI/preening-substrate | [repos/preening-substrate.md](repos/preening-substrate.md) | live |
 | guided-learn | ThreeFish-AI/guided-learn | [repos/guided-learn.md](repos/guided-learn.md) | live |
 | vibe-video | ThreeFish-AI/vibe-video | [repos/vibe-video.md](repos/vibe-video.md) | live |
-| dub | ThreeFish-AI/dub | [repos/dub.md](repos/dub.md) | pending |
+| vibe-tts | ThreeFish-AI/vibe-tts | [repos/vibe-tts.md](repos/vibe-tts.md) | pending |
 | review-once | ThreeFish-AI/review-once | [repos/review-once.md](repos/review-once.md) | live |
 | agents.md | ThreeFish-AI/agents.md | [repos/agents.md](repos/agents.md) | live |
 | rsi（自举） | ThreeFish-AI/rsi | [repos/rsi.md](repos/rsi.md) | live |
