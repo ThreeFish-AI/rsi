@@ -5,7 +5,7 @@
 ## [Unreleased]
 
 ### 新增
-- 注册 dub（ThreeFish-AI/dub，独立配音 Skill）：新增适配档案 `repos/dub.md`（`adoption: pending`，待 dub 切换 PR 合并后 flip）；SKILL.md 路由表与 description 枚举、README 注册表同步；`repos/vibe-video.md` 的不变量计数十五→十六（TTS 机制 SSOT 上收 dub），`repos/agents.md` 的「六注册仓」改「七注册仓」；trigger-evals 正负例各增一条。
+- 注册 dub（ThreeFish-AI/dub，独立配音 Skill）：新增适配档案 `repos/dub.md`（`adoption: pending`，待 dub 切换 PR 合并后 flip）；SKILL.md 路由表与 description 枚举、README 注册表同步；适配档案与 README 中随清单漂移的计数（vibe-video 的「十五条」、agents 的「六注册仓」、README 的「5+1 适配档案」）改为不含数字的指针式表述；trigger-evals 正负例各增一条（#22）。
 - 统一 RSI 经验沉淀协议 v0.1 首次落地：G0–G4 门禁、六态状态机、限流背压与降级矩阵（references/protocol.md）；Steward / Verifier / Context-Reviewer 三份子代理底稿；5+1 仓库适配档案；SKILL.md 薄入口与触发正负例评测（#1）。
 
 ### 修复
