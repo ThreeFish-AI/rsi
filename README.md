@@ -6,7 +6,7 @@
 
 ## 为什么
 
-此前 4 个注册仓（preening-substrate、guided-learn、review-once、vibe-video）各自实现了 RSI 机制：`preening-substrate` 与 `guided-learn` 的 rsi-hook 协议是孪生拷贝（机制改进需逐仓修改的 Split-Brain），`review-once` 的 ledger 无运行时 Hook（沉淀全靠人工显式驱动），且每次沉淀后需人工切到目标仓上下文反复 Review-Fix。本仓库把**机制**收归一处（协议、门禁、三份子代理底稿、5+1 适配档案），把**仓内事实**留在各仓（不变量清单、ledger、特殊通道），并以 Context-Reviewer 回路把 PR 后的第一轮上下文审阅自动化。
+此前 4 个注册仓（preening-substrate、guided-learn、review-once、vibe-video）各自实现了 RSI 机制：`preening-substrate` 与 `guided-learn` 的 rsi-hook 协议是孪生拷贝（机制改进需逐仓修改的 Split-Brain），`review-once` 的 ledger 无运行时 Hook（沉淀全靠人工显式驱动），且每次沉淀后需人工切到目标仓上下文反复 Review-Fix。本仓库把**机制**收归一处（协议、门禁、三份子代理底稿、各仓适配档案），把**仓内事实**留在各仓（不变量清单、ledger、特殊通道），并以 Context-Reviewer 回路把 PR 后的第一轮上下文审阅自动化。
 
 ## 仓库结构
 
@@ -31,6 +31,7 @@
 | preening-substrate | ThreeFish-AI/preening-substrate | live |
 | guided-learn | ThreeFish-AI/guided-learn | live |
 | vibe-video | ThreeFish-AI/vibe-video | live |
+| dub | ThreeFish-AI/dub | pending |
 | review-once | ThreeFish-AI/review-once | live |
 
 `pending` = 该仓切换 PR 合并前，仍按仓内既有 RSI 流程运行；合并后置 `live`，SSOT 原子翻转。切换 PR 已合并、flip PR 未落的窗口内仍为 `pending`，此时按协议直接派发、不退回仓内流程（防环形指引）。

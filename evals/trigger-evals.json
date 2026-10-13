@@ -9,7 +9,8 @@
     "这个 PR 提给 ThreeFish-AI/review-once 之后，帮忙自动做一轮上下文审阅并生成摘要",
     "rsi 协议 §8 的交接块在无 gh 场景没有消费路径，按 RSI 沉淀",
     "guided-learn 的验收标准没有客观判据，门禁无法判定",
-    "vibe-video 的渲染步骤在没有 GPU 的环境没有降级路径"
+    "vibe-video 的渲染步骤在没有 GPU 的环境没有降级路径",
+    "dub 的 watchdog 停服判据有个缺口，把这个改进沉淀回 dub 仓"
   ],
   "negative": [
     "帮我修一下这个业务仓库里的登录 bug",
@@ -17,6 +18,7 @@
     "把这段经验总结写到项目 README 里",
     "帮我 git commit 并 push 到 origin",
     "guided-learn 帮我精读这篇 arXiv 论文",
-    "preening-substrate 对这个模块做正交分解重构"
+    "preening-substrate 对这个模块做正交分解重构",
+    "用 dub 把这句话配成 mp3 并输出到统一目录"
   ]
 }
