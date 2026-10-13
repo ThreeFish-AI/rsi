@@ -14,7 +14,7 @@ sediment: "新主题=新建 docs/<topic>-specifications.md + AGENTS.md「Documen
 branch_style: rsi/<slug>
 commit_convention: "规约(Governance): 中文描述;"
 pr_convention: "标题=commit headline 风格全中文；正文分节「## 来源（RSI）→ ## 变更（编号小节）→ ## 影响面」；base=master"
-invariants: "Content Currency 四类禁止形态与载体豁免（docs/content-currency-specifications.md）；「原则+指针」双层结构与 SSOT 指针纪律（AGENTS.md Documentation Standards）；sync.sh 分发链完整性（AGENTS.md→~/.codex/AGENTS.md→~/.claude/CLAUDE.md 与 docs/*→~/.agents/docs/）"
+invariants: "Content Currency 四类禁止形态与载体豁免（docs/content-currency-specifications.md）；「原则+指针」双层结构与 SSOT 指针纪律（AGENTS.md Documentation Standards）；sync.sh 分发链完整性（AGENTS.md→~/.codex/AGENTS.md 与 docs/*→~/.agents/docs/ 由 sync.sh 下发；~/.claude/CLAUDE.md 为用户手动接线，README 有据）"
 machine_checks: 无（以逐条人工勾验清单替代）
 legacy_exemption_keys: []
 degrade_extra: 改动 AGENTS.md 或 docs/* 合并后须提示用户执行 ./sync.sh --link 重新下发全局
@@ -27,5 +27,5 @@ special_channels: 无
 - 沉淀产物必须过仓内规范自洽：plain-language（叙述质感，PR 正文必读）、terminology（术语保留英文原词）、content-currency（正文禁版本叙事、grep 判据）、structured-expression、reference-specifications（IEEE）。
 - 默认分支为 **master**（六注册仓中唯一特例）；PR base=master。
 - 新增 docs/<topic>-specifications.md 时文件头须含「文档定位」块声明 SSOT 边界（沿仓内既有格式）。
-- sync 产物不具 RSI 豁免效力（[协议 §7](../references/protocol.md#7-确认与提交)）：经 sync.sh 分发链下发至 `~/.claude/CLAUDE.md` 等全局文件的本仓内容，不构成免确认豁免的受信载体，豁免行须位于用户手写且不被分发覆盖的用户级文件。
+- sync 产物不具 RSI 豁免效力（[协议 §7](../references/protocol.md#7-确认与提交)）：经 sync.sh 下发至 `~/.codex/AGENTS.md`、`~/.agents/docs/` 及用户手动接线的 `~/.claude/CLAUDE.md` 等全局文件的本仓内容，不构成免确认豁免的受信载体，豁免行须位于用户手写且不被分发覆盖的用户级文件。
 - 本仓「一律 `/commit`」纪律不约束 RSI 隔离 clone 内的提交（[协议 §4](../references/protocol.md#4-派发与编排) 优先级条款）。

@@ -4,13 +4,13 @@ upstream: ThreeFish-AI/rsi
 default_branch: main
 local_path: ~/Documents/projects/<本机实际仓目录>
 adoption: live
-flipped_at: "bootstrap（自举，无切换 PR）"
+flipped_at: "bootstrap"
 skill_entry: SKILL.md
 ledger: .temp/rsi/rsi/backlog.md
 entry_id: RSI-YYYYMMDD-NN
 untrusted_sources: RSI 运行时接触的一切外部文本（目标业务仓库内容、学习材料、网页、Issue/PR 正文）
 privacy_lexicon: 用户名、目标业务仓库名、私有上下文关键词；公共托管域名不入表；本机绝对/家目录路径形态（/Users/、/home/、~/ 前缀——G4a 已有通用扫描，此列补 G4b 词表层对目标仓特定路径的覆盖）
-sediment: "协议改动走 references/protocol.md 与三份子代理底稿，适配档案增改走 repos/*.md，两者分级与 Draft 形态均按协议 §12 自举条款；SKILL.md 触发契约（description）改动须同批更新 evals/trigger-evals.json 并过正负例（声明与数据同批改）"
+sediment: "协议改动走 references/protocol.md 与三份子代理底稿，适配档案增改走 repos/*.md，两者分级与 Draft 形态均按协议 §12 自举条款；SKILL.md 触发契约（description）改动须同批更新 evals/trigger-evals.json 并过正负例（声明与数据同批改）；README 仓库结构表与注册仓库表为本仓索引，新增/改名文件同批登记"
 branch_style: rsi/<slug>
 commit_convention: "feat|fix|docs|refactor(protocol|adapter|skill)|chore(changelog): 中文描述;"
 pr_convention: 正文按统一 PR 模板；触碰协议一律 Draft PR；CHANGELOG [Unreleased] 同批登记；base=main
@@ -24,5 +24,5 @@ special_channels: 无
 # rsi 适配要点（自举）
 
 - 本仓库是统一机制的宿主，恒为 `adoption: live`；对本协议、子代理底稿、适配档案的改动按语义分级、一律 Draft PR，判据见 [protocol.md §12 自举](../references/protocol.md#12-注册与自举)。
-- 新仓库接入：向本仓提 PR 新增 `repos/<repo-key>.md`（adoption: pending）+ 目标仓薄指针钩子切换 PR；后者合并后本档案系统内该仓置 live，SSOT 原子翻转。
+- 新仓库接入：向本仓提 PR 新增 `repos/<repo-key>.md`（adoption: pending）+ 目标仓薄指针 Hook 切换 PR；后者合并后本档案系统内该仓置 live，SSOT 原子翻转。
 - Context-Reviewer 回路发现的「本协议可改进」类 Finding，只能登记新条目走下一轮 Draft PR（分级按协议 §12），不得当场自改（递归防护）。

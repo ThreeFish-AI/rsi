@@ -23,7 +23,5 @@ special_channels: 无
 
 # review-once 适配要点
 
-- 已知缺陷（切换 PR 借机修复）：SKILL.md / references 零引用 issue.md ledger，RSI 非运行时行为——切换 PR 为 SKILL.md 增补「自改进回路（RSI）」薄指针章节 + NEW_CONTRACT 词汇护栏 + evals 触发正负例。
 - ledger 条目六段式：日期 / 问题描述 / 表因与根因 / 处理方式（回填 PR 与 commit 链接）/ 后续防范（可检查规则而非叙述）/ 同类问题影响与注意事项（建教训谱系）。
 - 收敛门纪律对本仓自身适用（RSI-006 先例）：「修改契约本身也必须过收敛门」。
-- 切换 PR #8（feat/rsi-011）已于 2026-10-12 合并，本仓运行统一协议。
