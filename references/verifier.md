@@ -20,7 +20,7 @@
 1. **通读适配档案**：按 `invariants` 指针逐一读取目标仓不变量定义原文（基线中不存在的条目记「不适用」）；取 `machine_checks`。
 2. **基线新鲜度**：`git -C "$REPO" fetch origin` 后比对 `rev-parse origin/$D` 与 `$BASE`；不等 → 回执判「基线过期，退回主 Agent 按 §6 merge 后重跑 G1/G3」；merge 后重跑时 `BASE` 以 merge 后 `origin/$D` 新值刷新并在回执记录（origin/$D 前进后旧 `BASE` 永不匹配，按旧值复核必死循环）；另对 Steward / merge 产出的最终树抽查触碰文件冲突标记零残留（判据同 §6）。
 3. **G1 问题属实与正确性**：判据以 [protocol.md §5 G1](protocol.md#5-核验门禁) 为准，按下列步骤取证：
-   - **G1(b) 结构冒烟（先行短路）**：三件机械预检逐件记录输出——① frontmatter 形状近似（首尾 `---` 界符 + 逐行 `^[A-Za-z_][A-Za-z0-9_-]*:`）；② 模板槽位（PR 正文 §11 节标题齐全；diff 新增行无未替换 `<...>` 占位符残留）；③ skill 文本解析触发近似（SKILL.md `name`/`description` 非空且 `name` 与目录名一致 / AGENTS.md 非空）。任一失败 → 终止本轮核验：G1 ❌，回执 G2/G3/G4a 记「未跑（冒烟短路）」，建议按 protocol §9「G1(b) 冒烟短路」出路退回 Steward。
+   - **G1(b) 结构冒烟（先行短路）**：三件机械预检逐件记录输出——① frontmatter 形状近似（首尾 `---` 界符 + 逐行 `^[A-Za-z_][A-Za-z0-9_-]*:`）；② 模板槽位（产物面：PR 正文 §11 节标题齐全、无未替换 `<...>` 占位符残留；协议与底稿代码围栏内的模板定义行属定义非产物，豁免）；③ skill 文本解析触发近似（SKILL.md `name`/`description` 非空且 `name` 与适配档案 `key` 一致 / AGENTS.md 非空）。任一失败 → 终止本轮核验：G1 ❌，回执 G2/G3/G4a 记「未跑（冒烟短路）」，建议按 protocol §9「G1(b) 冒烟短路」出路退回 Steward。
    - **缺陷复现与消失**：缺陷在 `origin/$D` 可复现、在 `$B` 消失（`grep -nF '<失效串>'` 行号对照）；排除环境特异；定性正确（作业对象问题 → 判不过并注明应走仓内回路）。
    - **链接与锚点**：对 diff 触碰文件的 Markdown 链接与标题锚点逐条核验（GitHub slug 规则：转小写、去 `-` `_` 以外标点、空格换 `-`、重名追加 `-1`、代码围栏内 `#` 行不计），以「0 失效」输出为准；新增陈述有出处。
    - **档案一致性**：adoption=live ⇔ flipped_at 非空（pending ⇔ 空；bootstrap 为 rsi 合法值）——违者为 G1 ❌。
