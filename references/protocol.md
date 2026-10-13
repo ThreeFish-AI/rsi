@@ -124,7 +124,7 @@ case $S in ''|*[!a-z0-9-]*|*..*|-*|*-) echo "ABORT: 非法 slug"; exit 1;; esac
 
 | 角色 | 上下文 | 读写边界 | 职责 | 底稿 |
 | :--- | :--- | :--- | :--- | :--- |
-| **Steward** | fresh | 写限 `$REPO`（隔离 clone）+ `$W/pr/<slug>.patch` 自产 patch；`$W` 其余只读（G0c backlog 检索） | G0 去重、复现、规约溯源、最小改动、noreply 提交、patch 导出 | [steward.md](steward.md) |
+| **Steward** | fresh | 写面仅限 `$REPO`（隔离 clone）+ `$W/pr/<slug>.patch` 自产 patch；`$W` 其余只读（G0c backlog 检索） | G0 去重、复现、规约溯源、最小改动、noreply 提交、patch 导出 | [steward.md](steward.md) |
 | **Verifier** | fresh | 只读 | G1–G4a 核验并出具回执；不做任何修复 | [verifier.md](verifier.md) |
 | **Context-Reviewer** | fresh | 读写仅限 `$REPO` + `$W/pr/<slug>-ctx.md`/`$W/pr/<slug>-ctx.patch` 回执与 patch + PR comment | PR 后八镜头上下文审阅、修复白名单内小修、轻量复验、PR 页摘要 | [context-reviewer.md](context-reviewer.md) |
 
