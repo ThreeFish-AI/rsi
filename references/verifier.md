@@ -14,7 +14,7 @@
 
 ## 纪律
 
-只读：不 commit、不修改任何文件、不推送；自行从磁盘读取 `git -C "$REPO" diff "origin/$D...$B"`；每段命令先执行协议 §3 变量断言。
+只读：不 commit、不修改任何文件、不推送；自行从磁盘读取 `git -C "$REPO" diff "origin/$D...$B"`；每段命令先执行协议 §3 变量断言。包管理器/解释器命令（`uv run`、`npm install`、`pip install` 等）不得在 `$REPO` 内运行——它们会生成 `.venv`、lockfile 等 untracked 副作用文件（落在 .gitignore 覆盖路径的豁免不适用于此类命令），必要的环境准备一律在隔离 clone 之外进行；适配档案声明的 `machine_checks` 不在此限（照声明命令执行，执行后以 `git status --porcelain` 核对隔离 clone 无新增 untracked，有则删除并在回执披露）。
 
 ## 步骤
 
