@@ -19,6 +19,7 @@
 | [references/context-reviewer.md](references/context-reviewer.md) | Context-Reviewer 子代理底稿（PR 后八镜头审阅、修复白名单内小修、摘要回执） |
 | [repos/](repos/) | 适配层：每仓一份档案（upstream、ledger、沉淀格式、分支/commit 约定、不变量**指针**、机器执法命令、adoption 状态等；全部字段见[协议附录B](references/protocol.md#附录b-适配档案字段)） |
 | [evals/trigger-evals.json](evals/trigger-evals.json) | 触发边界正负例（改动 SKILL.md description 须同批过评测） |
+| [docs/research/](docs/research/) | 论文精读调研报告（快照产出；机制语义以 [references/protocol.md](references/protocol.md) 为准） |
 | [CHANGELOG.md](CHANGELOG.md) | 变更登记（Keep a Changelog 格式；[Unreleased] 同批登记义务见 [repos/rsi.md](repos/rsi.md) pr_convention） |
 | LICENSE | MIT License |
 
@@ -55,4 +56,4 @@ ln -sfn ~/projects/rsi ~/.agents/skills/rsi   # Codex 等其他 agent CLI
 
 ## 约束
 
-零可执行运行时代码（协议级 Hook，宿主通用）；G 门禁只增不减；适配档案只放指针与参数，不变量清单复述即违规；MIT License。
+零可执行运行时代码（协议级 Hook，宿主通用）；G 门禁只增不减、判据只许收严；适配档案只放指针与参数，不变量清单复述即违规；MIT License。
