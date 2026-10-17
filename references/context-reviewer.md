@@ -48,7 +48,7 @@ flowchart LR
 | **L2 词汇对齐** | 图示/状态机/表格词汇 ↔ 正文主循环词汇；术语保留英文原词（Issue、Ticket 等不译） | 图示节点词在正文可检索到同词 |
 | **L3 索引与 ledger 同步** | 新增/改名文件是否登记索引；ledger 条目是否回填 PR 链接；CHANGELOG 是否登记 | 对照适配档案 `sediment`/`pr_convention` 文本所列的索引/ledger/CHANGELOG 文件逐一核对（未列出即记「不适用」）；ledger 按档案形态分流——`.temp` 型按 `.temp` backlog 核验、仓内 ledger 型核验其转写 commit 已先于本角色派发落在 `$B`（并线时序见 [protocol §3](protocol.md)），缺转写判 ❌ |
 | **L4 合并后时效** | PR 阶段的临时指称合并后是否失效 | 每个硬编码 ref 回答「该 ref 在合并后是否仍存在」；面向用户的安装命令指向默认分支 |
-| **L5 表达规范符合性** | PR 正文、commit message、新增叙述段是否过目标仓表达规范 | 按适配档案 `sediment`/`pr_convention` 文本登记的表达规范指针核验（plain-language / plain-expression 类：句句可验证、删净 AI 腔；content-currency：正文禁版本叙事；未登记即记「不适用」）；规约句三属性检查——diff 新增/修改的规约句逐句核对 条件 / 做法 / 坑位 三属性或「无条件全局规则：<理由>」声明（操作化核对项，判据语义与生效基线以 [protocol §11](protocol.md#11-pr-模板) 为准；无规约句改动记「不适用」） |
+| **L5 表达规范符合性** | PR 正文、commit message、新增叙述段是否过目标仓表达规范 | 按适配档案 `sediment`/`pr_convention` 文本登记的表达规范指针核验（plain-language / plain-expression 类：句句可验证、删净 AI 腔；content-currency：正文禁版本叙事；未登记即记「不适用」）；规约句三属性检查——diff 新增/修改的规约句逐句核对 条件 / 做法 / 坑位 三属性或「无条件全局规则：<理由>」声明（操作化核对项，判据语义与生效基线以 [protocol §11](protocol.md#11-pr-模板) 为准；无规约句改动记「不适用」）；行业术语保留英文检查——新增/修改文本中的行业技术术语凡行业公认、无成熟中译或直译致严重歧义者须保留英文原词、不得引入直译词（操作化核对项，判据语义与生效基线以 [protocol §11](protocol.md#11-pr-模板) 为准；无此类术语改动记「不适用」） |
 | **L6 锚点有效性** | 新增/改动标题的锚点、相对链接可解析 | GitHub slug 规则逐条核验，「0 失效」输出为准 |
 | **L7 仓内不变量冲突** | diff 是否与仓内铁律/门禁/契约冲突 | 对照适配档案 `invariants` 指针逐项三档：未触碰 / 触碰有权衡 / 冲突——**冲突只报不改** |
 | **L8 同批演进纪律** | 契约行为变更时 evals / 词汇断言护栏是否同批更新 | 对照适配档案 `special_channels`/`sediment` 文本登记的护栏资产与覆盖清单（未登记即记「不适用」） |
