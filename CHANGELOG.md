@@ -5,6 +5,7 @@
 ## [Unreleased]
 
 ### 新增
+- 落盘根目录补 linked worktree 档：protocol §3 路径约定在原「`git rev-parse --show-toplevel` / 非 git 项目取项目根」两档之后追加从句（原句全文保留）——linked worktree（`--git-dir` 与 `--git-common-dir` 绝对路径不等）下 `W` 改取 `git worktree list --porcelain` 首项（main worktree）根下的同一子路径，backlog、`report.md` 与隔离 clone 随之跨 worktree 共享、不随 linked worktree 移除而丢失；bare 仓或 main worktree 下创建目录失败时回落原值并在报告提示迁移，回落后仍不可写沿用 §10「项目目录 `.temp` 不可写」行；常规仓、submodule 与非 git 项目取值不变（条件 / 做法 / 坑位三属性齐备，不触及门禁判据与状态机；源自运行时证据「宿主能力不符且无降级路径」，每工作区一个 linked worktree 的多 worktree 宿主下复现）。
 - 行业术语保留英文约定与全仓「夹具」清扫：protocol §11 写作约定区新增规约句——行业公认、无成熟中译或直译致严重歧义的技术术语（如 Fixture、Harness）一律保留英文原词、禁止生硬直译，首次出现处括注中文释义一次（条件 / 做法 / 坑位三属性齐备，Context-Reviewer L5 并入核验，存量直译词逐批清扫收敛）；全仓 12 处「夹具」统一清扫为「Fixture」（protocol.md 8、verifier.md 2、guided-learn 适配档案 1、调研报告 1；首处 §2 入账硬条件括注「预先构造的固定输入集」）（#27）。
 - 论文精读机制引入批（精选 7 项，其中 5 项经 ≥2 篇全文材料独立互证、2 项含 Awesome 清单标题级佐证，零可执行代码、纯协议文本级；steward 底稿并入「扩写纪律」（保留原句全文 + 追加从句，纠错型修改除外））：G1(b) 结构冒烟短路预检（frontmatter 形状 / 模板槽位 / 解析触发近似）；G2(b) 盲评三补强（异源场景 / 候选集必含现任 / 无关任务护栏）与统计死区（每维 ≥2 场景贡献、T2≥3/T3≥4 最小场景数、预登记软指标豁免）；T2/T3 PR「可证伪预测」小节与 §6 跨会话预测回验钩子；G0c 负证据核查与拒绝诊断四分类（repairable 类可凭同类新证据重开为新条目）；§12 门禁判据单调演化律与 Verifier G3 固定点名检查；§11 规约句三属性写作约定（Context-Reviewer L5 并入核验）；IEEE 参考 [7]–[12]；新增 docs/research/ 调研报告（#25）。
 - 注册 dub（ThreeFish-AI/dub，独立配音 Skill）：新增适配档案 `repos/dub.md`（`adoption: pending`，待 dub 切换 PR 合并后 flip）；SKILL.md 路由表与 description 枚举、README 注册表同步；适配档案与 README 中随清单漂移的计数（vibe-video 的「十五条」、agents 的「六注册仓」、README 的「5+1 适配档案」）改为不含数字的指针式表述；trigger-evals 正负例各增一条（#22）。
