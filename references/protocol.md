@@ -52,7 +52,7 @@ flowchart LR
 
 ## 3. 旁路捕获
 
-主 Agent 发现即追加入账、随即回到主流程；backlog 只由主 Agent 写。目录位于用户当前项目内，**按 repo-key 分仓**：
+主 Agent 发现即追加入账、随即回到主流程；backlog 只由主 Agent 写。目录位于用户当前项目内，linked worktree（附属工作树）下的落点见下方路径约定，**按 repo-key 分仓**：
 
 ```text
 .temp/rsi/<repo-key>/
@@ -69,10 +69,10 @@ flowchart LR
 └── pr/<slug>-ctx.patch   # Context-Reviewer 修复 patch（无一次授权或 push 受阻时只 commit 不 push 导出）
 ```
 
-**路径约定**：主 Agent 在用户项目根计算一次绝对路径 `W="$(git rev-parse --show-toplevel)/.temp/rsi/<repo-key>"`（非 git 项目取项目根绝对路径），连同 `R`、`K`、`<slug>` 写入派发 Prompt；子代理不自行推导（其 cwd 可能被重置）。`<slug>` 由标题转写：去停用词、kebab-case 化，必须匹配 `^[a-z0-9]([a-z0-9-]{0,37}[a-z0-9])?$`（1–39 字符、首尾须字母数字；六处判据须同步修改：本句正则、下方长度断言与 case 断言、steward 底稿副本、两份适配档案（guided-learn、preening-substrate）`branch_style` 内嵌「≤39」注记）。宿主每次工具调用都是独立 shell，**每段命令开头都先声明并断言变量非空与 slug 字符集**：
+**路径约定**：主 Agent 在用户项目根计算一次绝对路径 `W="$(git rev-parse --show-toplevel)/.temp/rsi/<repo-key>"`（非 git 项目取项目根绝对路径），连同 `R`、`K`、`<slug>` 写入派发 Prompt；子代理不自行推导（其 cwd 可能被重置）。linked worktree 下 `W` 改取 main worktree（主工作树）根下的同一子路径，使 backlog、`report.md` 与隔离 clone 跨 worktree 共享、不随 linked worktree 移除而丢失（§1、§3 目录树 report.md 与 review-request.md 行、§6、§8、§10 无网络行的跨会话承接）。条件：`git rev-parse --path-format=absolute --git-dir` 与 `--path-format=absolute --git-common-dir` 不等（git ≥2.31，低于 2.31 时 `--path-format` 不可用、旧 git 把它当未知选项原样回显而在子目录下误判，不触发本档、沿用上式原值；常规仓与 submodule 二者相等，同样沿用上式原值）；做法：以 `git worktree list --porcelain` 首项 `worktree <path>`（取 `worktree ` 前缀之后的整行，路径可含空格）为 main worktree 根；坑位：首项带 `bare` 行（bare 仓无 main worktree）、首项路径下无 `.git` 条目（submodule 自带 linked worktree、git-dir 不叫 `.git` 的 `--separate-git-dir` 等形态下首项是 git-dir 而非工作树，写入会落进 git-dir 内部；git-dir 本身叫 `.git`——如 `--separate-git-dir=<dir>/.git`、指向别处的 `.git` symlink——时首项是其父目录，此判据放行而无法识别，该形态下 linked worktree 与 main worktree 会话的 `W` 分叉，属已知残余），或其下创建 `.temp/rsi/<repo-key>/` 或在其内写入探针文件（写后即删，瞬态不入目录树）失败（目录不存在 / 只读 / 宿主写边界）时，回落上式原值并在报告注明「该 worktree 移除前须先迁移 backlog」，回落后仍不可写则按 §10「项目目录 `.temp` 不可写」行处理；`W` 已取 main worktree 落点而当前 linked worktree 根下已有 `.temp/rsi/<repo-key>/`（存量或回落产物）时，同在报告提示并入 main worktree 落点；目录内 `.gitignore` 自忽略，main worktree 的 git 状态不受污染。`<slug>` 由标题转写：去停用词、kebab-case 化，必须匹配 `^[a-z0-9]([a-z0-9-]{0,37}[a-z0-9])?$`（1–39 字符、首尾须字母数字；六处判据须同步修改：本句正则、下方长度断言与 case 断言、steward 底稿副本、两份适配档案（guided-learn、preening-substrate）`branch_style` 内嵌「≤39」注记）。宿主每次工具调用都是独立 shell，**每段命令开头都先声明并断言变量非空与 slug 字符集**：
 
 ```bash
-R=<upstream>; K=<repo-key>; D=<default-branch>; W=<主 Agent 传入的绝对路径>; S=<slug>
+R=<upstream>; K=<repo-key>; D=<default-branch>; W="<主 Agent 传入的绝对路径>"; S=<slug>
 NOREPLY=24806149+ThreeFish-AI@users.noreply.github.com  # 由主 Agent 于派发时供值（各仓值待档案增设字段后可指针化）
 REPO="$W/repo/$S"; B="rsi/$S"; : "${R:?}" "${K:?}" "${D:?}" "${W:?}" "${S:?}" "${NOREPLY:?}"
 export LC_ALL=C  # 固定 collation：case 字符类断言与正则跨宿主/跨 locale 逐字节等价（bash 3.2 + UTF-8 下 [!a-z0-9-] 会误放行大写与变音符）
