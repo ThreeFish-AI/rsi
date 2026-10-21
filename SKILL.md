@@ -31,6 +31,8 @@ RSI = 经人工评审闸门的**跨会话**规约迭代：改进落在上游注�
 
 捕获入账 → 当前任务先交付（用户点名或阻断性缺陷走 §4 快速通道除外）→ 派发 **Steward**（隔离 clone · G0 去重 · 复现 · 规约溯源 · 最小改动 · noreply 提交，[底稿](references/steward.md)）→ 派发 **Verifier**（只读核验 G1–G4a，[底稿](references/verifier.md)）→ RSI 改进报告**每批一次确认**（话术含 PR 后自动审阅授权）→ 推送分支建 PR → 派发 **Context-Reviewer**（八镜头上下文审阅 · 修复白名单内小修 · PR 页摘要回执，[底稿](references/context-reviewer.md)）→ 回报 PR 链接与摘要 → **人工决策合并**。
 
+backlog 无未结条目（或用户点名回顾）时走**回顾模式**：按协议 §2 触发白名单逐项过当前会话证据，零候选输出零条目回执（条件 / 做法 / 坑位与回执形态定义见 [protocol §3](references/protocol.md#3-旁路捕获)），不派发子代理；有候选照常捕获入账、回到上行主流程。
+
 ## 硬禁令（一句话版）
 
 永不推默认分支、不 merge 上游 PR（本地 merge 例外见协议 §7）、永不 force-push、不改 PR base、不代为 approve、严禁 rebase；提交身份一律 noreply 覆盖。
