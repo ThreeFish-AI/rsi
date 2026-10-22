@@ -191,8 +191,7 @@ NRE=$(printf '%s' "$NOREPLY" | sed 's|[.]|\\.|g')  # '.' 为 noreply 形态唯�
 ## 6. 限流与背压
 
 - 一个 PR 只含一个正交改进；互相重叠的条目合并为一条或串行处理。
-- 单会话最多提交 2 个 PR，T1 优先。
-- 背压：当前用户在上游已开启 ≥3 个 RSI 分支 PR 时暂停提交——补丁照常完成并标记 `ready`，只报告、不推送（`gh pr list -R "$R" --author @me --state open --json headRefName` 按适配档案分支前缀过滤计数）。
+- 同一上游 repo 至多 2 个 open 的 RSI 分支 PR（提交时点核查，多条 `ready` 待提交时 T1 优先）；达到上限即暂停提交——补丁照常完成并标记 `ready`，只报告、不推送（`gh pr list -R "$R" --author @me --state open --json headRefName` 按适配档案分支前缀过滤计数）。坑位：额度按 repo 计量、只约束同仓 open 存量，已合并（或关闭）的 PR 自然释放额度，不存在须回补的「会话额度」概念；会话维度不设总量上限，多仓同会话的提交速率由 ready 门（门禁全绿方可提交）与人工合并决策承接。
 - 推送前 `git -C "$REPO" fetch origin`；若 `origin/$D` 已前进，执行 `git -C "$REPO" -c user.name=rsi-merge -c user.email="$NOREPLY" merge origin/$D`（严禁 rebase；merge commit 身份须 noreply 覆盖），有冲突则解冲突，提交前对全部触碰文件执行 `grep -cE '^(<<<<<<<|=======|>>>>>>>)'` 须全为 0（输出贴回执；合法 setext 标题下划线——上一行非空且为标题文本、本行为 ≥4 等号纯序列——可人工豁免并在回执注明），并重跑 G1、G3；merge 后推送前对 `origin/$D..$B` 全量 commit 重跑 G4a 元数据检查（无冲突也须跑）。
 - 跨会话承接：下次会话 `captured` 条目照常处理；`ready` 条目推送前重跑 G0a/G0b 去重（含 G0c 负证据核查）；`superseded` 条目复核其 PR——已合并即结案，关闭未合并转 `rejected`；`submitted` 条目先按 [§1](#1-流程总览) 复核 PR 终态，补跑判据见 [§8](#8-context-reviewer-挂载)。**预测回验钩子**：新条目入账且同主题（同 `文件:锚点` 或条目标题核心名词）已有 T2/T3 条目、其 PR 已合并且当前安装版本含该 merge sha（`git merge-base --is-ancestor <merge-sha> <installed>` 判定；安装版本未知时记「待回验」）时，派发前读取该条目 PR「可证伪预测」小节（[§11](#11-pr-模板)），对照新证据将条目「预测回验」记为兑现 / 未兑现并回填双方条目注记（仓内 ledger 型仓库：旧条目注记回填 .temp 指针行，仓内 ledger 行不回写）；祖先判定不成立或修复未安装时记「待回验」，不评收益；未兑现时处理意见须说明是否影响该 PR 的合并后评估。
 

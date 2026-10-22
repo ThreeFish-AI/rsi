@@ -14,6 +14,7 @@
 - 统一 RSI 经验沉淀协议 v0.1 首次落地：G0–G4 门禁、六态状态机、限流背压与降级矩阵（references/protocol.md）；Steward / Verifier / Context-Reviewer 三份子代理底稿；5+1 仓库适配档案；SKILL.md 薄入口与触发正负例评测（#1）。
 
 ### 更改
+- §6 限流与背压合并为单条按 repo 计量规则：原「单会话最多提交 2 个 PR」与背压「≥3 open 暂停」两条款合一——同一上游 repo 至多 2 个 open 的 RSI 分支 PR（提交时点核查，多条 `ready` 待提交时 T1 优先），达到上限即暂停提交，补丁照常完成并标记 `ready`、只报告不推送，计数命令与适配档案分支前缀过滤原文保留；坑位封口「会话额度」歧义（额度只约束同仓 open 存量，已合并或关闭的 PR 自然释放、无回补问题）并声明速率承接（会话维度不设总量，多仓同会话的提交速率由 ready 门与人工合并决策承接）。T3 制度变更——门禁判据单调演化律放宽点名：删检查项（会话维度检查）＋收窄判据辖域（全会话→单仓），放宽经用户当轮裁决认可、由人工 merge 终裁；残余风险如实声明：单会话理论上限由 2 升至 2×live 仓数（源自 RSI-20261020-08）（#31）。
 - 上游仓更名同步：ThreeFish-AI/dub → ThreeFish-AI/vibe-tts（上游改名 PR 已合并），适配档案 git mv `repos/dub.md` → `repos/vibe-tts.md`（frontmatter `key`/`upstream` 同步），SKILL.md description 枚举与路由表、README 注册表、trigger-evals 正负例语料一并迁移，正文指称同步（库模块 `dub_` 前缀 → `vibe_tts_` 前缀）；存量 CHANGELOG 条目、既有 PR/issue URL 与 flipped_at 历史锚点保留原文（GitHub 仓库重定向保活），历史台账不改写（#23）。
 
 ### 修复
