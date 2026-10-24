@@ -239,7 +239,7 @@ review_focus: <G2 比选/盲评中 Verifier 标注的最弱一环，或「无」
 
 PR 创建后，CHANGELOG PR 号回填由主 Agent 以 rsi-reviewer noreply 身份追加 commit，标题式样 `chore(changelog): 回填 PR 号（#N）;`（正文含签名块）；回填与转写并入同一时序链——PR 创建 → 仓内 ledger 转写（如适用）→ 回填 commit（如适用——适配档案登记 CHANGELOG 号登记义务者）→ 派发 Context-Reviewer（共用同一 `$REPO` clone，防并发 push 非快进拒绝与 L3 检查误报）。
 
-- **非阻塞语义**：Context-Reviewer 不等待、不阻塞用户；其发现的**新问题不自动开新 RSI 回路**（防递归风暴）——只能作为 PR 评论披露或登记下一批条目，受限流背压管辖。
+- **非阻塞语义**：Context-Reviewer 不等待、不阻塞用户；其发现的**新问题不自动开新 RSI 回路**（防递归风暴）——只能作为 PR 评论披露或登记下一批条目，受限流管辖。
 - **状态对接**：backlog「结论」行追加 `submitted · PR #N · ctx-review: 可合并|修后可合并|需人工裁决（F×n 修×n 裁×n）`；跨会话承接：`submitted` 条目若 PR 仍 open 且 PR 页无回执 comment → 下次会话补跑；已合并或关闭未合并的按 [§1](#1-流程总览) 转移，不补跑。
 - **回执更新**：PR 追加 commit 后重跑复验的回执更新机制（编辑同一 comment、版本号递增，不另发新评论）以 [context-reviewer.md §8](context-reviewer.md#8-pr-页摘要模板) 为准。
 - **人永远是合并决策者**：摘要仅供决策，机器审阅非替代人工最终 review。
