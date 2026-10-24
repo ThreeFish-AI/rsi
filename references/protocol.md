@@ -191,7 +191,7 @@ NRE=$(printf '%s' "$NOREPLY" | sed 's|[.]|\\.|g')  # '.' 为 noreply 形态唯�
 ## 6. 限流与背压
 
 - 一个 PR 只含一个正交改进；互相重叠的条目合并为一条或串行处理。
-- 同一上游 repo 至多 2 个 open 的 RSI 分支 PR（提交时点核查，多条 `ready` 待提交时 T1 优先）；达到上限即暂停提交——补丁照常完成并标记 `ready`，只报告、不推送（`gh pr list -R "$R" --author @me --state open --json headRefName` 按适配档案分支前缀过滤计数）。坑位：额度按 repo 计量、只约束同仓 open 存量，已合并（或关闭）的 PR 自然释放额度，不存在须回补的「会话额度」概念；会话维度不设总量上限，多仓同会话的提交速率由 ready 门（门禁全绿方可提交）与人工合并决策承接。
+- 提交时点以 `gh pr list -R "$R" --author @me --state open --json headRefName`（按适配档案分支前缀过滤）计数本仓 open 的 RSI 分支 PR 并在回执披露——计数仅披露、不作闸：不设 open 存量上限，多条 `ready` 待提交时 T1 优先、逐条照常提交；评审负担防护不由机器存量闸承接，由 ready 门（门禁全绿方可提交）、[§7](#7-确认与提交) 每批一次确认与人工合并决策三道自然限速承接。坑位：open 存量闸「至多 2 个」由 RSI-20261024-04 经用户 2026-10-24 当轮指示解除（两代沿革：PR #1 立会话 2 PR＋全仓 ≥3 open 背压，PR #31 合并为按仓 2 open）；解除后单仓单批可同时挂多个 open PR，合并节奏的实质闸在人工合并决策；若未来引入多维护者或自动化合并，评审带宽的承接须重估本条。
 - 推送前 `git -C "$REPO" fetch origin`；若 `origin/$D` 已前进，执行 `git -C "$REPO" -c user.name=rsi-merge -c user.email="$NOREPLY" merge origin/$D`（严禁 rebase；merge commit 身份须 noreply 覆盖），有冲突则解冲突，提交前对全部触碰文件执行 `grep -cE '^(<<<<<<<|=======|>>>>>>>)'` 须全为 0（输出贴回执；合法 setext 标题下划线——上一行非空且为标题文本、本行为 ≥4 等号纯序列——可人工豁免并在回执注明），并重跑 G1、G3；merge 后推送前对 `origin/$D..$B` 全量 commit 重跑 G4a 元数据检查（无冲突也须跑）。
 - 跨会话承接：下次会话 `captured` 条目照常处理；`ready` 条目推送前重跑 G0a/G0b 去重（含 G0c 负证据核查）；`superseded` 条目复核其 PR——已合并即结案，关闭未合并转 `rejected`；`submitted` 条目先按 [§1](#1-流程总览) 复核 PR 终态，补跑判据见 [§8](#8-context-reviewer-挂载)。**预测回验钩子**：新条目入账且同主题（同 `文件:锚点` 或条目标题核心名词）已有 T2/T3 条目、其 PR 已合并且当前安装版本含该 merge sha（`git merge-base --is-ancestor <merge-sha> <installed>` 判定；安装版本未知时记「待回验」）时，派发前读取该条目 PR「可证伪预测」小节（[§11](#11-pr-模板)），对照新证据将条目「预测回验」记为兑现 / 未兑现并回填双方条目注记（仓内 ledger 型仓库：旧条目注记回填 .temp 指针行，仓内 ledger 行不回写）；祖先判定不成立或修复未安装时记「待回验」，不评收益；未兑现时处理意见须说明是否影响该 PR 的合并后评估。
 
@@ -239,7 +239,7 @@ review_focus: <G2 比选/盲评中 Verifier 标注的最弱一环，或「无」
 
 PR 创建后，CHANGELOG PR 号回填由主 Agent 以 rsi-reviewer noreply 身份追加 commit，标题式样 `chore(changelog): 回填 PR 号（#N）;`（正文含签名块）；回填与转写并入同一时序链——PR 创建 → 仓内 ledger 转写（如适用）→ 回填 commit（如适用——适配档案登记 CHANGELOG 号登记义务者）→ 派发 Context-Reviewer（共用同一 `$REPO` clone，防并发 push 非快进拒绝与 L3 检查误报）。
 
-- **非阻塞语义**：Context-Reviewer 不等待、不阻塞用户；其发现的**新问题不自动开新 RSI 回路**（防递归风暴）——只能作为 PR 评论披露或登记下一批条目，受限流背压管辖。
+- **非阻塞语义**：Context-Reviewer 不等待、不阻塞用户；其发现的**新问题不自动开新 RSI 回路**（防递归风暴）——只能作为 PR 评论披露或登记下一批条目，受限流管辖。
 - **状态对接**：backlog「结论」行追加 `submitted · PR #N · ctx-review: 可合并|修后可合并|需人工裁决（F×n 修×n 裁×n）`；跨会话承接：`submitted` 条目若 PR 仍 open 且 PR 页无回执 comment → 下次会话补跑；已合并或关闭未合并的按 [§1](#1-流程总览) 转移，不补跑。
 - **回执更新**：PR 追加 commit 后重跑复验的回执更新机制（编辑同一 comment、版本号递增，不另发新评论）以 [context-reviewer.md §8](context-reviewer.md#8-pr-页摘要模板) 为准。
 - **人永远是合并决策者**：摘要仅供决策，机器审阅非替代人工最终 review。
@@ -272,7 +272,6 @@ PR 创建后，CHANGELOG PR 号回填由主 Agent 以 rsi-reviewer noreply 身�
 | 统一 rsi skill 未安装 / 不可调用 | 调用方（注册仓 Hook）直接拉取本仓 `references/protocol.md` 全文，按协议文本派发 Steward 与 Verifier；无法读取（离线）时只捕获入 backlog 标「待联网」，派发延后 |
 | 无写权限 | 报告中声明将 fork，经同意后按 [§7](#7-确认与提交) fork 配方推送 |
 | 用户拒绝 | `declined`，保留 patch，不再追问 |
-| 背压触发 | 补丁完成标 `ready`，只报告不推送 |
 | 授权为「关闭」 | 只记录来源①条目，不派发 |
 | 仓内扩展降级 | 适配档案 `degrade_extra` 字段追加（如 vibe-video 非 git 安装大声退出） |
 
