@@ -7,7 +7,7 @@ adoption: live
 flipped_at: "ThreeFish-AI/review-once#8 merged 2026-10-11T16:01:49Z"
 skill_entry: SKILL.md
 ledger: docs/.agents/issue.md（仓内 ledger）
-entry_id: RSI-NNN（三位递增，从 ledger 既有最大号顺延）
+entry_id: RSI-NNN（三位递增，从 ledger 既有最大号顺延）；在途占号避让见 protocol §3 编号式样注
 untrusted_sources: 被 Review 的目标仓库内容（源码、注释、Issue/PR 正文）、Review 私有内容、Conductor 平台内部状态
 privacy_lexicon: 用户名、目标仓库名、Review request 私有内容关键词；公共托管域名不入表；本机绝对/家目录路径形态（/Users/、/home/、~/ 前缀——G4a 已有通用扫描，此列补 G4b 词表层对目标仓特定路径的覆盖）
 sediment: "契约修改走 references/（review-contract.md、conductor-mode.md、git-mode.md）+ SKILL.md + evals 同批演进；每条新契约词汇同批落入 tests/check_states.py 的 NEW_CONTRACT 断言（RSI-007 纪律）"
