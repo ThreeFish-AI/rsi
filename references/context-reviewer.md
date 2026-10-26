@@ -162,7 +162,7 @@ Fingerprint 去重：`normalized path + 失败模式 + 触发场景`，行号只
 ## 10. 主 Agent 编排
 
 - **时机**：`gh pr create` 成功、解析出 `N`、交接块追加后后台派发（仓内 ledger 型仓库须先完成 [protocol §3](protocol.md) 转写 commit，时序：PR 创建 → 转写 → 派发）；主会话可先回报「PR 已创建 `<URL>`，Context-Reviewer 已派发」，回执齐备后补充摘要（不阻塞用户）；回执标注「升级条件命中」时由主 Agent 派发第 2 轮新实例（信息包 = 增量 diff + 未查镜头，不含第 1 轮 Finding 理由）——新实例派发归主 Agent，不靠第一实例自派（[protocol §4](protocol.md) 不依赖子代理嵌套）。
-- **串行**：同批全部 PR 串行派发、先 T1 后 T2 再 T3（隔离 clone 天然支持并行，但权限提示在主会话交错会污染确认语义，串行换确定性）。
+- **串行**：同批全部 PR 串行派发、先 T1 后 T2 再 T3（全序定义见 [protocol §6](protocol.md#6-限流与背压)）（隔离 clone 天然支持并行，但权限提示在主会话交错会污染确认语义，串行换确定性）。
 - **权限收敛**：派发 Prompt 首行声明子代理工具白名单（`$REPO` 内写、push 同名分支、`gh pr comment -R "$R"`、回执与 patch 落盘 `$W/pr/<slug>-ctx.md`/`$W/pr/<slug>-ctx.patch`）；所有「需要用户决定」的场景按 §4 路由进摘要「需人工裁决」，绝不中途提问。
 - **回执消费**：主 Agent 据回执回写 backlog「结论」行、组装最终回报；PR comment 由子代理直接发布（它持有全部证据），失败时降级为仅落盘、主 Agent 代发或并入回报。
 
