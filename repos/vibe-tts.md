@@ -7,7 +7,7 @@ adoption: live
 flipped_at: "ThreeFish-AI/dub#1 merged 2026-10-13T08:19:07Z"
 skill_entry: SKILL.md
 ledger: docs/.agents/issue.md（仓内 ledger）
-entry_id: RSI-NNN（三位递增，从 ledger 既有最大号顺延）
+entry_id: RSI-NNN（三位递增，从 ledger 既有最大号顺延）；在途占号避让见 protocol §3 编号式样注
 untrusted_sources: 待配音的文本内容、用户提供的声音样本及其来源说明；上游 vibe-video 的 Issue 正文，上游教训一律写全 URL 引用
 privacy_lexicon: 声音样本生物特征纪律——样本路径、音频、样本指纹与说话人身份绝不进任何 RSI 材料；输出目录与数据目录的实际路径；公共托管域名不入表；本机绝对/家目录路径形态（/Users/、/home/、~/ 前缀——G4a 已有通用扫描，此列补 G4b 词表层对目标仓特定路径的覆盖）
 sediment: "机制契约改动走 references/（CONTRACT/ENGINES/STYLES/ENV/VOICE-REFS）与 SKILL.md（正文守 8000 字符预算）；CHANGELOG [Unreleased] 登记；ledger 条目回填 PR 与 commit 链接；复发不新开编号，原条目追加带日期复盘点"

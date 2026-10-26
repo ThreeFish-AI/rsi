@@ -52,7 +52,7 @@ flowchart LR
 
 ## 3. 旁路捕获
 
-主 Agent 发现即追加入账、随即回到主流程；backlog 只由主 Agent 写。条目编号入账前先重读 ledger 现值再顺延分配（无条件全局规则：读现值永不劣于沿用上下文缓存值，防共享落点下多会话并发入账撞号——现值一律取本次写入的 ledger：.temp 入账重读 `$W/backlog.md` 现值，仓内 ledger 型仓库转写时点的编号（编号式样注见下）重读隔离 clone `origin/$D` 上仓内 ledger 的现值顺延，同受重读纪律约束）。共享落点使写者可跨会话并存：不同会话共享同一 `W` 时，同仓条目的捕获与派发须跨会话串行、由用户协调先后——串行辖域为同仓条目自捕获至终态的整个处理流：报告落盘、§7 推送 / PR 创建、仓内转写与 CHANGELOG 回填、§8 审阅回路均在辖内（在途隔离 clone 的占用延续至条目终态）——坑位：并发下后启动会话把在途隔离 clone 按「中断残留」改名（§4 步骤②）、`report.md` 后写覆盖前写、backlog 追加交叠与条目编号撞号；不引入锁文件等机制（零可执行代码不变量，罕见并发窗口下的最小干预）。目录位于用户当前项目内，linked worktree（附属工作树）下的落点见下方路径约定，**按 repo-key 分仓**：
+主 Agent 发现即追加入账、随即回到主流程；backlog 只由主 Agent 写。条目编号入账前先重读 ledger 现值再顺延分配（无条件全局规则：读现值永不劣于沿用上下文缓存值，防共享落点下多会话并发入账撞号——现值一律取本次写入的 ledger：.temp 入账重读 `$W/backlog.md` 现值，仓内 ledger 型仓库转写时点的编号（编号式样注见下）（存在在途占号时按编号式样注取 max 顺延）重读隔离 clone `origin/$D` 上仓内 ledger 的现值顺延，同受重读纪律约束）。共享落点使写者可跨会话并存：不同会话共享同一 `W` 时，同仓条目的捕获与派发须跨会话串行、由用户协调先后——串行辖域为同仓条目自捕获至终态的整个处理流：报告落盘、§7 推送 / PR 创建、仓内转写与 CHANGELOG 回填、§8 审阅回路均在辖内（在途隔离 clone 的占用延续至条目终态）——坑位：并发下后启动会话把在途隔离 clone 按「中断残留」改名（§4 步骤②）、`report.md` 后写覆盖前写、backlog 追加交叠与条目编号撞号；不引入锁文件等机制（零可执行代码不变量，罕见并发窗口下的最小干预）。目录位于用户当前项目内，linked worktree（附属工作树）下的落点见下方路径约定，**按 repo-key 分仓**：
 
 ```text
 .temp/rsi/<repo-key>/
@@ -105,7 +105,7 @@ case $S in ''|*[!a-z0-9-]*|*..*|-*|*-) echo "ABORT: 非法 slug"; exit 1;; esac
 - 拒绝诊断：<不适用 | 候选 <一句话> · 被拒门 <G 门> · 失败原因 <一句话> · 与触发证据关系 <一句话> · 分类 <hard-unrecoverable|repairable-implementation|repeatedly-unpromising>>（仅 rejected 填写；抽象模式入账，不复述触发证据原文）
 ```
 
-> 编号式样（`RSI-NNN` 仓内 ledger 型 / `RSI-YYYYMMDD-NN` 项目 .temp 型）由适配档案 `entry_id` 供值。仓内 ledger 型仓库（适配档案 `ledger` 指向仓内文件者）：PR 创建成功时由主 Agent 将条目转写仓内 ledger、沿用仓内编号（`entry_id` 仓内式样），.temp backlog 结论行同步指向仓内条目；转写由主 Agent 在 `$REPO` 以 rsi-reviewer noreply 身份追加独立 commit 完成，且须先于 Context-Reviewer 派发（时序：PR 创建 → 转写 commit → 派发）。
+> 编号式样（`RSI-NNN` 仓内 ledger 型 / `RSI-YYYYMMDD-NN` 项目 .temp 型）由适配档案 `entry_id` 供值。仓内 ledger 型仓库（适配档案 `ledger` 指向仓内文件者）：PR 创建成功时由主 Agent 将条目转写仓内 ledger、沿用仓内编号（`entry_id` 仓内式样），.temp backlog 结论行同步指向仓内条目；转写由主 Agent 在 `$REPO` 以 rsi-reviewer noreply 身份追加独立 commit 完成，且须先于 Context-Reviewer 派发（时序：PR 创建 → 转写 commit → 派发）。仓内 ledger 型仓库的 NNN 在 Steward 建分支时即随 `$B` 占号，且 #32 后同仓可同时挂多个 open PR——不并行也会撞号，故在途占号须显式避让。条件：适配档案 `branch_style` 含 NNN；做法：编号由主 Agent（单写者）于派发 Steward 前分配：NNN = max（`origin/$D` 仓内 ledger 现值；`$W/backlog.md` 同仓非终态条目已登记的仓内编号；有 `gh` 时 [§6](#6-限流与背压) 计数命令所列本仓 open RSI 分支名内含的编号）+ 1，同批逐条递增、写入条目结论行「派发 · 分支 `<B>` · 编号 `<NNN>`」后随 `$B` 供值，禁止以占位编号（如「RSI-<顺延>」）派发；Steward clone 后断言分配号大于 `origin/$D` 仓内 ledger 现值，不满足即止步回执、由主 Agent 重新分配，不自行顺延；转写沿用分配号，转写时点按本注首段重读现值——分配号仍空闲即沿用，已被会话外合并占用则取 max 后顺延改号并在回报披露；坑位：只读现值看不到在途未合并分支的占号（vibe-video 曾靠手工把 I-077 顺延到 I-078 规避）；合并顺序与编号顺序不一致时，仓内 ledger 的 ID 升序排列由后合并方整理。
 
 | 分级 | 范围 | commit type | G2 要求 | 提交形态 |
 | :--- | :--- | :--- | :--- | :--- |
