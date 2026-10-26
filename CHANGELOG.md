@@ -19,6 +19,7 @@
 - 上游仓更名同步：ThreeFish-AI/dub → ThreeFish-AI/vibe-tts（上游改名 PR 已合并），适配档案 git mv `repos/dub.md` → `repos/vibe-tts.md`（frontmatter `key`/`upstream` 同步），SKILL.md description 枚举与路由表、README 注册表、trigger-evals 正负例语料一并迁移，正文指称同步（库模块 `dub_` 前缀 → `vibe_tts_` 前缀）；存量 CHANGELOG 条目、既有 PR/issue URL 与 flipped_at 历史锚点保留原文（GitHub 仓库重定向保活），历史台账不改写（#23）。
 
 ### 修复
+- context-reviewer §10「串行」句与 protocol §6 存量闸解除对齐（#32 漏改残留）：「同批 ≤2 PR 串行派发、先 T1 后 T2」纠错为「同批全部 PR 串行派发、先 T1 后 T2 再 T3」——#32 解除 open 存量上限时同步了 protocol §6/§8 与调研快照、独漏本行「≤2」字面（#1 立规残留），同批 3 条 ready 全绿时两处对 Context-Reviewer 派发给出相反判定；其余字面（隔离 clone 天然支持并行、串行换确定性等理由句）逐字保留，串行覆盖面由「≤2」扩为「全部」属纠错非弱化（源自 RSI-20261026-03）（#33）。
 - 盲审只读纪律补包管理器副作用显式禁令：steward 与 verifier 两份底稿的只读纪律处各补一句——禁止在隔离 clone 内运行包管理器/解释器命令（uv run、npm install、pip install 等生成 .venv、lockfile 等 untracked 副作用文件，.gitignore 豁免不覆盖此类命令），必要的环境准备一律在隔离 clone 之外进行；verifier 另加例外——适配档案声明的 `machine_checks` 不在此限（照声明命令执行，事后核对隔离 clone 无新增 untracked）：verifier 步骤 5 要求在隔离 clone 内执行 `machine_checks`，而 vibe-video、vibe-tts 的该字段正是 `uv run` 命令，无例外则底稿内部互斥；steward 无执行 `machine_checks` 的步骤，不加例外（源自 review-once RSI-013 同源缺口；禁令主体与 review-once#11 同构；#26）。
 - vibe-tts 适配档案的「须与 vibe-video 同值」表述改为「黄金哈希测试只住 vibe-tts，vibe-video 经委托继承、不留镜像副本」：vibe-tts 与 vibe-video 的配音测试按被测对象归属拆分，不再要求双仓人工同步（#23）。
 - 注册状态 flip 补登：agents.md（#2）、preening-substrate / guided-learn / vibe-video（#3）、review-once（#6）依次置 `live`——`adoption`、SKILL 路由表与 README 注册表同步翻转（#2、#3、#6）。
