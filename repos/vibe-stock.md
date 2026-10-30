@@ -15,7 +15,7 @@ branch_style: "ThreeFish-AI/rsi-<slug>"
 commit_convention: "feat|fix|docs|refactor|chore(changelog): 中文描述;"
 pr_convention: "中文标题与正文；功能变更常规 PR、触碰红线不变量或裁决链语义一律 Draft；CHANGELOG 同批登记；base=main"
 invariants: "指针→ThreeFish-AI/vibe-stock AGENTS.md：红线四条（不下单/敏感信息零落盘/RiskGuard 只降不升/门禁只收严-selftest 全绿）与『改一处规约须同步全部指针（判表/PIPELINE/README）』SSOT 纪律"
-machine_checks: "uv run --no-project scripts/adjudicate.py --selftest && uv run --no-project scripts/diagnose.py --selftest && uv run --no-project scripts/postmortem.py --selftest"
+machine_checks: "uv run --no-project scripts/adjudicate.py --selftest && uv run --no-project scripts/diagnose.py --selftest && uv run --no-project scripts/postmortem.py --selftest && uv run --no-project scripts/lens.py --selftest"
 legacy_exemption_keys: []
 degrade_extra: 无
 special_channels: 无
