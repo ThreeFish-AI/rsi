@@ -33,6 +33,7 @@
 | guided-learn | ThreeFish-AI/guided-learn | live |
 | vibe-video | ThreeFish-AI/vibe-video | live |
 | vibe-tts | ThreeFish-AI/vibe-tts | live |
+| vibe-stock | ThreeFish-AI/vibe-stock | pending |
 | review-once | ThreeFish-AI/review-once | live |
 
 `pending` = 该仓切换 PR 合并前，仍按仓内既有 RSI 流程运行；合并后置 `live`，SSOT 原子翻转。切换 PR 已合并、flip PR 未落的窗口内仍为 `pending`，此时按协议直接派发、不退回仓内流程（防环形指引）。
