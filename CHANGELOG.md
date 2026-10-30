@@ -2,15 +2,14 @@
 
 本仓库遵循 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.1.0/) 格式；版本历史与全部变更痕迹由 Git 历史承载。
 
-### Added
-
-- vibe-stock 适配档案（RSI-20261030-01，#41）：`repos/vibe-stock.md`（adoption:
-  pending）+ SKILL.md 注册仓库路由表行 + README 注册仓库表行；切换 PR
-  ThreeFish-AI/vibe-stock#12（RSI.md 整替为指针 stub，须晚于本 PR 合并），
-  flip PR 待两 PR 合并后 24h 内提。
-
+## [Unreleased]
 
 ### 新增
+
+- vibe-stock 接入统一 RSI 路由（RSI-20261030-01，#41）：`repos/vibe-stock.md`
+  适配档案（adoption: pending）+ SKILL.md 注册仓库路由表行 + README 注册仓库
+  表行；切换 PR ThreeFish-AI/vibe-stock#12（RSI.md 整替为指针 stub，须晚于
+  本 PR 合并），flip PR 待两 PR 合并后 24h 内提。
 - 盲评输入内容与判定结果落点纪律成文（盲性条款只防文件级泄漏、未覆盖内容级泄漏的判据缺位补全）：protocol §4 盲评前置检条在「读到 `pr/<slug>.patch`、`pr/<slug>.md` 或存档内预登记的新版预期即破坏盲性」原句全文保留下句末追加——条件同前句（T2/T3 盲评回放，含 §10 顺序自评的材料落盘）；做法：产出与判定子代理实际收到的全部输入（派发消息、场景文本与 rubric）只写题目、场景事实与评分维度（派发编排字段系既有义务不在此限，规约文本与打乱作答按取文与读面纪律供给、亦不在此限），不得含预登记预期、场景构成类别标签（主场景 / 异源 / 无关常规任务 / 哨兵等）或任何版本暗示，预登记与场景构成标注只留在 `pr/<slug>-blind-prompt.md` 存档、不随派发下发，从存档摘取场景须剥净预期括注与类别标签，事后发现已派发输入违反本款的整轮作废、剥净后以全新实例重跑且旧轮结果不采用；判定表、分场景评分矩阵与标签映射一律落 `$W/pr/<slug>-blind/`、不回写存档，存档只收派发前内容（补写口径指回 §4「并行编排」①，不另立）；坑位：「（预期两版等价）」类括注最易随手写进场景，趋平偏置使无关任务护栏（§5 G2(b)「新版劣化即不过」）空转，判定后回填存档令「预登记在先」失去文件级时序佐证；§3 目录树 blind-prompt 行注释末追加「判定结果不回写，落点见 §4 盲评前置检」指针、盲评工作区行枚举补「评分矩阵与标签映射」与 §4 既有「标签映射单列」对齐（纯收严、原句全文保留，不触 G2(b) 判据文字；源自 RSI-20261026-10）（#40）。
 - 提交身份纪律成文（改写类 git 操作无身份覆盖条款的模板缺位补全）：protocol §7「身份告知」条后新增「提交身份纪律」条，作 `$REPO` 内提交身份覆盖的唯一定义处，各处既有 noreply 式样（§4 步骤⑦、§3 转写、§6 merge、§8 回填、context-reviewer §5）原句全文保留、视作本条实例。条件：在 `$REPO` 内执行任何生成或改写 commit 的 git 操作（commit、amend、merge、cherry-pick、revert，含转写 / 授权例外微修 / 回填 / Context-Reviewer 修复）。做法：一律带全套 `-c user.name=<角色> -c user.email="$NOREPLY"`；每次写入后立即核对 author 与 committer；每次推送前（首推与追加推送均在内）对 `origin/$D..$B` 全部 commit 按 §5 G4a 元数据判据核对，与 §6 merge 后复跑同一检查、不另立判据，不合规即停止推送。坑位：amend 与 cherry-pick 不带 `-c` 时 committer 回落宿主默认而 author 不变，只看 author 即漏检；带 `-c` 的 amend 也不改 author（须 `--reset-author`）；宿主 `GIT_*` 环境变量与 `author.*` / `committer.*` 配置优先于 `-c user.*`；未推送 HEAD 可带 `-c` 重做 amend，非 HEAD 或已推送 commit 无合规改写路径，只能停推、披露并交用户裁定。§6 merge 段与 §4 授权例外条各在句末追加指向本条的指针；steward 底稿纪律 4 与 context-reviewer §5「commit 身份」条两份底稿同步指针（原句全文保留，后者补推送前对 `origin/$D..$B` 全部 commit 核对 author 与 committer、不只追加的 commit）（纯收严：既有式样与 G4a 判据文字不动；源自 RSI-20261026-09，授权例外微修 amend 致 committer 回落宿主默认身份的运行时证据）（#39）。
 - report 按批追加、条目指称消歧与阶段时刻注记成文（§7 改进报告条无追加/指称/时刻纪律的模板缺位补全，#30 坑位列举覆盖风险但未立规则）：protocol §7 改进报告条在「同内容落 `$W/report.md`」原句全文保留下句末追加——`report.md` 按批追加、不覆盖前批（批头登记日期与本批条目集合，用户未答复的 `ready` 条目在后续批报告中重列）、报告与部分确认中的条目一律以 `<repo-key>/<编号>` 或 slug 指称、本批含 Verifier 回执点名的放宽类条目时确认请求对该条目逐条点名（不得被整批「全部确认」顺带覆盖）、每条结论行注记各阶段派发/回执时刻（本地时刻、分钟精度：Steward 派发/回执、盲评派发、判定回执、Verifier 回执、报告呈现，供「可证伪预测」回验——mtime 上界不可回验的 missing 补全）；坑位：.temp 型编号在不同 repo-key 间可重号（实证同一编号并存于三仓 backlog（RSI-20261022-01 实证）），只写编号的部分确认会挂错条目、直接污染确认语义，后写覆盖前写会丢失前批 `ready` 条目的跨会话承接依据；§3 目录树 report.md 行注释末追加「按批追加、不覆盖前批（§7）」指针（条件 / 做法 / 坑位三属性齐备，纯追加、原句全文保留，不触及确认话术、豁免指令等 §7 既有制度句；源自 RSI-20261026-07）（#37）。
