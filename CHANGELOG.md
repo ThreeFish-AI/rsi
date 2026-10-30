@@ -5,7 +5,6 @@
 ## [Unreleased]
 
 ### 新增
-
 - vibe-stock 接入统一 RSI 路由（RSI-20261030-01，#41）：`repos/vibe-stock.md`
   适配档案（adoption: pending）+ SKILL.md 注册仓库路由表行 + README 注册仓库
   表行；切换 PR ThreeFish-AI/vibe-stock#12（RSI.md 整替为指针 stub，须晚于
