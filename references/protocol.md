@@ -10,7 +10,7 @@
 - **双平面**：作业平面（使用注册仓库的 skill/规约完成当前任务）始终按**当前已安装版本**运行；维护平面（本协议）只旁路记录、交付后处理，是横切关注点而非独立阶段，不打断作业平面的端到端自治。
 - **确认的性质**：RSI 确认是**对外发布授权**（以用户身份向公开仓库推送分支并建 PR，含 PR 后自动上下文审阅与修复白名单内小修推送，见 [§7](#7-确认与提交)），不是作业门禁，不阻塞交付。
 - **协议级 Hook**：本仓库零可执行运行时代码（Claude Code、Codex、Antigravity 等宿主通用），全部命令以协议内嵌 bash 片段呈现；各仓机器执法命令由适配档案 `machine_checks` 字段登记。
-- **设计依据**：自改进须经实证校验、沙箱隔离与人工监督，并警惕 objective hacking（通过删减门禁或放宽判据来过关）[1]；把运行中的失败反思沉淀为可复用的文字经验 [2]；改一条规约前先弄清它为何存在（Chesterton's Fence）[3]；指标一旦成为目标即失效 [4]，故硬约束绝不许被「改松」来刷通过率；PR 后的上下文漂移须以目标仓全上下文审阅兜底 [5]；Critic（门禁与判据）是被治理的基础设施，其判据只许收严，任何放宽仅人工可为并留审计轨迹 [8]；改动的决策须可观测、可证伪——「更新是否发生」与「更新是否产生收益」解耦评估 [12]。
+- **设计依据**：自改进须经实证校验、沙箱隔离与人工监督，并警惕 objective hacking（通过删减门禁或放宽判据来过关）[1]；把运行中的失败反思沉淀为可复用的文字经验 [2]；改一条规约前先弄清它为何存在（Chesterton's Fence）[3]；指标一旦成为目标即失效 [4]，故硬约束绝不许被「改松」来刷通过率；PR 后的上下文漂移须以目标仓全上下文审阅兜底 [5]；Critic（门禁与判据）是被治理的基础设施，其判据只许收严，任何放宽仅人工可为并留审计轨迹 [8]；改动的决策须可观测、可证伪——「更新是否发生」与「更新是否产生收益」解耦评估 [12]；改进的收益主张分层——单次改动、后继生效、改法本身是三个须分开证明的主张，「被继承」与「被真正调用」是后继生效的两个独立判据 [13]。
 
 ## 1. 流程总览
 
@@ -370,3 +370,5 @@ frontmatter 值含 `: `、行内 ` #`、引号或行首 YAML 指示字符（`&`�
 [11] H. Zhou, H. Hu, T. Luo, et al., "Self-evolving coding agents," arXiv preprint arXiv:2608.03392, 2026. [Online]. Available: https://arxiv.org/abs/2608.03392
 
 [12] L. Weng, "Harness engineering for self-improvement," *Lil'Log*, Jul. 2026. [Online]. Available: https://lilianweng.github.io/posts/2026-07-04-harness/
+
+[13] J. Pu, A. Gao, J. Bai, et al., "Trustworthy recursive self-improvement in the era of large models: Foundation, risks, evaluation and open challenges," arXiv preprint arXiv:2610.35193, 2026. [Online]. Available: https://arxiv.org/abs/2610.35193
