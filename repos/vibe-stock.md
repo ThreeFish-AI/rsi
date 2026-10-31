@@ -3,8 +3,8 @@ key: vibe-stock
 upstream: ThreeFish-AI/vibe-stock
 default_branch: main
 local_path: ~/Documents/projects/<本机实际仓目录>
-adoption: pending
-flipped_at: ""
+adoption: live
+flipped_at: "ThreeFish-AI/vibe-stock#12 merged 2026-10-31T00:55:10Z"
 skill_entry: SKILL.md
 ledger: .temp/rsi/vibe-stock/backlog.md
 entry_id: RSI-YYYYMMDD-NN
