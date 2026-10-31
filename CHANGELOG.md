@@ -6,7 +6,6 @@
 
 ### 新增
 - 结案收尾生效核对成文（§0 自认改进「下次安装或拉取后生效」而结案语境全文无一步核对安装副本是否包含 merge sha 的义务缺位补全——合并（successor 成立）与生效（安装副本含修复）被当作同一事件）：protocol §1 状态机 submitted 行在「PR 合并 → 结案（`结论`行回填 merge sha），PR 关闭未合并 → `rejected`（记死因，进拒绝记忆）」原句全文保留下句末追加——结案收尾同步核对已安装副本生效状态（合并与生效是两个事件，细则见 §6 跨会话承接段、不在 §1 展开）；§6 跨会话承接段「预测回验钩子」前增补「结案收尾生效核对」规约句——条件：条目结案时（submitted 与 superseded 两类合并终态均在辖内，前者入口为本段 submitted 复核、后者为 superseded 复核）；做法：以 `git -C <skill-dir> merge-base --is-ancestor <merge-sha> <installed-HEAD>` 核对已安装副本是否包含该 merge sha（已安装版本的判定与「未知」记法同 §2 入账硬条件③ 式样，软链安装按其指向的仓库核对），`结论`行追加「生效：已含 <M>（安装 <sha>）/ 已合并未生效（安装 <I>，待拉取）/ 生效状态未知」三态之一，「待拉取」条目登记为下次会话承接首查项（重跑本核对；拉取节奏仍归用户 / 宿主，本协议只加核对与登记义务、不加拉取义务）；坑位：勿以 PR 合并回报表生育效，`is-ancestor` 不可用（非 git 安装、`<skill-dir>` 并非其仓库根、HEAD 未知等形态）即如实落「生效状态未知」不硬判；判定式样复用 §6 预测回验钩子既有 `is-ancestor` 判定（#25 调研 M11 自认「改了 ≠ 被用了」仅部分覆盖，本条补结案收尾缺口；纯新增、原句全文保留，不触门禁编号与判据语义、不改状态机转移判定；源自 RSI-20261030-01）（#42）。
-- vibe-stock 置 live（RSI-20261030-01 flip）：切换 PR ThreeFish-AI/vibe-stock#12 已合并（2026-10-31T00:55:10Z），适配档案 `adoption: live` + `flipped_at` 落锚，路由表/注册表同步；该仓经验条目自此经本仓路由直接派发。
 - vibe-stock 接入统一 RSI 路由（RSI-20261030-01，#41）：`repos/vibe-stock.md`
   适配档案（adoption: pending）+ SKILL.md 注册仓库路由表行 + README 注册仓库
   表行；切换 PR ThreeFish-AI/vibe-stock#12（RSI.md 整替为指针 stub，须晚于
@@ -32,6 +31,7 @@
 - 上游仓更名同步：ThreeFish-AI/dub → ThreeFish-AI/vibe-tts（上游改名 PR 已合并），适配档案 git mv `repos/dub.md` → `repos/vibe-tts.md`（frontmatter `key`/`upstream` 同步），SKILL.md description 枚举与路由表、README 注册表、trigger-evals 正负例语料一并迁移，正文指称同步（库模块 `dub_` 前缀 → `vibe_tts_` 前缀）；存量 CHANGELOG 条目、既有 PR/issue URL 与 flipped_at 历史锚点保留原文（GitHub 仓库重定向保活），历史台账不改写（#23）。
 
 ### 修复
+- vibe-stock 置 live（RSI-20261030-01 flip）：切换 PR ThreeFish-AI/vibe-stock#12 已合并（2026-10-31T00:55:10Z），适配档案 `adoption: live` + `flipped_at` 落锚，路由表/注册表同步；该仓经验条目自此经本仓路由直接派发（#43）。
 - context-reviewer §10「串行」句与 protocol §6 存量闸解除对齐（#32 漏改残留）：「同批 ≤2 PR 串行派发、先 T1 后 T2」纠错为「同批全部 PR 串行派发、先 T1 后 T2 再 T3」——#32 解除 open 存量上限时同步了 protocol §6/§8 与调研快照、独漏本行「≤2」字面（#1 立规残留），同批 3 条 ready 全绿时两处对 Context-Reviewer 派发给出相反判定；其余字面（隔离 clone 天然支持并行、串行换确定性等理由句）逐字保留，串行覆盖面由「≤2」扩为「全部」属纠错非弱化（源自 RSI-20261026-03）（#33）。
 - 盲审只读纪律补包管理器副作用显式禁令：steward 与 verifier 两份底稿的只读纪律处各补一句——禁止在隔离 clone 内运行包管理器/解释器命令（uv run、npm install、pip install 等生成 .venv、lockfile 等 untracked 副作用文件，.gitignore 豁免不覆盖此类命令），必要的环境准备一律在隔离 clone 之外进行；verifier 另加例外——适配档案声明的 `machine_checks` 不在此限（照声明命令执行，事后核对隔离 clone 无新增 untracked）：verifier 步骤 5 要求在隔离 clone 内执行 `machine_checks`，而 vibe-video、vibe-tts 的该字段正是 `uv run` 命令，无例外则底稿内部互斥；steward 无执行 `machine_checks` 的步骤，不加例外（源自 review-once RSI-013 同源缺口；禁令主体与 review-once#11 同构；#26）。
 - vibe-tts 适配档案的「须与 vibe-video 同值」表述改为「黄金哈希测试只住 vibe-tts，vibe-video 经委托继承、不留镜像副本」：vibe-tts 与 vibe-video 的配音测试按被测对象归属拆分，不再要求双仓人工同步（#23）。
