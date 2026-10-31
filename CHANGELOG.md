@@ -6,6 +6,7 @@
 
 ### 新增
 - 结案收尾生效核对成文（§0 自认改进「下次安装或拉取后生效」而结案语境全文无一步核对安装副本是否包含 merge sha 的义务缺位补全——合并（successor 成立）与生效（安装副本含修复）被当作同一事件）：protocol §1 状态机 submitted 行在「PR 合并 → 结案（`结论`行回填 merge sha），PR 关闭未合并 → `rejected`（记死因，进拒绝记忆）」原句全文保留下句末追加——结案收尾同步核对已安装副本生效状态（合并与生效是两个事件，细则见 §6 跨会话承接段、不在 §1 展开）；§6 跨会话承接段「预测回验钩子」前增补「结案收尾生效核对」规约句——条件：条目结案时（submitted 与 superseded 两类合并终态均在辖内，前者入口为本段 submitted 复核、后者为 superseded 复核）；做法：以 `git -C <skill-dir> merge-base --is-ancestor <merge-sha> <installed-HEAD>` 核对已安装副本是否包含该 merge sha（已安装版本的判定与「未知」记法同 §2 入账硬条件③ 式样，软链安装按其指向的仓库核对），`结论`行追加「生效：已含 <M>（安装 <sha>）/ 已合并未生效（安装 <I>，待拉取）/ 生效状态未知」三态之一，「待拉取」条目登记为下次会话承接首查项（重跑本核对；拉取节奏仍归用户 / 宿主，本协议只加核对与登记义务、不加拉取义务）；坑位：勿以 PR 合并回报表生育效，`is-ancestor` 不可用（非 git 安装、`<skill-dir>` 并非其仓库根、HEAD 未知等形态）即如实落「生效状态未知」不硬判；判定式样复用 §6 预测回验钩子既有 `is-ancestor` 判定（#25 调研 M11 自认「改了 ≠ 被用了」仅部分覆盖，本条补结案收尾缺口；纯新增、原句全文保留，不触门禁编号与判据语义、不改状态机转移判定；源自 RSI-20261030-01）（#42）。
+- vibe-stock 置 live（RSI-20261030-01 flip）：切换 PR ThreeFish-AI/vibe-stock#12 已合并（2026-10-31T00:55:10Z），适配档案 `adoption: live` + `flipped_at` 落锚，路由表/注册表同步；该仓经验条目自此经本仓路由直接派发。
 - vibe-stock 接入统一 RSI 路由（RSI-20261030-01，#41）：`repos/vibe-stock.md`
   适配档案（adoption: pending）+ SKILL.md 注册仓库路由表行 + README 注册仓库
   表行；切换 PR ThreeFish-AI/vibe-stock#12（RSI.md 整替为指针 stub，须晚于
