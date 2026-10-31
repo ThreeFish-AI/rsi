@@ -371,4 +371,4 @@ frontmatter 值含 `: `、行内 ` #`、引号或行首 YAML 指示字符（`&`�
 
 [12] L. Weng, "Harness engineering for self-improvement," *Lil'Log*, Jul. 2026. [Online]. Available: https://lilianweng.github.io/posts/2026-07-04-harness/
 
-[13] J. Pu et al., "Trustworthy Recursive Self-Improvement in the Era of Large Models: Foundation, Risks, Evaluation and Open Challenges," arXiv preprint arXiv:2610.35193, 2026. [Online]. Available: https://arxiv.org/abs/2610.35193
+[13] J. Pu, A. Gao, J. Bai, et al., "Trustworthy recursive self-improvement in the era of large models: Foundation, risks, evaluation and open challenges," arXiv preprint arXiv:2610.35193, 2026. [Online]. Available: https://arxiv.org/abs/2610.35193
