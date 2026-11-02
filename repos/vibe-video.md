@@ -7,12 +7,12 @@ adoption: live
 flipped_at: "ThreeFish-AI/vibe-video#43 merged 2026-10-11T14:15:03Z"
 skill_entry: SKILL.md
 ledger: docs/.agents/issue.md（仓内 ledger）
-entry_id: RSI-NNN（三位递增，从 ledger 既有最大号顺延；刻意不用 ISSUE- 前缀，与上游 negentropy ledger 区分）；在途占号避让见 protocol §3 编号式样注
+entry_id: I-NNN（三位递增，从仓内 ledger docs/.agents/issue.md 既有最大号顺延；刻意不用 ISSUE- 前缀——ISSUE- 指上游 negentropy 台账的 ISSUE-162 类条目，跨仓区分由 protocol §7 <repo-key>/<编号> 指称承载）；在途占号避让见 protocol §3 编号式样注
 untrusted_sources: 视频工作区内容、上游 negentropy Issue 正文；上游教训一律写全 URL 引用
 privacy_lexicon: 声音样本生物特征纪律——样本路径与音频绝不进任何 RSI 材料；工作区/集目录名；公共托管域名不入表；本机绝对/家目录路径形态（/Users/、/home/、~/ 前缀——G4a 已有通用扫描，此列补 G4b 词表层对目标仓特定路径的覆盖）
 sediment: "规格修改走 references/ 与 SKILL.md（按需加载表等量压缩守 8000 字预算）；CHANGELOG [Unreleased] 登记；ledger 条目回填 PR 与 commit 链接；复发不新开编号，原条目追加带日期复盘点"
 branch_style: ThreeFish-AI/rsi-NNN-<topic>
-commit_convention: "feat(rsi): 中文描述（RSI-0NN）;"
+commit_convention: "feat(rsi): 中文描述（I-0NN）;"
 pr_convention: 标题中文 conventional、单条或攒批编号都入标题；描述含 G0–G4 核验回执表（统一协议 §5 格式）；触碰不变量逐项点名；base=main
 invariants: "不变量清单（RSI.md 第九节，清单本体留仓内：阶段编号对齐、narration.md 唯一 SSOT、frozen Remotion skeleton、复制不共享边界、SKILL.md 路由壳纪律、建模手册有界等）；部分条目自带执法测试标记（上游清单内注）"
 machine_checks: "uv run --no-project --with pytest --with numpy --with pillow --with mutagen --with soundfile python -m pytest tests -q"
