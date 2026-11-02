@@ -168,12 +168,13 @@ git -C "$REPO" -c color.ui=never -c core.quotePath=false diff --name-only "origi
   done
 done
 NRE=$(printf '%s' "$NOREPLY" | sed 's|[.]|\\.|g')  # '.' 为 noreply 形态唯一 BRE 元字符，转义防近形态误剥
-{ git -C "$REPO" -c color.ui=never diff --no-ext-diff "origin/$D...$B" | grep -E '^\+' | grep -vE '^\+\+\+ (b/|/dev/null)'
+{ git -C "$REPO" -c color.ui=never diff --no-ext-diff "origin/$D...$B" | grep -E '^\+' | grep -vE '^\+\+\+ (b/|/dev/null)' | sed -e 's/^+//'
   git -C "$REPO" -c color.ui=never log "origin/$D..$B" --format=%B; } \
   | sed -e ":a" -e "s|\([^[:alnum:]._%+-]\)$NRE\([^[:alnum:]._%+-]\)|\1\2|g" -e "ta" \
         -e "s|^$NRE\([^[:alnum:]._%+-]\)|\1|" -e "s|\([^[:alnum:]._%+-]\)$NRE\$|\1|" -e "s|^$NRE\$||" \
   | grep -E '/Users/|/home/|[A-Za-z]:\\Users|[[:alnum:]._%+-]+@[[:alnum:].-]+\.[a-zA-Z]{2,}|gh[pousr]_[[:alnum:]]{20,}|github_pat_|sk-[[:alnum:]_-]{20,}|AKIA[0-9A-Z]{16}|BEGIN [A-Z ]*PRIVATE KEY'
 # 上述 sed 四段式仅用 POSIX BRE（捕获组/否定字符类/^$ 锚/:a-ta 循环），BSD 与 GNU sed 均可运行；仅剥独立成 token 的 noreply 地址；
+# diff 流出口的 sed -e 's/^+//' 在合并前剥单个 diff 标记 +（+ 为 BRE 字面量，BSD/GNU 均可），commit message 流不剥——防 +@decorator 类新增行的标记 + 混入 email local 部伪命中（local 部字符集含 +），行首紧贴 + 的真 email 剥后 local 部仍完整、照常命中；该 sed 仅入下方机密正则流，上方反刷分词表计数流不经此段，两流分离；
 # git 全程 -c color.ui=never（防 ANSI 色码吃掉 +/- 行首致扫描假绿）并 --no-ext-diff（防外部 diff 驱动改写输出）；行头过滤假定标准 a/ b/ 前缀（diff.noprefix/mnemonicPrefix 定制者须先归一）
 ```
 
