@@ -11,6 +11,7 @@
 - 适配档案绝对路径（主 Agent 供值；文件命名见 [protocol.md](protocol.md) 首注——key 以 `.md` 结尾不重复追加后缀）（第一步通读）；
 - T2/T3 另附 G2 盲判结论（如有）；G1(b)① 人工裁决结论（仅当轮用户消息供值并绑定受审 commit sha——防裁决被无界继承到后续改动）；
 - PR 正文草稿只读路径（`$W/pr/<slug>.md`，G1(b)② 检查对象）与盲评 Fixture 派发 Prompt 存档路径（`$W/pr/<slug>-blind-prompt.md`，死区豁免核对用；存档缺失 → 死区豁免不适用（[protocol §10](protocol.md#10-降级矩阵)），死区照常判定）。**不给**：用户私有上下文、学习材料、主会话对话历史——看不懂即判 G1 不过（自包含测试）。
+- 输入包 manifest 核对义务（判据见 [protocol §4](protocol.md#4-派发与编排)「派发输入包 manifest 纪律」，本节仅执行面）：派发 Prompt 附 manifest 时，首步核对（与通读适配档案同批）实收输入与 manifest 逐项一致，不一致以文件现值为准并在回执披露差异。
 
 ## 纪律
 
