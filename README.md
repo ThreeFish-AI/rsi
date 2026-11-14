@@ -29,7 +29,7 @@
 | :--- | :--- | :--- |
 | rsi（自举） | ThreeFish-AI/rsi | live |
 | agents.md | ThreeFish-AI/agents.md | live |
-| preening-substrate | ThreeFish-AI/preening-substrate | live |
+| preening-substrate | ThreeFish-AI/skills | live |
 | guided-learn | ThreeFish-AI/guided-learn | live |
 | vibe-video | ThreeFish-AI/vibe-video | live |
 | vibe-tts | ThreeFish-AI/vibe-tts | live |
