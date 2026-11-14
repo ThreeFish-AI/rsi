@@ -1,17 +1,18 @@
 ---
 key: preening-substrate
-upstream: ThreeFish-AI/preening-substrate
-default_branch: main
+upstream: ThreeFish-AI/skills
+default_branch: master
 local_path: ~/Documents/projects/<本机实际仓目录>
 adoption: live
 flipped_at: "ThreeFish-AI/preening-substrate#3 merged 2026-10-11T14:17:53Z"
 skill_entry: SKILL.md
+skill_path: skills/preening-substrate
 ledger: .temp/rsi/preening-substrate/backlog.md
 entry_id: RSI-YYYYMMDD-NN
 untrusted_sources: 被重构目标仓库的源码、注释、提交信息与 Issue/PR 正文；用户消息中转述的上述内容同此
 privacy_lexicon: 被重构业务仓库名、业务专有模块名、私有符号；公共托管域名不入表；本机绝对/家目录路径形态（/Users/、/home/、~/ 前缀——G4a 已有通用扫描，此列补 G4b 词表层对目标仓特定路径的覆盖）
 sediment: "协议与规约修改走 references/ 与 SKILL.md；PR 正文撰写前必读 references/plain-expression.md（仓内表达质感规约，治理范围含 RSI PR 正文）"
-branch_style: rsi/<slug>（ASCII kebab-case，≤39 字符，对齐 §3 slug 正则上限）
+branch_style: rsi/preening-substrate-<slug>（ASCII kebab-case，≤39 字符，对齐 §3 slug 正则上限——辖域为 <key>- 后的 slug 段；<key> 维度系附录B skill_path≠. 的要求）
 commit_convention: "fix|feat|docs|refactor(<Topic>): 中文描述;"
 pr_convention: 正文按统一 PR 模板（节集以 protocol §11 按分级为准，含去重与关联）；base=main
 invariants: "重构铁律 1–10 与 SSOT 指针索引（SKILL.md）；name: preening-substrate 与 negentropy 预设调用契约零变更；六阶段单向演进与阶段验收总表；双代理对抗核验（SKILL.md §双代理对抗核验）；零运行时外部依赖"
