@@ -10,7 +10,8 @@
     "rsi 协议 §8 的交接块在无 gh 场景没有消费路径，按 RSI 沉淀",
     "guided-learn 的验收标准没有客观判据，门禁无法判定",
     "vibe-video 的渲染步骤在没有 GPU 的环境没有降级路径",
-    "vibe-tts 的 watchdog 停服判据有个缺口，把这个改进沉淀回 vibe-tts 仓"
+    "vibe-tts 的 watchdog 停服判据有个缺口，把这个改进沉淀回 vibe-tts 仓",
+    "vibe-stock 的诊股报告模板缺一节，把这个改进沉淀回 vibe-stock 仓"
   ],
   "negative": [
     "帮我修一下这个业务仓库里的登录 bug",
@@ -19,6 +20,7 @@
     "帮我 git commit 并 push 到 origin",
     "guided-learn 帮我精读这篇 arXiv 论文",
     "preening-substrate 对这个模块做正交分解重构",
-    "用 vibe-tts 把这句话配成 mp3 并输出到统一目录"
+    "用 vibe-tts 把这句话配成 mp3 并输出到统一目录",
+    "用 vibe-stock 诊断一下 600519 并给我出决策报告"
   ]
 }
